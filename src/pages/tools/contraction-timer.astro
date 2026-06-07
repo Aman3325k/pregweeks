@@ -1,0 +1,362 @@
+---
+// src/pages/tools/contraction-timer.astro
+import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+
+const title = "Labor Contraction Timer & Tracker: 5-1-1 Labor Rule | PregWeeks";
+const description = "Track labor contractions, duration, and frequency easily. Learn the 5-1-1 rule to know when it's time to call your doctor or go to the hospital.";
+const url = "https://pregweeks.com/tools/contraction-timer";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Tools", url: "https://pregweeks.com/tools/contraction-timer" },
+    { name: "Contraction Timer", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink-muted-48">Tools</span>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">Contraction Timer</span>
+    </div>
+  </div>
+
+  <!-- Hero Title (Light Canvas) -->
+  <section class="bg-canvas py-12 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center mb-10">
+      <span class="text-3xl mb-3 block">⏱️</span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl text-ink tracking-apple-tight mb-4">
+        Contraction Timer
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        Monitor the duration and frequency of your labor contractions. Keep track offline. The calculator helps evaluate labor stages.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Timer Section (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-12 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto flex flex-col md:flex-row items-center gap-12 justify-center">
+      <!-- Big Tapper Button -->
+      <div class="flex flex-col items-center">
+        <button 
+          id="contraction-btn" 
+          class="w-[220px] h-[220px] rounded-full bg-primary hover:bg-primary-focus text-white font-bold text-lg flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all duration-300 shadow-[0_10px_25px_rgba(0,102,204,0.25)] active:scale-95"
+        >
+          <span class="text-4xl" id="btn-emoji">⚡</span>
+          <span id="btn-text">Start Contraction</span>
+        </button>
+        
+        <div class="mt-4 flex flex-col items-center gap-1">
+          <span class="text-xs font-semibold uppercase text-ink-muted-48 tracking-wider">Active Duration</span>
+          <span class="text-2xl font-bold font-mono text-ink" id="active-timer">00:00</span>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Panel -->
+      <div class="bg-canvas border border-hairline p-6 rounded-apple-lg flex flex-col gap-4 w-full max-w-[320px]">
+        <h3 class="font-display font-semibold text-base text-ink tracking-apple-tight border-b border-hairline pb-2">
+          Labor Averages (Last 3)
+        </h3>
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-ink-muted-80 font-medium">Avg. Duration:</span>
+          <span class="font-bold text-ink" id="avg-duration">--</span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-ink-muted-80 font-medium">Avg. Frequency:</span>
+          <span class="font-bold text-ink" id="avg-frequency">--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Active Labor Alert Banner (Hidden by default) -->
+  <div id="labor-alert" class="max-w-[720px] mx-auto my-6 px-4" style="display: none;">
+    <div class="bg-[#e07a5f]/10 border border-[#e07a5f] text-ink p-5 rounded-apple-lg flex items-start gap-4">
+      <span class="text-2xl">🚨</span>
+      <div>
+        <h4 class="font-bold text-base text-ink mb-1">5-1-1 Labor Pattern Detected</h4>
+        <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          Your contractions are averaging 5 minutes apart, lasting 1 minute, for at least 1 hour. This indicates you may be in active labor. Please call your OB-GYN, midwife, or head to your planned delivery location immediately.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contraction Log Table (Light Canvas) -->
+  <section class="bg-canvas py-12 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="font-display font-semibold text-2xl text-ink tracking-apple-tight">Contraction Timeline</h3>
+        <button id="clear-all-btn" class="text-xs text-ink-muted-48 hover:text-primary font-bold cursor-pointer" style="display: none;">
+          Clear History
+        </button>
+      </div>
+      
+      <div class="overflow-x-auto border border-hairline rounded-apple-lg">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-canvas-parchment border-b border-hairline font-semibold text-ink">
+              <th class="p-4">Start Time</th>
+              <th class="p-4">Duration</th>
+              <th class="p-4">Frequency</th>
+              <th class="p-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="timeline-rows" class="divide-y divide-hairline">
+            <!-- Dynamic entries -->
+            <tr>
+              <td colspan="4" class="p-8 text-center text-ink-muted-80 bg-canvas-parchment/10">
+                No contractions timed yet. Use the button above to record your contractions.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Labor Information Tile (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto flex flex-col gap-6">
+      <h3 class="font-display font-semibold text-2xl text-ink tracking-apple-tight mb-2">Understanding Labor Contractions</h3>
+      
+      <div class="flex flex-col gap-4 text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        <p>
+          <strong>What is Duration?</strong> Duration measures how long an individual contraction lasts, from the moment it begins to tighten until it fully relaxes.
+        </p>
+        <p>
+          <strong>What is Frequency?</strong> Frequency is the time elapsed between the start of one contraction and the start of the next contraction. It includes both the contraction itself and the rest period in between.
+        </p>
+        <h4 class="font-bold text-ink mt-2">The 5-1-1 Rule of Labor</h4>
+        <p>
+          OB-GYNs and midwives recommend heading to the hospital or birth location when:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-xs md:text-sm pl-2">
+          <li><strong>5:</strong> Contractions occur every <strong>5 minutes</strong> or less (from start to start).</li>
+          <li><strong>1:</strong> Each contraction lasts for at least <strong>1 minute</strong>.</li>
+          <li><strong>1:</strong> This pattern continues consistently for <strong>1 hour</strong>.</li>
+        </ul>
+        <div class="bg-canvas border border-hairline p-4 rounded-apple-sm text-xs text-ink-muted-48 mt-2 leading-relaxed">
+          <strong>Medical Disclaimer:</strong> Every pregnancy and labor is unique. If your water breaks, if you experience significant bleeding, or if you feel severe pain in between contractions, contact your doctor immediately, regardless of what the timer displays.
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  interface Contraction {
+    id: string;
+    startTime: number; // timestamp
+    durationSeconds: number;
+    frequencySeconds: number; // time from previous contraction start to this contraction start
+  }
+
+  let isTiming = false;
+  let activeStart = 0;
+  let activeInterval: any = null;
+  let activeDuration = 0;
+
+  const timerBtn = document.getElementById('contraction-btn');
+  const btnEmoji = document.getElementById('btn-emoji');
+  const btnText = document.getElementById('btn-text');
+  const activeDisplay = document.getElementById('active-timer');
+  const avgDurationDisplay = document.getElementById('avg-duration');
+  const avgFrequencyDisplay = document.getElementById('avg-frequency');
+  const laborAlert = document.getElementById('labor-alert');
+  const timelineRows = document.getElementById('timeline-rows');
+  const clearAllBtn = document.getElementById('clear-all-btn');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTimeline();
+    calculateAverages();
+  });
+
+  timerBtn?.addEventListener('click', () => {
+    if (!isTiming) {
+      startContraction();
+    } else {
+      stopContraction();
+    }
+  });
+
+  clearAllBtn?.addEventListener('click', () => {
+    if (confirm("Are you sure you want to clear all contraction history?")) {
+      localStorage.removeItem('pregnancy_contractions_v1');
+      renderTimeline();
+      calculateAverages();
+    }
+  });
+
+  function startContraction() {
+    isTiming = true;
+    activeStart = Date.now();
+    btnText!.textContent = 'Stop Contraction';
+    btnEmoji!.textContent = '⏳';
+    timerBtn?.classList.remove('bg-primary', 'hover:bg-primary-focus');
+    timerBtn?.classList.add('bg-[#e07a5f]', 'hover:bg-[#c9654b]');
+
+    activeInterval = setInterval(() => {
+      activeDuration = Math.floor((Date.now() - activeStart) / 1000);
+      activeDisplay!.textContent = formatSeconds(activeDuration);
+    }, 1000);
+  }
+
+  function stopContraction() {
+    clearInterval(activeInterval);
+    isTiming = false;
+    btnText!.textContent = 'Start Contraction';
+    btnEmoji!.textContent = '⚡';
+    timerBtn?.classList.add('bg-primary', 'hover:bg-primary-focus');
+    timerBtn?.classList.remove('bg-[#e07a5f]', 'hover:bg-[#c9654b]');
+    
+    // Save contraction log
+    const list = getStoredContractions();
+    let frequency = 0;
+
+    if (list.length > 0) {
+      // Frequency is time from start of last contraction to start of this one
+      frequency = Math.floor((activeStart - list[0].startTime) / 1000);
+    }
+
+    const newContraction: Contraction = {
+      id: 'contraction_' + Date.now(),
+      startTime: activeStart,
+      durationSeconds: activeDuration,
+      frequencySeconds: frequency
+    };
+
+    list.unshift(newContraction);
+    saveStoredContractions(list);
+
+    // Reset displays
+    activeDuration = 0;
+    activeDisplay!.textContent = '00:00';
+    
+    renderTimeline();
+    calculateAverages();
+  }
+
+  function formatSeconds(sec: number): string {
+    const min = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(min).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function formatTime(timestamp: number): string {
+    return new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+
+  function getStoredContractions(): Contraction[] {
+    const raw = localStorage.getItem('pregnancy_contractions_v1');
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  function saveStoredContractions(list: Contraction[]) {
+    localStorage.setItem('pregnancy_contractions_v1', JSON.stringify(list));
+  }
+
+  function calculateAverages() {
+    const list = getStoredContractions();
+    if (list.length < 2) {
+      avgDurationDisplay!.textContent = '--';
+      avgFrequencyDisplay!.textContent = '--';
+      laborAlert!.style.display = 'none';
+      return;
+    }
+
+    // Average duration (last 3 entries)
+    const recent = list.slice(0, 3);
+    const avgDuration = Math.round(recent.reduce((sum, item) => sum + item.durationSeconds, 0) / recent.length);
+    
+    // Average frequency (last 3 items, filtering out the first item which has 0 frequency)
+    const validFreqs = recent.map(item => item.frequencySeconds).filter(f => f > 0);
+    const avgFrequency = validFreqs.length > 0 
+      ? Math.round(validFreqs.reduce((sum, f) => sum + f, 0) / validFreqs.length)
+      : 0;
+
+    avgDurationDisplay!.textContent = `${Math.floor(avgDuration / 60)}m ${avgDuration % 60}s`;
+    
+    if (avgFrequency > 0) {
+      avgFrequencyDisplay!.textContent = `${Math.floor(avgFrequency / 60)}m ${avgFrequency % 60}s`;
+      
+      // 5-1-1 Labor Pattern Check:
+      // Contractions 5 mins apart (300 seconds), lasting 1 min (60 seconds).
+      if (avgFrequency <= 300 && avgDuration >= 50) {
+        laborAlert!.style.display = 'block';
+      } else {
+        laborAlert!.style.display = 'none';
+      }
+    } else {
+      avgFrequencyDisplay!.textContent = '--';
+      laborAlert!.style.display = 'none';
+    }
+  }
+
+  function renderTimeline() {
+    if (!timelineRows) return;
+    
+    const list = getStoredContractions();
+
+    if (list.length === 0) {
+      timelineRows.innerHTML = `
+        <tr>
+          <td colspan="4" class="p-8 text-center text-ink-muted-80 bg-canvas-parchment/10">
+            No contractions timed yet. Use the button above to record your contractions.
+          </td>
+        </tr>
+      `;
+      clearAllBtn!.style.display = 'none';
+      return;
+    }
+
+    clearAllBtn!.style.display = 'inline-block';
+    timelineRows.innerHTML = '';
+    
+    list.forEach(item => {
+      const row = document.createElement('tr');
+      row.className = 'border-b border-hairline bg-canvas hover:bg-canvas-parchment/20 transition-colors';
+      
+      const freqText = item.frequencySeconds > 0 
+        ? `${Math.floor(item.frequencySeconds / 60)}m ${item.frequencySeconds % 60}s` 
+        : '--';
+
+      row.innerHTML = `
+        <td class="p-4 font-medium text-ink flex flex-col">
+          <span>${new Date(item.startTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+          <span class="text-xs text-ink-muted-48">${formatTime(item.startTime)}</span>
+        </td>
+        <td class="p-4 font-semibold text-primary">${Math.floor(item.durationSeconds / 60)}m ${item.durationSeconds % 60}s</td>
+        <td class="p-4 text-ink-muted-80">${freqText}</td>
+        <td class="p-4 text-right">
+          <button class="delete-contra-btn text-ink-muted-48 hover:text-[#e07a5f] cursor-pointer p-1" data-id="${item.id}">
+            Delete
+          </button>
+        </td>
+      `;
+
+      row.querySelector('.delete-contra-btn')?.addEventListener('click', () => {
+        deleteContraction(item.id);
+      });
+
+      timelineRows.appendChild(row);
+    });
+  }
+
+  function deleteContraction(id: string) {
+    const list = getStoredContractions();
+    const updated = list.filter(item => item.id !== id);
+    saveStoredContractions(updated);
+    renderTimeline();
+    calculateAverages();
+  }
+</script>

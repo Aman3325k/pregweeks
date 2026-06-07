@@ -1,0 +1,93 @@
+---
+// src/pages/tools/due-date-calculator.astro
+import Layout from '../../layouts/Layout.astro';
+import Calculator from '../../components/Calculator.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+
+const title = "Pregnancy Due Date Calculator & Gestational Age Tracker | PregWeeks";
+const description = "Calculate your estimated due date (EDD), trimester progress, and precise gestational age in weeks and days with our private, offline calculator.";
+const url = "https://pregweeks.com/tools/due-date-calculator";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+    { name: "Due Date Calculator", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink-muted-48">Tools</span>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">Due Date Calculator</span>
+    </div>
+  </div>
+
+  <!-- Hero Tile (Light Canvas) -->
+  <section class="bg-canvas py-12 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center mb-10">
+      <span class="text-3xl mb-3 block">🗓️</span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl text-ink tracking-apple-tight mb-4">
+        Pregnancy Due Date Calculator
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        Determine your pregnancy timeline. Calculate your Estimated Due Date (EDD), trimester progress, and exact gestational weeks and days.
+      </p>
+    </div>
+    
+    <div class="max-w-2xl mx-auto">
+      <Calculator />
+    </div>
+  </section>
+
+  <!-- Explanation Tile (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto flex flex-col gap-8">
+      <div>
+        <h2 class="font-display font-semibold text-2xl text-ink tracking-apple-tight mb-3">How Due Dates Are Calculated</h2>
+        <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed mb-4">
+          A typical pregnancy lasts approximately 280 days (40 weeks) from the first day of your last menstrual period (LMP) or 266 days (38 weeks) from conception.
+        </p>
+        <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+          Our calculator supports two popular, medically recognized methods:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="bg-canvas border border-hairline p-5 rounded-apple-sm">
+          <h3 class="font-semibold text-sm md:text-base text-ink mb-2">Last Menstrual Period (LMP)</h3>
+          <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+            Uses <strong>Naegele's Rule</strong>. The calculator adds 280 days (40 weeks) to the first day of your last period. This assumes a standard 28-day menstrual cycle.
+          </p>
+        </div>
+
+        <div class="bg-canvas border border-hairline p-5 rounded-apple-sm">
+          <h3 class="font-semibold text-sm md:text-base text-ink mb-2">Conception Date</h3>
+          <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+            If you tracked ovulation or underwent IVF, your due date is calculated by adding 266 days (38 weeks) to the estimated conception date.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-canvas border border-hairline p-5 rounded-apple-sm flex flex-col gap-3">
+        <h3 class="font-semibold text-sm md:text-base text-ink">Understanding Gestational Milestones</h3>
+        <ul class="list-disc list-inside space-y-2 text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          <li><strong>First Trimester:</strong> Weeks 1 to 13. High cell replication and basic organ systems creation.</li>
+          <li><strong>Second Trimester:</strong> Weeks 14 to 27. Rapid physical elongation, bones ossification, and quickening movements.</li>
+          <li><strong>Third Trimester:</strong> Weeks 28 to 40. Lung maturation, peak antibody accumulation, and labor preparation.</li>
+        </ul>
+      </div>
+
+      <div class="border-t border-hairline pt-6 text-xs text-ink-muted-48 leading-relaxed">
+        <strong>Important Note:</strong> Only about 4% to 5% of babies are born exactly on their estimated due date. Most deliveries occur within a window spanning two weeks before and two weeks after the calculated EDD. This calculator serves as an educational tool; always consult your obstetrician for clinical tracking.
+      </div>
+    </div>
+  </section>
+</Layout>

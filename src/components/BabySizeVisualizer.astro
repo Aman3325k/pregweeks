@@ -1,0 +1,504 @@
+---
+import { pregnancyData } from '../data/pregnancyData';
+
+// Helper to convert weight and length to imperial units for better readability
+const cmToInches = (cm: number) => (cm * 0.393701).toFixed(1);
+const gToOunces = (g: number) => {
+  if (g < 1) return "< 0.1";
+  return (g * 0.035274).toFixed(1);
+};
+---
+
+<div class="visualizer-container animate-fade-in">
+  {pregnancyData.map((data) => {
+    const isFirstWeek = data.week === 1;
+    
+    // Scale factor for the baby size representation (based on max length 51.2cm)
+    const maxCm = 52;
+    const scalePercent = data.babySize.lengthCm > 0 
+      ? Math.max(8, Math.min(100, (data.babySize.lengthCm / maxCm) * 100))
+      : 0;
+
+    return (
+      <div 
+        class={`week-panel ${isFirstWeek ? 'active' : ''}`} 
+        data-week-panel={data.week}
+        id={`week-panel-${data.week}`}
+      >
+        <div class="panel-layout">
+          <!-- Left Column: Size Comparison & Metrics -->
+          <div class="visuals-column">
+            <div class="glass-card comparison-box">
+              <span class="trimester-tag">Trimester {data.trimester}</span>
+              
+              <div class="size-circle-wrapper">
+                {scalePercent > 0 ? (
+                  <div class="size-circle animate-pulse-glow" style={`width: ${scalePercent}%; height: ${scalePercent}%;`}>
+                    <span class="circle-label">{data.babySize.name}</span>
+                  </div>
+                ) : (
+                  <div class="size-circle-empty">
+                    <span>✨</span>
+                  </div>
+                )}
+              </div>
+
+              <div class="comparison-details">
+                <h4>Baby's Size Comparison</h4>
+                <p class="fruit-name">{data.babySize.name}</p>
+                
+                {data.babySize.lengthCm > 0 && (
+                  <div class="metrics-grid">
+                    <div class="metric-item">
+                      <span class="m-label">Length</span>
+                      <span class="m-value">{data.babySize.lengthCm} cm</span>
+                      <span class="m-sub">{cmToInches(data.babySize.lengthCm)} inches</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="m-label">Weight</span>
+                      <span class="m-value">{data.babySize.weightG} g</span>
+                      <span class="m-sub">{gToOunces(data.babySize.weightG)} oz</span>
+                    </div>
+                  </div>
+                )}
+                <p class="visual-desc">{data.babySize.visualDescription}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Detailed Development Logs -->
+          <div class="info-column">
+            <div class="tabs-container">
+              <div class="tabs-header" data-panel-id={data.week}>
+                <button class="tab-btn active" data-tab="baby">Baby's Growth</button>
+                <button class="tab-btn" data-tab="mother">Mother's Body</button>
+                <button class="tab-btn" data-tab="tips">Care & Tips</button>
+              </div>
+
+              <div class="tabs-content">
+                <!-- Tab 1: Baby's Growth -->
+                <div class="tab-pane active" data-pane="baby">
+                  <h3>Baby's Development</h3>
+                  <p class="desc-text">{data.babyDevelopment}</p>
+                  
+                  {data.milestones.length > 0 && (
+                    <div class="feature-list">
+                      <h4>Key Milestones this Week</h4>
+                      <ul>
+                        {data.milestones.map((milestone) => (
+                          <li>
+                            <span class="list-bullet">✦</span>
+                            <span>{milestone}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <!-- Tab 2: Mother's Body -->
+                <div class="tab-pane" data-pane="mother">
+                  <h3>Your Body & Changes</h3>
+                  <p class="desc-text">{data.motherChanges}</p>
+                  
+                  {data.symptoms.length > 0 && (
+                    <div class="symptoms-tags">
+                      <h4>Common Symptoms</h4>
+                      <div class="tags-flex">
+                        {data.symptoms.map((symptom) => (
+                          <span class="symptom-tag">{symptom}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <!-- Tab 3: Care & Tips -->
+                <div class="tab-pane" data-pane="tips">
+                  <h3>Tips for Week {data.week}</h3>
+                  <ul class="tips-list">
+                    {data.tips.map((tip) => (
+                      <li>
+                        <span class="tip-check">✓</span>
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .visualizer-container {
+    max-width: 960px;
+    margin: 0 auto 3rem auto;
+  }
+
+  .week-panel {
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition-smooth) ease-in-out;
+  }
+
+  .week-panel.active {
+    display: block;
+    opacity: 1;
+    animation: fadeIn var(--transition-smooth) forwards;
+  }
+
+  .panel-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 800px) {
+    .panel-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Left Column visuals */
+  .visuals-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comparison-box {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .trimester-tag {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--color-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .size-circle-wrapper {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    background: var(--bg-surface-elevated);
+    border-radius: 50%;
+    border: 1px dashed var(--color-border);
+    position: relative;
+  }
+
+  .size-circle {
+    background: radial-gradient(circle, var(--color-primary), var(--color-secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    padding: 1rem;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(224, 122, 95, 0.3);
+    transition: width var(--transition-smooth) ease, height var(--transition-smooth) ease;
+  }
+
+  .circle-label {
+    font-size: 0.8rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+  }
+
+  .size-circle-empty {
+    font-size: 3rem;
+  }
+
+  .comparison-details {
+    width: 100%;
+  }
+
+  .comparison-details h4 {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .fruit-name {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    color: var(--color-text);
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    background: var(--bg-surface-elevated);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .m-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .m-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .m-sub {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .visual-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  /* Right Column Tabs */
+  .info-column {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabs-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .tabs-header {
+    display: flex;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .tab-btn {
+    border: none;
+    background: transparent;
+    padding: 0.75rem 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    position: relative;
+    transition: color var(--transition-fast);
+  }
+
+  .tab-btn:hover {
+    color: var(--color-text);
+  }
+
+  .tab-btn.active {
+    color: var(--color-primary);
+  }
+
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: 99px;
+  }
+
+  .tab-pane {
+    display: none;
+    opacity: 0;
+  }
+
+  .tab-pane.active {
+    display: block;
+    opacity: 1;
+    animation: fadeIn var(--transition-fast) forwards;
+  }
+
+  .tab-pane h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .desc-text {
+    line-height: 1.6;
+    font-size: 1.05rem;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Feature Lists */
+  .feature-list h4,
+  .symptoms-tags h4,
+  .tips-pane h4 {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-list ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .feature-list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .list-bullet {
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+
+  /* Symptoms Tags */
+  .tags-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .symptom-tag {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  /* Tips List */
+  .tips-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tips-list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .tip-check {
+    color: var(--color-tertiary);
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  // Handle tab switching for all panels
+  document.addEventListener('DOMContentLoaded', () => {
+    // Setup tab listeners for each week panel
+    const panels = document.querySelectorAll('.week-panel');
+    
+    panels.forEach(panel => {
+      const tabBtns = panel.querySelectorAll('.tab-btn');
+      const tabPanes = panel.querySelectorAll('.tab-pane');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetTab = btn.getAttribute('data-tab');
+          
+          // Toggle buttons
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // Toggle panes
+          tabPanes.forEach(pane => {
+            const paneName = pane.getAttribute('data-pane');
+            if (paneName === targetTab) {
+              pane.classList.add('active');
+            } else {
+              pane.classList.remove('active');
+            }
+          });
+        });
+      });
+    });
+  });
+
+  // Listen to week-selected event to switch panels
+  document.addEventListener('week-selected', (e: any) => {
+    if (e.detail && e.detail.week) {
+      switchPanel(e.detail.week);
+    }
+  });
+
+  function switchPanel(week: number) {
+    const panels = document.querySelectorAll('.week-panel');
+    panels.forEach(panel => {
+      const panelWeek = parseInt(panel.getAttribute('data-week-panel') || '1', 10);
+      if (panelWeek === week) {
+        panel.classList.add('active');
+      } else {
+        panel.classList.remove('active');
+      }
+    });
+  }
+</script>

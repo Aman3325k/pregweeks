@@ -1,0 +1,370 @@
+---
+// WeekSelector.astro
+---
+
+<div class="week-selector-container animate-fade-in">
+  <div class="selector-header">
+    <div class="week-info">
+      <h3>Explore Weeks</h3>
+      <span class="active-week-display" id="active-week-label">Week 1</span>
+    </div>
+    
+    <div class="nav-arrows">
+      <button class="arrow-btn" id="prev-week" aria-label="Previous week">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button class="arrow-btn" id="next-week" aria-label="Next week">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="slider-wrapper">
+    <div class="week-slider" id="week-slider">
+      {Array.from({ length: 40 }, (_, i) => {
+        const week = i + 1;
+        let trimesterClass = 'tri-1';
+        if (week >= 28) trimesterClass = 'tri-3';
+        else if (week >= 14) trimesterClass = 'tri-2';
+        
+        return (
+          <button 
+            class={`week-node ${trimesterClass}`} 
+            data-week={week}
+            id={`week-node-${week}`}
+          >
+            <span class="node-num">{week}</span>
+            <span class="node-dot"></span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <div class="trimester-bar-legend">
+    <div class="legend-segment l-tri-1">
+      <span class="legend-dot tri-1-dot"></span>
+      <span>Trimester 1 (Weeks 1 - 13)</span>
+    </div>
+    <div class="legend-segment l-tri-2">
+      <span class="legend-dot tri-2-dot"></span>
+      <span>Trimester 2 (Weeks 14 - 27)</span>
+    </div>
+    <div class="legend-segment l-tri-3">
+      <span class="legend-dot tri-3-dot"></span>
+      <span>Trimester 3 (Weeks 28 - 40)</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .week-selector-container {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--glass-shadow);
+    max-width: 960px;
+    margin: 2rem auto;
+    overflow: hidden;
+  }
+
+  .selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .week-info {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .week-info h3 {
+    font-size: 1.5rem;
+    color: var(--color-text);
+  }
+
+  .active-week-display {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: var(--bg-surface-elevated);
+    padding: 0.25rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+  }
+
+  .nav-arrows {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .arrow-btn {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .arrow-btn:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  /* Slider Styling */
+  .slider-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .slider-wrapper::before,
+  .slider-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity var(--transition-fast);
+  }
+
+  .slider-wrapper::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg-surface) 0%, transparent 100%);
+    opacity: 0;
+  }
+
+  .slider-wrapper::after {
+    right: 0;
+    background: linear-gradient(-90deg, var(--bg-surface) 0%, transparent 100%);
+  }
+
+  .week-slider {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    padding: 0.75rem 0;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .week-slider::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .week-node {
+    scroll-snap-align: center;
+    flex: 0 0 54px;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-radius: 16px;
+    border: 1.5px solid transparent;
+    background: var(--bg-surface-elevated);
+    cursor: pointer;
+    transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .week-node:hover {
+    transform: translateY(-2px);
+    background: var(--bg-surface);
+  }
+
+  .node-num {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .node-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-text-muted);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  /* Trimester Color Coding for Node Dots */
+  .week-node.tri-1 .node-dot { background: var(--color-primary); }
+  .week-node.tri-2 .node-dot { background: var(--color-secondary); }
+  .week-node.tri-3 .node-dot { background: var(--color-tertiary); }
+
+  /* Active Node Styling */
+  .week-node.active {
+    background: var(--bg-surface);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  .week-node.active.tri-1 { border-color: var(--color-primary); }
+  .week-node.active.tri-2 { border-color: #e3b05e; } /* Slightly darkened sand for outline contrast */
+  .week-node.active.tri-3 { border-color: var(--color-tertiary); }
+
+  .week-node.active .node-dot {
+    transform: scale(1.4);
+  }
+
+  /* Trimester Legend */
+  .trimester-bar-legend {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .legend-segment {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .tri-1-dot { background: var(--color-primary); }
+  .tri-2-dot { background: var(--color-secondary); }
+  .tri-3-dot { background: var(--color-tertiary); }
+
+  @media (max-width: 600px) {
+    .trimester-bar-legend {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding-left: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  let currentWeek = 1;
+  const totalWeeks = 40;
+
+  const weekSlider = document.getElementById('week-slider');
+  const activeLabel = document.getElementById('active-week-label');
+  const prevBtn = document.getElementById('prev-week');
+  const nextBtn = document.getElementById('next-week');
+  const nodes = document.querySelectorAll('.week-node');
+
+  // Load saved selected week, or calculate default from URL or standard storage
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedCalculation = localStorage.getItem('pregnancy_calc_v1');
+    let startingWeek = 1;
+
+    if (savedCalculation) {
+      // Calculate current week from stored details
+      const data = JSON.parse(savedCalculation);
+      const date = new Date(data.date);
+      date.setHours(12, 0, 0, 0);
+      const now = new Date();
+      now.setHours(12, 0, 0, 0);
+      
+      let ageDays = 0;
+      if (data.mode === 'lmp') {
+        ageDays = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000));
+      } else {
+        ageDays = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000)) + 14;
+      }
+      
+      if (ageDays < 0) ageDays = 0;
+      const weeks = Math.floor(ageDays / 7);
+      startingWeek = Math.max(1, Math.min(40, weeks + 1));
+    } else {
+      // Look for separately saved browsed week
+      const savedBrowsedWeek = localStorage.getItem('browsed_week_v1');
+      if (savedBrowsedWeek) {
+        startingWeek = parseInt(savedBrowsedWeek, 10);
+      }
+    }
+
+    setWeek(startingWeek, false); // Initialize
+  });
+
+  // Handle slide clicks
+  nodes.forEach(node => {
+    node.addEventListener('click', () => {
+      const week = parseInt(node.getAttribute('data-week') || '1', 10);
+      setWeek(week, true);
+    });
+  });
+
+  // Next / Prev triggers
+  prevBtn?.addEventListener('click', () => {
+    if (currentWeek > 1) {
+      setWeek(currentWeek - 1, true);
+    }
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    if (currentWeek < totalWeeks) {
+      setWeek(currentWeek + 1, true);
+    }
+  });
+
+  // Listen for calculations
+  document.addEventListener('pregnancy-updated', (e: any) => {
+    if (e.detail && e.detail.week) {
+      setWeek(e.detail.week, true);
+    }
+  });
+
+  document.addEventListener('pregnancy-reset', () => {
+    setWeek(1, true);
+  });
+
+  function setWeek(week: number, dispatchEvent = true) {
+    currentWeek = week;
+    localStorage.setItem('browsed_week_v1', String(currentWeek));
+
+    // Update active visual node
+    nodes.forEach(node => {
+      const nodeWeek = parseInt(node.getAttribute('data-week') || '1', 10);
+      if (nodeWeek === currentWeek) {
+        node.classList.add('active');
+        // Scroll element into view
+        node.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        node.classList.remove('active');
+      }
+    });
+
+    // Update labels
+    if (activeLabel) {
+      activeLabel.textContent = `Week ${currentWeek}`;
+    }
+
+    // Dispatch global event
+    if (dispatchEvent) {
+      const event = new CustomEvent('week-selected', {
+        detail: { week: currentWeek }
+      });
+      document.dispatchEvent(event);
+    }
+  }
+</script>

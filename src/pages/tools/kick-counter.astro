@@ -1,0 +1,335 @@
+---
+// src/pages/tools/kick-counter.astro
+import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+
+const title = "Fetal Kick Counter: Track Baby Movements Online | PregWeeks";
+const description = "Monitor your baby's health with our easy-to-use, secure fetal kick counter. Track and log baby kicks offline with no ads or backend tracking.";
+const url = "https://pregweeks.com/tools/kick-counter";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Tools", url: "https://pregweeks.com/tools/kick-counter" },
+    { name: "Fetal Kick Counter", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink-muted-48">Tools</span>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">Fetal Kick Counter</span>
+    </div>
+  </div>
+
+  <!-- Hero Title (Light Canvas) -->
+  <section class="bg-canvas py-12 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center mb-10">
+      <span class="text-3xl mb-3 block">🦶</span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl text-ink tracking-apple-tight mb-4">
+        Fetal Kick Counter
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        Fetal movement counting is a simple method to monitor your baby's health. Clinicians recommend tracking kicks daily starting around Week 28.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Tapper Tile (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-12 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <!-- Left: Counter Controller -->
+      <div class="bg-canvas border border-hairline p-6 rounded-apple-lg flex flex-col gap-6 items-center text-center">
+        <div class="flex flex-col gap-1">
+          <span class="text-xs font-semibold uppercase text-ink-muted-48 tracking-wider">Active Session</span>
+          <span class="text-3xl font-bold font-mono text-ink" id="session-timer">00:00:00</span>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <span class="text-xs font-semibold uppercase text-ink-muted-48 tracking-wider">Kicks Recorded</span>
+          <span class="text-5xl font-black text-primary" id="kick-count">0</span>
+          <span class="text-xs text-ink-muted-80">Goal: 10 Movements</span>
+        </div>
+
+        <div class="flex gap-2 w-full mt-2">
+          <button id="session-toggle-btn" class="flex-1 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm">
+            Start Session
+          </button>
+          <button id="session-reset-btn" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm" disabled>
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Tapper Button -->
+      <div class="flex flex-col items-center justify-center">
+        <!-- Disabled state overlay by default -->
+        <button 
+          id="tap-kick-btn" 
+          class="w-[200px] h-[200px] rounded-full bg-primary hover:bg-primary-focus text-white font-bold text-lg flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-300 shadow-[0_10px_25px_rgba(0,102,204,0.25)] active:scale-90 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-95" 
+          disabled
+        >
+          <span class="text-4xl">👶</span>
+          <span>Log a Kick</span>
+        </button>
+        <p class="text-xs text-ink-muted-48 mt-4 text-center" id="tapper-instructions">
+          Start a session to enable logging. Tap the button every time you feel a kick, flutter, or roll.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 Kick Alert Banner (Hidden by default) -->
+  <div id="ten-kick-alert" class="max-w-[720px] mx-auto my-6 px-4" style="display: none;">
+    <div class="bg-[#81b29a]/15 border border-[#81b29a] text-ink p-5 rounded-apple-lg flex items-start gap-4">
+      <span class="text-2xl">🎉</span>
+      <div>
+        <h4 class="font-bold text-base text-ink mb-1">10 Kicks Logged!</h4>
+        <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          Your session is complete. Standard medical guidelines suggest tracking 10 movements in under 2 hours is a good sign of fetal activity. Feel free to save your log below.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Timeline (Light Canvas) -->
+  <section class="bg-canvas py-12 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto">
+      <h3 class="font-display font-semibold text-2xl text-ink mb-6 tracking-apple-tight">Fetal Movement Log History</h3>
+      
+      <div class="overflow-x-auto border border-hairline rounded-apple-lg">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-canvas-parchment border-b border-hairline font-semibold text-ink">
+              <th class="p-4">Date</th>
+              <th class="p-4">Duration</th>
+              <th class="p-4">Total Kicks</th>
+              <th class="p-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="history-rows" class="divide-y divide-hairline">
+            <!-- Dynamic rows -->
+            <tr>
+              <td colspan="4" class="p-8 text-center text-ink-muted-80 bg-canvas-parchment/10">
+                No saved movement sessions yet. Track baby kicks above to build your journal!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explanation Tile (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto flex flex-col gap-6">
+      <h3 class="font-display font-semibold text-2xl text-ink tracking-apple-tight mb-2">Guide to Fetal Movement Tracking</h3>
+      
+      <div class="flex flex-col gap-4 text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        <p>
+          <strong>When to start:</strong> Most obstetricians recommend starting daily kick counts around Week 28 (or Week 24 if you have a high-risk pregnancy).
+        </p>
+        <p>
+          <strong>When to count:</strong> Choose a time when your baby is usually active (frequently after eating a meal, drinking cold water, or in the evening). Lie comfortably on your left side to support circulation.
+        </p>
+        <p>
+          <strong>What to look for:</strong> You want to record the amount of time it takes to feel 10 movements (kicks, rolls, swishes, or flutters). Ideally, you should feel 10 movements in under 2 hours. Most babies hit 10 movements in less than 30 minutes.
+        </p>
+        <div class="bg-canvas border border-hairline p-4 rounded-apple-sm text-xs text-ink-muted-48 mt-2 leading-relaxed">
+          <strong>When to Contact Professional Care:</strong> If you do not count 10 movements in 2 hours, or notice a sudden, major decrease in daily baby movement, call your OB-GYN or midwife immediately. Quick evaluation provides safety and peace of mind.
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  interface KickSession {
+    id: string;
+    date: string;
+    durationSeconds: number;
+    kicks: number;
+  }
+
+  let isRunning = false;
+  let startTime = 0;
+  let timerInterval: any = null;
+  let kickCount = 0;
+  let durationSeconds = 0;
+
+  const timerDisplay = document.getElementById('session-timer');
+  const countDisplay = document.getElementById('kick-count');
+  const toggleBtn = document.getElementById('session-toggle-btn') as HTMLButtonElement;
+  const resetBtn = document.getElementById('session-reset-btn') as HTMLButtonElement;
+  const tapBtn = document.getElementById('tap-kick-btn') as HTMLButtonElement;
+  const alertBanner = document.getElementById('ten-kick-alert');
+  const historyRows = document.getElementById('history-rows');
+  const instructions = document.getElementById('tapper-instructions');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+  });
+
+  toggleBtn.addEventListener('click', () => {
+    if (!isRunning) {
+      startSession();
+    } else {
+      stopSession();
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    resetSession();
+  });
+
+  tapBtn.addEventListener('click', () => {
+    if (!isRunning) return;
+    
+    kickCount++;
+    countDisplay!.textContent = String(kickCount);
+
+    if (kickCount === 10) {
+      alertBanner!.style.display = 'block';
+    }
+  });
+
+  function startSession() {
+    isRunning = true;
+    startTime = Date.now() - (durationSeconds * 1000);
+    toggleBtn.textContent = 'Stop & Save';
+    toggleBtn.classList.remove('bg-primary', 'hover:bg-primary-focus');
+    toggleBtn.classList.add('bg-[#81b29a]', 'hover:bg-[#6e9d85]');
+    resetBtn.disabled = false;
+    tapBtn.disabled = false;
+    instructions!.textContent = "Tap every time your baby moves. Session is actively recording.";
+
+    timerInterval = setInterval(() => {
+      durationSeconds = Math.floor((Date.now() - startTime) / 1000);
+      timerDisplay!.textContent = formatDuration(durationSeconds);
+    }, 1000);
+  }
+
+  function stopSession() {
+    clearInterval(timerInterval);
+    isRunning = false;
+    toggleBtn.textContent = 'Start Session';
+    toggleBtn.classList.add('bg-primary', 'hover:bg-primary-focus');
+    toggleBtn.classList.remove('bg-[#81b29a]', 'hover:bg-[#6e9d85]');
+    tapBtn.disabled = true;
+    instructions!.textContent = "Session stopped. Start a new session to record kicks.";
+
+    // Save if we have recorded kicks
+    if (kickCount > 0) {
+      saveSession(kickCount, durationSeconds);
+    }
+    
+    resetSessionState();
+    renderHistory();
+  }
+
+  function resetSession() {
+    clearInterval(timerInterval);
+    resetSessionState();
+  }
+
+  function resetSessionState() {
+    isRunning = false;
+    durationSeconds = 0;
+    kickCount = 0;
+    timerDisplay!.textContent = '00:00:00';
+    countDisplay!.textContent = '0';
+    toggleBtn.textContent = 'Start Session';
+    toggleBtn.classList.add('bg-primary', 'hover:bg-primary-focus');
+    toggleBtn.classList.remove('bg-[#81b29a]', 'hover:bg-[#6e9d85]');
+    resetBtn.disabled = true;
+    tapBtn.disabled = true;
+    alertBanner!.style.display = 'none';
+    instructions!.textContent = "Start a session to enable logging. Tap the button every time you feel a kick, flutter, or roll.";
+  }
+
+  function formatDuration(sec: number): string {
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const seconds = sec % 60;
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  }
+
+  function getStoredSessions(): KickSession[] {
+    const raw = localStorage.getItem('pregnancy_kick_sessions_v1');
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  function saveStoredSessions(sessions: KickSession[]) {
+    localStorage.setItem('pregnancy_kick_sessions_v1', JSON.stringify(sessions));
+  }
+
+  function saveSession(kicks: number, sec: number) {
+    const newSession: KickSession = {
+      id: 'session_' + Date.now(),
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      durationSeconds: sec,
+      kicks: kicks
+    };
+
+    const sessions = getStoredSessions();
+    sessions.unshift(newSession);
+    saveStoredSessions(sessions);
+  }
+
+  function renderHistory() {
+    if (!historyRows) return;
+    
+    const sessions = getStoredSessions();
+
+    if (sessions.length === 0) {
+      historyRows.innerHTML = `
+        <tr>
+          <td colspan="4" class="p-8 text-center text-ink-muted-80 bg-canvas-parchment/10">
+            No saved movement sessions yet. Track baby kicks above to build your journal!
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    historyRows.innerHTML = '';
+    sessions.forEach(sess => {
+      const row = document.createElement('tr');
+      row.className = 'border-b border-hairline bg-canvas hover:bg-canvas-parchment/20 transition-colors';
+      row.innerHTML = `
+        <td class="p-4 font-medium text-ink">${sess.date}</td>
+        <td class="p-4 font-mono text-ink-muted-80">${formatDuration(sess.durationSeconds)}</td>
+        <td class="p-4 font-semibold text-primary">${sess.kicks} kicks</td>
+        <td class="p-4 text-right">
+          <button class="delete-sess-btn text-ink-muted-48 hover:text-[#e07a5f] cursor-pointer p-1" data-id="${sess.id}">
+            Delete
+          </button>
+        </td>
+      `;
+
+      row.querySelector('.delete-sess-btn')?.addEventListener('click', () => {
+        if (confirm("Are you sure you want to delete this kick log?")) {
+          deleteSession(sess.id);
+        }
+      });
+
+      historyRows.appendChild(row);
+    });
+  }
+
+  function deleteSession(id: string) {
+    const sessions = getStoredSessions();
+    const updated = sessions.filter(s => s.id !== id);
+    saveStoredSessions(updated);
+    renderHistory();
+  }
+</script>

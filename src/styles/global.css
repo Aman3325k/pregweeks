@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  /* Apple Design Colors */
+  --color-primary: #0066cc;
+  --color-primary-focus: #0071e3;
+  --color-primary-on-dark: #2997ff;
+  --color-ink: #1d1d1f;
+  --color-body-muted: #cccccc;
+  --color-ink-muted-80: #333333;
+  --color-ink-muted-48: #7a7a7a;
+  --color-divider-soft: #f0f0f0;
+  --color-hairline: #e0e0e0;
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-surface-tile-1: #272729;
+  --color-surface-tile-2: #2a2a2c;
+  --color-surface-tile-3: #252527;
+  --color-surface-black: #000000;
+  --color-surface-chip-translucent: rgba(210, 210, 215, 0.64);
+  --color-on-primary: #ffffff;
+  --color-on-dark: #ffffff;
+
+  /* Typography Stack - System Only (Lighthouse Speed) */
+  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Border Radii */
+  --radius-apple-none: 0px;
+  --radius-apple-xs: 5px;
+  --radius-apple-sm: 8px;
+  --radius-apple-md: 11px;
+  --radius-apple-lg: 18px;
+  --radius-apple-pill: 9999px;
+  --radius-apple-full: 9999px;
+  
+  /* Speeds */
+  --animate-fade-in: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-scale-in: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Custom Utilities */
+@utility tracking-apple-tight {
+  letter-spacing: -0.28px;
+}
+
+@utility tracking-apple-dense {
+  letter-spacing: -0.374px;
+}
+
+@utility tracking-apple-caption {
+  letter-spacing: -0.224px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Base resets & theme styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    font-family: var(--font-text);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Support data-theme="dark" attribute for color inversion */
+  [data-theme="dark"] {
+    --color-canvas: #110e1a;
+    --color-canvas-parchment: #1a162b;
+    --color-ink: #eae6f3;
+    --color-divider-soft: rgba(255, 255, 255, 0.08);
+    --color-hairline: rgba(255, 255, 255, 0.12);
+    --color-surface-pearl: #231d3a;
+  }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-hairline);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-ink);
+  }
+}

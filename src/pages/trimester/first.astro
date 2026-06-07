@@ -1,0 +1,120 @@
+---
+// src/pages/trimester/first.astro
+import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+
+const title = "First Trimester Guide: Weeks 1 to 13 Pregnancy Care | PregWeeks";
+const description = "Learn what to expect in the first trimester of pregnancy. Detailed guides on baby development, symptoms, morning sickness tips, and critical screenings.";
+const url = "https://pregweeks.com/trimester/first";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Trimester Guides", url: "https://pregweeks.com/trimester/first" },
+    { name: "First Trimester", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink-muted-48">Trimesters</span>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">First Trimester</span>
+    </div>
+  </div>
+
+  <!-- Hero Tile (Light Canvas) -->
+  <section class="bg-canvas py-16 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center">
+      <span class="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+        Weeks 1 - 13
+      </span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl lg:text-5xl text-ink leading-tight tracking-apple-tight mb-6">
+        First Trimester Guide
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        Welcome to the beginning of your pregnancy journey. The first trimester is a phase of rapid development where a single fertilized cell evolves into a fully structured fetus.
+      </p>
+    </div>
+  </section>
+
+  <!-- Key Developmental Events (Dark surface) -->
+  <section class="bg-surface-tile-1 text-white py-16 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-bold text-primary-on-dark mb-2 block">Biological Timeline</span>
+        <h2 class="font-display font-semibold text-2xl md:text-3xl text-white mb-4 tracking-apple-tight">Baby's Rapid Growth</h2>
+        <p class="text-body-muted text-sm md:text-base leading-relaxed mb-4">
+          During these first 13 weeks, your baby transitions from a microscopic blastocyst to an embryo, and finally to a fetus. 
+        </p>
+        <p class="text-body-muted text-sm md:text-base leading-relaxed">
+          The baby's neural tube closes (forming the brain and spinal cord), limbs begin bud formation, fingerprints develop, reflexes form, and by Week 5, the tiny heart starts beating and pumping blood.
+        </p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 p-6 rounded-apple-lg flex flex-col gap-4">
+        <h3 class="font-semibold text-base text-white tracking-wider uppercase">Milestone Highlights</h3>
+        <ul class="space-y-3.5 text-xs md:text-sm text-body-muted">
+          <li><strong>Week 3-4:</strong> Implantation into the uterine lining. Embryo forms.</li>
+          <li><strong>Week 5:</strong> Heart begins beating, neural tube starts closing.</li>
+          <li><strong>Week 8:</strong> Embryonic tail disappears; fingers and toes form.</li>
+          <li><strong>Week 12:</strong> Kidneys produce urine; baby begins swallowing amniotic fluid.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptoms and Changes (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div>
+        <h2 class="font-display font-semibold text-2xl md:text-3xl text-ink mb-4 tracking-apple-tight">Common Symptoms & Changes</h2>
+        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed mb-6">
+          Surging hormone levels (hCG, progesterone, and estrogen) are peaking, preparing your uterus to nourish the embryo. These biological changes can trigger typical early symptoms:
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-xs md:text-sm font-semibold text-ink-muted-80">
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🤢 Nausea / Morning Sickness</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">😴 Extreme Fatigue</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🍼 Tender, Sore Breasts</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🚽 Frequent Urination</span>
+        </div>
+      </div>
+
+      <div class="bg-canvas border border-hairline p-6 rounded-apple-lg">
+        <h3 class="font-display font-semibold text-lg text-ink mb-4 tracking-apple-tight border-b border-hairline pb-2">
+          Clinical Guidance & Screenings
+        </h3>
+        <ul class="space-y-4 text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          <li>
+            <strong>First Doctor Visit:</strong> Scheduled between Week 8 and 12 to verify fetal heartbeat and estimate gestation dates.
+          </li>
+          <li>
+            <strong>NIPT Screening:</strong> Non-Invasive Prenatal Testing can be conducted from Week 10 onwards to check chromosomal counts.
+          </li>
+          <li>
+            <strong>Folic Acid Intake:</strong> Essential to take 400 mcg daily to prevent neural tube defects.
+          </li>
+          <li>
+            <strong>Avoid Food Hazards:</strong> Abstain from unpasteurized dairy, raw fish (sushi), deli meat, alcohol, and tobacco.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation Trimester links -->
+  <section class="bg-canvas py-8 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto flex justify-between font-semibold">
+      <span class="text-ink-muted-48 opacity-40 select-none">&larr; Previous Trimester</span>
+      <a href="/trimester/second" class="text-primary hover:underline flex items-center gap-1.5 cursor-pointer">
+        Second Trimester Guide &rarr;
+      </a>
+    </div>
+  </section>
+</Layout>

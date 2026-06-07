@@ -1,23 +1,203 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+// src/layouts/Layout.astro
+import '../styles/global.css';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  schemas?: object[];
+}
+
+const {
+  title = "PregWeeks.com | Your Weekly Pregnancy Guide & Due Date Tracker",
+  description = "Detailed week-by-week pregnancy guides, developmental milestones, medical symptoms, safe nutrition, kick counter, and due date calculator tools.",
+  canonicalUrl = "https://pregweeks.com",
+  ogImage = "https://pregweeks.com/pregnancy-hero.png",
+  schemas = []
+} = Astro.props;
+
+// Format the canonical URL to ensure consistency
+const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1) : canonicalUrl;
+---
+
+<!doctype html>
+<html lang="en" class="motion-safe:scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={formattedCanonical} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={formattedCanonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={formattedCanonical} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+    
+    <!-- Anti-theme-flash script -->
+    <script is:inline>
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      document.documentElement.setAttribute('data-theme', getTheme());
+    </script>
+
+    <!-- Schema Markup -->
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </head>
+  <body class="bg-canvas text-ink antialiased">
+    <!-- Global Black Nav Bar (44px) -->
+    <nav class="bg-surface-black text-[#eae6f3] h-11 text-[12px] flex items-center z-50 relative">
+      <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center">
+        <a href="/" class="flex items-center gap-1.5 font-display font-semibold hover:text-white transition-colors duration-200">
+          <span>🌸</span>
+          <span class="tracking-apple-dense">PregWeeks</span>
+        </a>
+        
+        <div class="hidden md:flex items-center gap-6 text-[12px] text-body-muted">
+          <a href="/symptoms" class="hover:text-white transition-colors">Symptoms</a>
+          <a href="/nutrition" class="hover:text-white transition-colors">Nutrition</a>
+          <a href="/faq" class="hover:text-white transition-colors">FAQ</a>
+        </div>
+
+        <button 
+          id="global-theme-toggle" 
+          class="text-body-muted hover:text-white cursor-pointer transition-colors p-1" 
+          aria-label="Toggle Theme"
+        >
+          <!-- Sun Icon (shown in dark theme) -->
+          <svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon (shown in light theme) -->
+          <svg class="block dark:hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Frosted Sticky Sub-Nav (52px) -->
+    <div class="sticky top-0 z-40 bg-canvas-parchment/80 backdrop-blur-md border-b border-hairline h-[52px] flex items-center transition-colors">
+      <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <a href="/" class="font-display font-semibold text-[18px] md:text-[21px] text-ink hover:text-primary transition-colors">
+            PregWeeks<span class="text-primary font-normal text-sm">.com</span>
+          </a>
+        </div>
+        
+        <div class="flex items-center gap-1.5 md:gap-4 text-[12px] md:text-[14px]">
+          <a href="/tools/due-date-calculator" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Calculator</a>
+          <a href="/tools/kick-counter" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Kicks</a>
+          <a href="/tools/contraction-timer" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Timer</a>
+          <a href="/checklist/hospital-bag" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklist</a>
+          <a href="/tools/due-date-calculator" class="hidden sm:inline-block bg-primary text-white text-[12px] font-semibold tracking-wide uppercase px-3 py-1.5 rounded-full hover:bg-primary-focus transition-colors cursor-pointer">
+            Track Week
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Slot -->
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Apple-style Parchment Footer (64px padding) -->
+    <footer class="bg-canvas-parchment border-t border-hairline pt-12 pb-16 px-4 md:px-12 transition-colors">
+      <div class="max-w-[960px] mx-auto text-[12px] text-ink-muted-80 flex flex-col gap-6">
+        <!-- Trimester Columns Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-8 border-b border-hairline">
+          <div>
+            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Weeks & Guides</h4>
+            <ul class="space-y-2 text-ink-muted-48">
+              <li><a href="/symptoms" class="hover:text-primary hover:underline">Symptom Guide</a></li>
+              <li><a href="/nutrition" class="hover:text-primary hover:underline">Nutrition Guide</a></li>
+              <li><a href="/faq" class="hover:text-primary hover:underline">FAQs Index</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Trimesters</h4>
+            <ul class="space-y-2 text-ink-muted-48">
+              <li><a href="/trimester/first" class="hover:text-primary hover:underline">First Trimester</a></li>
+              <li><a href="/trimester/second" class="hover:text-primary hover:underline">Second Trimester</a></li>
+              <li><a href="/trimester/third" class="hover:text-primary hover:underline">Third Trimester</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Interactive Tools</h4>
+            <ul class="space-y-2 text-ink-muted-48">
+              <li><a href="/tools/due-date-calculator" class="hover:text-primary hover:underline">Due Date Calculator</a></li>
+              <li><a href="/tools/kick-counter" class="hover:text-primary hover:underline">Fetal Kick Counter</a></li>
+              <li><a href="/tools/contraction-timer" class="hover:text-primary hover:underline">Contraction Timer</a></li>
+              <li><a href="/checklist/hospital-bag" class="hover:text-primary hover:underline">Hospital Bag Checklist</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Weeks Directory</h4>
+            <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-ink-muted-48">
+              <a href="/week/1" class="hover:text-primary hover:underline">Week 1</a>
+              <a href="/week/10" class="hover:text-primary hover:underline">Week 10</a>
+              <a href="/week/20" class="hover:text-primary hover:underline">Week 20</a>
+              <a href="/week/30" class="hover:text-primary hover:underline">Week 30</a>
+              <a href="/week/40" class="hover:text-primary hover:underline">Week 40</a>
+            </div>
+          </div>
+        </div>
+
+        <p class="leading-relaxed bg-canvas p-4 rounded-apple-sm border border-hairline text-ink-muted-48 text-[11px]">
+          <strong>Medical Disclaimer:</strong> The content provided on PregWeeks.com is for informational and educational purposes only. It is not intended as a substitute for professional medical advice, diagnosis, or treatment. Always consult with your obstetrician, doctor, or other qualified healthcare provider regarding any questions about a medical condition, symptoms, or pregnancy concerns.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-ink-muted-48 pt-2">
+          <span>&copy; {new Date().getFullYear()} PregWeeks.com. All rights reserved.</span>
+          <div class="flex gap-4">
+            <span>Client-side Privacy Enabled (LocalStorage)</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Script to toggle light/dark theme in LocalStorage -->
+    <script>
+      const toggle = document.getElementById('global-theme-toggle');
+      toggle?.addEventListener('click', () => {
+        const doc = document.documentElement;
+        const currentTheme = doc.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        doc.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+    </script>
+  </body>
+</html>

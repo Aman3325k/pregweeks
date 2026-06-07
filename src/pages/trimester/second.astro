@@ -1,0 +1,122 @@
+---
+// src/pages/trimester/second.astro
+import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+
+const title = "Second Trimester Guide: Weeks 14 to 27 Care & Tips | PregWeeks";
+const description = "Explore the second trimester of pregnancy. Learn about baby kicks (quickening), the mid-pregnancy anatomy scan, and managing round ligament pain.";
+const url = "https://pregweeks.com/trimester/second";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Trimester Guides", url: "https://pregweeks.com/trimester/second" },
+    { name: "Second Trimester", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink-muted-48">Trimesters</span>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">Second Trimester</span>
+    </div>
+  </div>
+
+  <!-- Hero Tile (Light Canvas) -->
+  <section class="bg-canvas py-16 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center">
+      <span class="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+        Weeks 14 - 27
+      </span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl lg:text-5xl text-ink leading-tight tracking-apple-tight mb-6">
+        Second Trimester Guide
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        Often referred to as the "honeymoon phase," the second trimester is characterized by stabilized hormones, returning energy, and the exciting first movements of your baby.
+      </p>
+    </div>
+  </section>
+
+  <!-- Key Developmental Events (Dark surface) -->
+  <section class="bg-surface-tile-1 text-white py-16 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-bold text-primary-on-dark mb-2 block">Growth & Senses</span>
+        <h2 class="font-display font-semibold text-2xl md:text-3xl text-white mb-4 tracking-apple-tight">Fetal Maturity & Movement</h2>
+        <p class="text-body-muted text-sm md:text-base leading-relaxed mb-4">
+          This phase is all about refinement. The baby's hearing is fully online by Week 18, and they can hear your voice and heartbeat. 
+        </p>
+        <p class="text-body-muted text-sm md:text-base leading-relaxed">
+          Eye blinking begins in Week 26, taste buds form, the baby practice-breathes amniotic fluid, and a protective cheese-like layer called <em>vernix caseosa</em> forms over their transparent skin.
+        </p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 p-6 rounded-apple-lg flex flex-col gap-4">
+        <h3 class="font-semibold text-base text-white tracking-wider uppercase">Milestone Highlights</h3>
+        <ul class="space-y-3.5 text-xs md:text-sm text-body-muted">
+          <li><strong>Week 16:</strong> Quickening: you may feel the baby move for the first time.</li>
+          <li><strong>Week 20:</strong> Halfway point. Measurements shift to head-to-heel.</li>
+          <li><strong>Week 24:</strong> The baby reaches clinical viability outside the womb.</li>
+          <li><strong>Week 27:</strong> Lungs, liver, and immune system prep ready for Trimester 3.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptoms and Changes (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div>
+        <h2 class="font-display font-semibold text-2xl md:text-3xl text-ink mb-4 tracking-apple-tight">Your Changing Body</h2>
+        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed mb-6">
+          Your uterus rises out of the pelvic cavity, relieving bladder pressure but causing muscle stretching. As your belly expands, you might feel new physiological changes:
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-xs md:text-sm font-semibold text-ink-muted-80">
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">⚡ Round Ligament Pain</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🩺 Anatomy Scan (Wk 18-22)</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">👣 Visible Baby Bump</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🩸 Leg Cramps at Night</span>
+        </div>
+      </div>
+
+      <div class="bg-canvas border border-hairline p-6 rounded-apple-lg">
+        <h3 class="font-display font-semibold text-lg text-ink mb-4 tracking-apple-tight border-b border-hairline pb-2">
+          Clinical Recommendations
+        </h3>
+        <ul class="space-y-4 text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          <li>
+            <strong>Anatomy Scan:</strong> Conducted between Week 18 and 22 to check the structural health of baby's organs.
+          </li>
+          <li>
+            <strong>Glucose Screening:</strong> Done between Week 24 and 28 to test for gestational diabetes.
+          </li>
+          <li>
+            <strong>Increase Iron:</strong> Crucial to eat spinach, beef, and legumes to prevent pregnancy anemia.
+          </li>
+          <li>
+            <strong>Sleeping Position:</strong> Transition to sleeping on your side (left side preferred) to keep blood flow optimal.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation Trimester links -->
+  <section class="bg-canvas py-8 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto flex justify-between font-semibold">
+      <a href="/trimester/first" class="text-primary hover:underline flex items-center gap-1.5 cursor-pointer">
+        &larr; First Trimester Guide
+      </a>
+      <a href="/trimester/third" class="text-primary hover:underline flex items-center gap-1.5 cursor-pointer">
+        Third Trimester Guide &rarr;
+      </a>
+    </div>
+  </section>
+</Layout>

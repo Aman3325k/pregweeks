@@ -1,0 +1,120 @@
+---
+// src/pages/trimester/third.astro
+import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+
+const title = "Third Trimester Guide: Weeks 28 to 40 Labor Prep | PregWeeks";
+const description = "Prepare for labor and delivery. Learn about the third trimester of pregnancy, GBS screening, Braxton Hicks, kick counts, and hospital packing.";
+const url = "https://pregweeks.com/trimester/third";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Trimester Guides", url: "https://pregweeks.com/trimester/third" },
+    { name: "Third Trimester", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink-muted-48">Trimesters</span>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">Third Trimester</span>
+    </div>
+  </div>
+
+  <!-- Hero Tile (Light Canvas) -->
+  <section class="bg-canvas py-16 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center">
+      <span class="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+        Weeks 28 - 40
+      </span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl lg:text-5xl text-ink leading-tight tracking-apple-tight mb-6">
+        Third Trimester Guide
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        The final stretch. During the third trimester, you prepare physically and mentally for labor, while your baby packs on fat and completes critical organ maturation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Key Developmental Events (Dark surface) -->
+  <section class="bg-surface-tile-1 text-white py-16 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-bold text-primary-on-dark mb-2 block">Finishing Touches</span>
+        <h2 class="font-display font-semibold text-2xl md:text-3xl text-white mb-4 tracking-apple-tight">Baby's Final Milestones</h2>
+        <p class="text-body-muted text-sm md:text-base leading-relaxed mb-4">
+          Your baby reaches significant weight goals now, gaining about 200–250g per week. Lungs are producing surfactant (essential for breathing outside the womb), bones are fully formed but remain soft and flexible, and immune antibodies transfer from you to your baby.
+        </p>
+        <p class="text-body-muted text-sm md:text-base leading-relaxed">
+          By Week 36, most babies descend lower into the pelvis, turning head-down in preparation for birth.
+        </p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 p-6 rounded-apple-lg flex flex-col gap-4">
+        <h3 class="font-semibold text-base text-white tracking-wider uppercase">Milestone Highlights</h3>
+        <ul class="space-y-3.5 text-xs md:text-sm text-body-muted">
+          <li><strong>Week 28:</strong> Eyelashes complete. Weight passes 1 kilogram (2.2 lbs).</li>
+          <li><strong>Week 32:</strong> Plump, opaque skin. Fingernails reach tips.</li>
+          <li><strong>Week 36:</strong> Lightening: baby drops down into the pelvis.</li>
+          <li><strong>Week 39-40:</strong> Full-term milestone. Baby is ready for birth.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptoms and Changes (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div>
+        <h2 class="font-display font-semibold text-2xl md:text-3xl text-ink mb-4 tracking-apple-tight">Late Pregnancy Changes</h2>
+        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed mb-6">
+          The physical weight of the baby puts pressure on your diaphragm, hips, and bladder. Insomnia and practice contractions are very common:
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-xs md:text-sm font-semibold text-ink-muted-80">
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">⚡ Braxton Hicks (Practice contractions)</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">💧 Leaking Colostrum (Early milk)</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🚽 Return of Urinary Frequency</span>
+          <span class="bg-canvas border border-hairline p-3 rounded-apple-sm">🎒 Nesting Instinct Spikes</span>
+        </div>
+      </div>
+
+      <div class="bg-canvas border border-hairline p-6 rounded-apple-lg">
+        <h3 class="font-display font-semibold text-lg text-ink mb-4 tracking-apple-tight border-b border-hairline pb-2">
+          Clinical Guidance & Care
+        </h3>
+        <ul class="space-y-4 text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          <li>
+            <strong>Daily Kick Counts:</strong> Start daily tracking around Week 28. Look for 10 movements in under 2 hours.
+          </li>
+          <li>
+            <strong>Group B Strep (GBS):</strong> Swab test performed between Week 35 and 37 to protect baby during delivery.
+          </li>
+          <li>
+            <strong>Watch for Preeclampsia:</strong> Monitor for sudden facial swelling, severe headaches, or vision changes.
+          </li>
+          <li>
+            <strong>Know the Signs of Labor:</strong> Contractions getting stronger/closer, water breaking, or losing mucus plug.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation Trimester links -->
+  <section class="bg-canvas py-8 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto flex justify-between font-semibold">
+      <a href="/trimester/second" class="text-primary hover:underline flex items-center gap-1.5 cursor-pointer">
+        &larr; Second Trimester Guide
+      </a>
+      <span class="text-ink-muted-48 opacity-40 select-none">Next Trimester &rarr;</span>
+    </div>
+  </section>
+</Layout>

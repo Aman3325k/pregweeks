@@ -1,0 +1,280 @@
+---
+// src/pages/week/[week].astro
+import Layout from '../../layouts/Layout.astro';
+import { pregnancyData } from '../../data/pregnancyData';
+import { getMedicalPageSchema, getBreadcrumbSchema, getFAQSchema } from '../../utils/seo';
+
+// 1. Generate paths for all 40 weeks at compile time
+export async function getStaticPaths() {
+  return Array.from({ length: 40 }, (_, i) => {
+    const week = String(i + 1);
+    return {
+      params: { week },
+      props: { weekNum: i + 1 }
+    };
+  });
+}
+
+const { weekNum } = Astro.props;
+
+// 2. Load the corresponding week data
+const data = pregnancyData.find((d) => d.week === weekNum);
+if (!data) {
+  throw new Error(`Data not found for week ${weekNum}`);
+}
+
+// Imperial conversions
+const cmToInches = (cm: number) => (cm * 0.393701).toFixed(1);
+const gToOunces = (g: number) => {
+  if (g < 1) return "< 0.1";
+  return (g * 0.035274).toFixed(1);
+};
+
+const title = `Week ${weekNum} of Pregnancy: Fetal Size, Symptoms & Milestones | PregWeeks`;
+const description = `Track Week ${weekNum} of pregnancy. Your baby is the size of a ${data.babySize.name} (${data.babySize.lengthCm} cm, ${data.babySize.weightG} g). Learn body changes, common symptoms, and key milestones.`;
+const pageUrl = `https://pregweeks.com/week/${weekNum}`;
+
+// 3. Construct 3 custom medical FAQs for this week dynamically
+const faqItems = [
+  {
+    q: `How big is the baby in week ${weekNum} of pregnancy?`,
+    a: weekNum <= 3
+      ? `In week ${weekNum}, the baby is still in the microscopic stage (from zygote to blastocyst) and has not yet reached measurable size. Measurements begin in week 4.`
+      : `In week ${weekNum}, your baby is approximately the size of a ${data.babySize.name}. The average length is ${data.babySize.lengthCm} cm (about ${cmToInches(data.babySize.lengthCm)} inches) from crown to rump (or head to heel starting in week 20), and the weight is roughly ${data.babySize.weightG} grams (${gToOunces(data.babySize.weightG)} ounces).`
+  },
+  {
+    q: `What are the most common maternal symptoms in week ${weekNum}?`,
+    a: data.symptoms.length > 0 
+      ? `Typical symptoms during pregnancy week ${weekNum} include: ${data.symptoms.join(', ')}. These symptoms are caused by hormonal changes (such as progesterone and estrogen rises) preparing your body to nurture the growing fetus.`
+      : `Common symptoms early on include mild abdominal changes and fatigue. At this stage, your body is quietly undergoing significant internal adjustments to prepare the uterine lining for embryonic implantation.`
+  },
+  {
+    q: `What is the most important milestone or tip for week ${weekNum}?`,
+    a: data.tips.length > 0 
+      ? `The primary recommendation for week ${weekNum} is: ${data.tips[0]} Key milestones: ${data.milestones.join(' and ')}.`
+      : `Keep taking your prenatal vitamins with folic acid, stay hydrated, and arrange your regular clinical prenatal checks.`
+  }
+];
+
+// Combine SEO schemas
+const pageSchemas = [
+  getMedicalPageSchema(title, description, pageUrl),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: `Week ${weekNum}`, url: pageUrl }
+  ]),
+  getFAQSchema(faqItems)
+];
+
+// Helper to determine Trimester Label
+const getTrimesterLabel = (tri: number) => {
+  if (tri === 1) return "First Trimester (Weeks 1 - 13)";
+  if (tri === 2) return "Second Trimester (Weeks 14 - 27)";
+  return "Third Trimester (Weeks 28 - 40)";
+};
+
+// Calculate visual SVG parameters (Max length: 51.2cm)
+const svgSize = 140; // SVG ViewBox width/height
+const maxCm = 52;
+// Base radius: minimum 3px, max 60px
+const baseRadius = data.babySize.lengthCm > 0
+  ? Math.max(3, Math.min(60, (data.babySize.lengthCm / maxCm) * 60))
+  : 0;
+
+// Setup navigation links
+const prevWeek = weekNum > 1 ? weekNum - 1 : null;
+const nextWeek = weekNum < 40 ? weekNum + 1 : null;
+---
+
+<Layout title={title} description={description} canonicalUrl={pageUrl} schemas={pageSchemas}>
+  <!-- Top Navigation Progress bar -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto flex items-center justify-between text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline flex items-center gap-1">
+        &larr; Back to Home
+      </a>
+      <span class="font-semibold text-ink">{getTrimesterLabel(data.trimester)}</span>
+      <span class="text-primary font-bold">Week {weekNum} of 40</span>
+    </div>
+    <div class="max-w-[960px] mx-auto h-1 bg-canvas-parchment rounded-full mt-2 overflow-hidden">
+      <div class="h-full bg-primary" style={`width: ${(weekNum / 40) * 100}%;`}></div>
+    </div>
+  </div>
+
+  <!-- Tile 1: Size Hero Tile (Light Canvas) -->
+  <section class="bg-canvas py-16 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+      <div class="flex flex-col items-start">
+        <span class="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+          Fetal Size Comparison
+        </span>
+        <h1 class="font-display font-semibold text-4xl md:text-5xl text-ink leading-tight tracking-apple-tight mb-4">
+          Week {weekNum} Size: {data.babySize.name}
+        </h1>
+        <p class="text-lg text-ink-muted-80 mb-6 leading-relaxed tracking-apple-dense">
+          {data.babySize.visualDescription}
+        </p>
+
+        {data.babySize.lengthCm > 0 ? (
+          <div class="grid grid-cols-2 gap-4 w-full">
+            <div class="bg-canvas-parchment border border-hairline p-4 rounded-apple-sm">
+              <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Length</span>
+              <span class="text-xl font-bold text-primary">{data.babySize.lengthCm} cm</span>
+              <span class="text-xs text-ink-muted-80 block">{cmToInches(data.babySize.lengthCm)} inches</span>
+            </div>
+            <div class="bg-canvas-parchment border border-hairline p-4 rounded-apple-sm">
+              <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Weight</span>
+              <span class="text-xl font-bold text-primary">{data.babySize.weightG} g</span>
+              <span class="text-xs text-ink-muted-80 block">{gToOunces(data.babySize.weightG)} oz</span>
+            </div>
+          </div>
+        ) : (
+          <div class="bg-canvas-parchment border border-hairline p-4 rounded-apple-sm w-full text-center">
+            <span class="text-sm text-ink-muted-80 font-medium">Fetal measurements will begin at Week 4 once organogenesis is underway.</span>
+          </div>
+        )}
+      </div>
+
+      <!-- Simple, Lightweight SVG Size Visualizer -->
+      <div class="flex flex-col items-center justify-center bg-canvas-parchment border border-hairline p-8 rounded-apple-lg shadow-none">
+        <h3 class="text-xs font-semibold uppercase text-ink-muted-48 tracking-wider mb-4">Relative Visual Scale</h3>
+        <div class="w-[200px] h-[200px] rounded-full border border-dashed border-primary/20 flex items-center justify-center bg-canvas relative">
+          {baseRadius > 0 ? (
+            <svg class="w-full h-full max-w-[140px] max-h-[140px]" viewBox={`0 0 ${svgSize} ${svgSize}`}>
+              <!-- Background comparison circle (Full pregnancy scale: Week 40 Pumpkin reference) -->
+              <circle cx={svgSize / 2} cy={svgSize / 2} r="60" fill="none" stroke="#e0e0e0" stroke-width="1.5" stroke-dasharray="3,3" />
+              <!-- Current baby size circle with signature single drop-shadow -->
+              <circle 
+                cx={svgSize / 2} 
+                cy={svgSize / 2} 
+                r={baseRadius} 
+                fill="url(#primaryGrad)" 
+                class="filter drop-shadow-[0px_4px_12px_rgba(0,102,204,0.3)]" 
+              />
+              <defs>
+                <radialGradient id="primaryGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#2997ff" />
+                  <stop offset="100%" stop-color="#0066cc" />
+                </radialGradient>
+              </defs>
+            </svg>
+          ) : (
+            <span class="text-3xl">✨</span>
+          )}
+        </div>
+        <p class="text-[11px] text-ink-muted-48 mt-4 text-center leading-normal">
+          Solid circle represents your baby's size. Dotted circle shows the full-term week 40 size threshold.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tile 2: Baby's Development (Dark surface) -->
+  <section class="bg-surface-tile-1 text-white py-16 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+      <div class="md:col-span-3">
+        <span class="text-xs uppercase tracking-widest font-bold text-primary-on-dark mb-2 block">Inside The Womb</span>
+        <h2 class="font-display font-semibold text-3xl text-white mb-4 tracking-apple-tight">Baby's Development</h2>
+        <p class="text-body-muted leading-relaxed text-[17px] mb-6">
+          {data.babyDevelopment}
+        </p>
+      </div>
+      
+      <div class="md:col-span-2 bg-white/5 border border-white/10 rounded-apple-lg p-6">
+        <h3 class="font-display font-semibold text-lg text-white mb-4 tracking-apple-tight">Weekly Milestones</h3>
+        <ul class="space-y-3 text-sm text-body-muted">
+          {data.milestones.map((milestone) => (
+            <li class="flex gap-2 items-start">
+              <span class="text-primary-on-dark font-bold">✦</span>
+              <span>{milestone}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tile 3: Mom's Body & Symptoms (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-bold text-primary mb-2 block">Maternal Health</span>
+        <h2 class="font-display font-semibold text-3xl text-ink mb-4 tracking-apple-tight">Your Body & Symptoms</h2>
+        <p class="text-ink-muted-80 leading-relaxed text-[17px] mb-6">
+          {data.motherChanges}
+        </p>
+        
+        <h3 class="font-display font-semibold text-base text-ink mb-3 tracking-apple-tight">Common Symptoms this Week</h3>
+        <div class="flex flex-wrap gap-2">
+          {data.symptoms.map((symptom) => (
+            <span class="bg-canvas border border-hairline text-ink-muted-80 px-3 py-1 rounded-full text-xs font-semibold transition-colors hover:border-primary">
+              {symptom}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div class="bg-canvas border border-hairline p-6 rounded-apple-lg flex flex-col gap-4">
+        <h3 class="font-display font-semibold text-lg text-ink tracking-apple-tight border-b border-hairline pb-3">
+          Doctor & Care Recommendations
+        </h3>
+        <ul class="space-y-3.5 text-sm text-ink-muted-80">
+          {data.tips.map((tip) => (
+            <li class="flex gap-3.5 items-start">
+              <span class="text-[#81b29a] font-bold text-base">✓</span>
+              <span class="leading-relaxed">{tip}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tile 4: FAQ Accordion Section (Light Canvas) -->
+  <section class="bg-canvas py-16 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto">
+      <h2 class="font-display font-semibold text-2xl md:text-3xl text-center text-ink mb-8 tracking-apple-tight">
+        Frequently Asked Questions: Week {weekNum}
+      </h2>
+      
+      <div class="space-y-4">
+        {faqItems.map((faq, index) => (
+          <div class="border border-hairline rounded-apple-sm bg-canvas-parchment p-5 flex flex-col gap-2">
+            <h3 class="font-semibold text-sm md:text-base text-ink flex gap-2">
+              <span class="text-primary font-bold">Q:</span>
+              <span>{faq.q}</span>
+            </h3>
+            <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed pl-5 border-l border-primary/20">
+              {faq.a}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pagination Bottom Navigation (Light Canvas) -->
+  <section class="bg-canvas-parchment border-t border-hairline py-8 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto flex items-center justify-between font-semibold">
+      {prevWeek ? (
+        <a href={`/week/${prevWeek}`} class="text-primary hover:underline flex items-center gap-1.5 active:scale-95 transition-transform">
+          &larr; Week {prevWeek}
+        </a>
+      ) : (
+        <span class="text-ink-muted-48 opacity-40 select-none">&larr; Week 1</span>
+      )}
+
+      <a href="/#weeks-directory" class="text-ink-muted-80 hover:text-ink text-sm">
+        All Weeks Grid
+      </a>
+
+      {nextWeek ? (
+        <a href={`/week/${nextWeek}`} class="text-primary hover:underline flex items-center gap-1.5 active:scale-95 transition-transform">
+          Week {nextWeek} &rarr;
+        </a>
+      ) : (
+        <span class="text-ink-muted-48 opacity-40 select-none">Week 40 &rarr;</span>
+      )}
+    </div>
+  </section>
+</Layout>
