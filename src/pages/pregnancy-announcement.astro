@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const announcementCategories = [
+  {
+    title: "For Partners",
+    description: "Intimate and memorable ways to share the news with your significant other.",
+    ideas: [
+      {
+        name: "The Photo Booth Surprise",
+        detail: "Suggest taking photos together in a photo booth. Right before the camera flashes, pull out the positive pregnancy test or ultrasound photo. The camera will capture their genuine, raw reaction frame-by-frame."
+      },
+      {
+        name: "Customized Baby Clothing",
+        detail: "Gift them a baby onesie printed with a custom message like 'Hello Daddy' or 'Player 3 Entering the Game'. Wrap it in a box and hand it over as a spontaneous present."
+      },
+      {
+        name: "Bun in the Oven",
+        detail: "Place an actual hamburger or dinner bun inside your kitchen oven. Ask your partner to open the oven to check on 'dinner' and wait for the penny to drop."
+      },
+      {
+        name: "Coffee Mug Reveal",
+        detail: "Serve them their morning coffee or tea in a custom mug that reveals a message like 'You're going to be a dad!' at the bottom as they finish drinking."
+      },
+      {
+        name: "Special Delivery Delivery",
+        detail: "Order takeout or a package, and secretly write 'We're having a baby!' on the inside lid of the box before asking your partner to open it."
+      }
+    ]
+  },
+  {
+    title: "For Grandparents & Family",
+    description: "Heartwarming ideas to break the news to future grandparents, siblings, and close relatives.",
+    ideas: [
+      {
+        name: "The Family Group Photo",
+        detail: "Gather the family for a group picture. Volunteer to set up the camera timer, and instead of saying 'Say cheese!', yell out 'We're pregnant!' and record a video to capture the chaos."
+      },
+      {
+        name: "Grandparent Starter Kit",
+        detail: "Assemble a gift basket containing a custom grandparent storybook, baby booties, and a framed ultrasound photo."
+      },
+      {
+        name: "Scratch-Off Cards",
+        detail: "Hand out custom scratch-off cards that look like lottery tickets but reveal 'We are having a baby!' under the scratchable surface."
+      },
+      {
+        name: "Surprise Puzzle",
+        detail: "Gift a custom jigsaw puzzle (15-20 pieces) printed with your ultrasound picture. Have them assemble it together to discover the message."
+      },
+      {
+        name: "Promotion Notice",
+        detail: "Present your parents with a certificate promoting them from 'Parents' to 'Grandparents' effective on your estimated due date."
+      }
+    ]
+  },
+  {
+    title: "For Social Media",
+    description: "Photogenic, shareable flatlays and concepts to share your joy with friends online.",
+    ideas: [
+      {
+        name: "Classic Flatlay",
+        detail: "Arrange a pair of baby shoes, a neutral knit onesie, your ultrasound image, and a letterboard displaying your due date month on a simple linen background."
+      },
+      {
+        name: "Pet Eviction Notice",
+        detail: "Take a photo of your dog or cat sitting next to a sign that reads: 'Eviction Notice: Roommate arriving [Due Date Month/Year]'."
+      },
+      {
+        name: "The Sibling Promotion",
+        detail: "Have your older child wear a t-shirt that says 'Promoted to Big Brother/Sister' or posing with a sign reading 'Only Child Expiring [Due Date Month]'."
+      },
+      {
+        name: "Safety Pins Illustration",
+        detail: "Use safety pins to represent the family: two large pins representing the parents, with one tiny baby pin inside one of the larger ones."
+      },
+      {
+        name: "Movie Poster Announcement",
+        detail: "Design a movie-style poster with a photo of the parents looking surprised, titled 'The Sequel: Coming [Due Date Month]'."
+      }
+    ]
+  },
+  {
+    title: "Festive & Seasonal",
+    description: "Incorporate holidays, seasons, and natural elements into your announcement.",
+    ideas: [
+      {
+        name: "Fall: The Extra Pumpkin",
+        detail: "Take a photo in a pumpkin patch with two large pumpkins and one tiny pumpkin nestled between them."
+      },
+      {
+        name: "Winter: Christmas Ornament",
+        detail: "Hang a tiny baby stocking next to yours on the mantel, or hold a personalized ornament displaying your due date."
+      },
+      {
+        name: "Spring: In Full Bloom",
+        detail: "Pose with a bouquet of spring flowers and a sign that reads: 'Our family is blooming. Baby arriving [Due Date]'."
+      },
+      {
+        name: "Summer: Beach Footprints",
+        detail: "Take a photo of your footprints in the sand, alongside a tiny pair of baby booties pressed into the shoreline."
+      }
+    ]
+  }
+];
+
+const captions = [
+  { text: "And then there were three...", type: "Sweet" },
+  { text: "The best is yet to come. Arriving [Due Date Month/Year].", type: "Classic" },
+  { text: "Adding a little extra love to our family.", type: "Sweet" },
+  { text: "We've been keeping a little secret! Baby [Last Name] due [Month].", type: "Classic" },
+  { text: "Player 3 entering the game [Due Date Month/Year].", type: "Playful" },
+  { text: "Our ultimate DIY project is coming soon.", type: "Playful" },
+  { text: "Eviction notice served to the dog. Roommate arriving [Month].", type: "Funny" },
+  { text: "Oops, we did it again! Sibling due [Month].", type: "Funny" }
+];
+---
+
+<Layout 
+  title="30+ Creative Pregnancy Announcement Ideas & Captions | PregWeeks"
+  description="Discover 30+ unique pregnancy announcement ideas for partners, grandparents, and social media. Includes photo concepts, timing tips, and caption templates."
+>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Pregnancy Announcement</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Guides & Milestones</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-4 sm:text-4xl">
+        Pregnancy Announcement Ideas
+      </h1>
+      <p class="text-base text-neutral-500 leading-relaxed">
+        Sharing the news of your pregnancy is a milestone you will cherish forever. Explore our catalog of 30+ creative announcement ideas, photo flatlays, captions, and timing tips.
+      </p>
+    </header>
+
+    <!-- Grid of announcement ideas -->
+    <div class="space-y-12">
+      {announcementCategories.map(cat => (
+        <section class="space-y-6">
+          <div class="border-b border-neutral-200 pb-2">
+            <h2 class="text-xl font-bold text-neutral-900">{cat.title}</h2>
+            <p class="text-xs text-neutral-500">{cat.description}</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {cat.ideas.map(idea => (
+              <div class="bg-white border border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
+                <h3 class="text-sm font-bold text-neutral-900 mb-2">{idea.name}</h3>
+                <p class="text-xs text-neutral-600 leading-relaxed">{idea.detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Social Media Captions Section -->
+    <section class="mt-16 space-y-6">
+      <div class="border-b border-neutral-200 pb-2">
+        <h2 class="text-xl font-bold text-neutral-900">Social Media Captions</h2>
+        <p class="text-xs text-neutral-500">Copy-and-paste captions to match your photo style.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        {captions.map(caption => (
+          <div class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 flex flex-col justify-between">
+            <p class="text-xs italic text-neutral-700 mb-4">"{caption.text}"</p>
+            <span class="text-[9px] uppercase font-bold tracking-wider text-neutral-400 self-start bg-white px-2 py-0.5 rounded border border-neutral-100">
+              {caption.type}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Advice & Timing Section -->
+    <section class="mt-16 bg-neutral-50 rounded-2xl p-6 sm:p-8 border border-neutral-200 space-y-6">
+      <h2 class="text-lg font-semibold text-neutral-900">When Should You Announce?</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-neutral-600 leading-relaxed">
+        <div class="space-y-3">
+          <h3 class="font-bold text-neutral-800">The 12-Week Milestone (Second Trimester)</h3>
+          <p>
+            The majority of parents wait until the end of the first trimester (around week 12 or 13) to share their news. By this point, the risk of miscarriage drops significantly (under 1-2%), and many have completed their first ultrasound scan.
+          </p>
+          <p>
+            <strong>Pros:</strong> Confirmed fetal heartbeat, lower miscarriage risk, ultrasound photo ready.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="font-bold text-neutral-800">Early Announcement (Weeks 4-11)</h3>
+          <p>
+            Some choose to tell close family and friends immediately. This provides a strong support system early on, which is invaluable if you are dealing with intense morning sickness or want to share the initial excitement.
+          </p>
+          <p>
+            <strong>Pros:</strong> Immediate support network, sharing early joy with closest relatives.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</Layout>

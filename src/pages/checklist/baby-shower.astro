@@ -1,0 +1,275 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const checklistTimeline = [
+  {
+    period: "8 Weeks Before",
+    id: "8w",
+    items: [
+      { id: "bs-1", text: "Select a host/co-host (if not planning it yourself)" },
+      { id: "bs-2", text: "Establish a realistic budget for venue, food, and decor" },
+      { id: "bs-3", text: "Determine the guest list (consult the parents-to-be)" },
+      { id: "bs-4", text: "Pick a date and time (ensure it doesn't conflict with key holidays)" },
+      { id: "bs-5", text: "Choose a theme or color palette" },
+      { id: "bs-6", text: "Book the venue (home, park, community center, or restaurant)" }
+    ]
+  },
+  {
+    period: "6 Weeks Before",
+    id: "6w",
+    items: [
+      { id: "bs-7", text: "Ensure parents-to-be have set up their baby registries" },
+      { id: "bs-8", text: "Design the invitations (printed or digital)" },
+      { id: "bs-9", text: "Send invitations and request RSVPs at least 2 weeks before event" },
+      { id: "bs-10", text: "Order the cake, cupcakes, or dessert items" },
+      { id: "bs-11", text: "Plan the menu (finger foods, buffet, or catered)" }
+    ]
+  },
+  {
+    period: "4 Weeks Before",
+    id: "4w",
+    items: [
+      { id: "bs-12", text: "Purchase decorations (balloons, banners, tablecloths)" },
+      { id: "bs-13", text: "Order party favors and thank-you tags for guests" },
+      { id: "bs-14", text: "Plan 3-4 baby shower games and buy prizes for winners" },
+      { id: "bs-15", text: "Designate a photographer (or hire a professional)" },
+      { id: "bs-16", text: "Purchase tableware (plates, cups, napkins, cutlery)" }
+    ]
+  },
+  {
+    period: "2 Weeks Before",
+    id: "2w",
+    items: [
+      { id: "bs-17", text: "Follow up with guests who haven't RSVP'd yet" },
+      { id: "bs-18", text: "Finalize the headcount with the venue or caterer" },
+      { id: "bs-19", text: "Create a detailed day-of timeline (arrival, games, food, gifts)" },
+      { id: "bs-20", text: "Assign helper roles (gift tracker, game leader, setup/cleanup crew)" }
+    ]
+  },
+  {
+    period: "1 Week Before",
+    id: "1w",
+    items: [
+      { id: "bs-21", text: "Assemble the party favors and place cards" },
+      { id: "bs-22", text: "Print out game sheets and package game materials" },
+      { id: "bs-23", text: "Confirm orders with the bakery and caterer" },
+      { id: "bs-24", text: "Prepare the outfit for the guest of honor" }
+    ]
+  },
+  {
+    period: "The Day Of",
+    id: "day-of",
+    items: [
+      { id: "bs-25", text: "Pick up the cake, balloons, and fresh flowers" },
+      { id: "bs-26", text: "Set up decorations and food stations at the venue" },
+      { id: "bs-27", text: "Designate a table for gifts and cards" },
+      { id: "bs-28", text: "Assign a helper to write down gifts and who gave them for thank-you notes" },
+      { id: "bs-29", text: "Distribute games and manage the timeline" },
+      { id: "bs-30", text: "Hand out party favors as guests depart" }
+    ]
+  }
+];
+---
+
+<Layout 
+  title="Baby Shower Planning Checklist & Timeline | PregWeeks"
+  description="Plan the perfect baby shower with our timeline checklist. Tracks setup milestones from 8 weeks before to the day of. Save progress or print."
+>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6 print:hidden" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <a href="/checklist/hospital-bag" class="hover:text-[#0066cc] transition-colors">Checklists</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Baby Shower Checklist</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-xl mx-auto mb-8">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full print:hidden">Planner Checklist</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-3 sm:text-4xl">
+        Baby Shower Checklist
+      </h1>
+      <p class="text-sm text-neutral-500 leading-relaxed print:hidden">
+        Plan a memorable baby shower without the stress. Track tasks week-by-week, monitor progress, save automatically, or print a copy.
+      </p>
+    </header>
+
+    <!-- Actions & Progress (Sticky on scroll) -->
+    <div class="bg-white border border-neutral-200 rounded-xl p-5 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 print:hidden">
+      <!-- Progress Indicator -->
+      <div class="w-full sm:w-2/3 space-y-2">
+        <div class="flex justify-between items-center text-xs font-semibold text-neutral-700">
+          <span>Overall Progress</span>
+          <span id="overall-percentage">0% Complete</span>
+        </div>
+        <div class="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+          <div id="overall-progress-bar" class="bg-[#0066cc] h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-2 w-full sm:w-auto justify-end">
+        <button 
+          id="print-btn" 
+          class="bg-neutral-50 hover:bg-neutral-100 text-neutral-700 py-2.5 px-4 rounded-lg text-xs font-semibold border border-neutral-200 transition-all active:scale-95 flex items-center justify-center space-x-1.5"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 1.523a1.125 1.125 0 0 1-1.12 1.277H7.23a1.125 1.125 0 0 1-1.12-1.277L6.34 18m11.318 0a3.11 3.11 0 0 1-.183-1.882V12.013a1.125 1.125 0 0 0-1.125-1.125H7.94a1.125 1.125 0 0 0-1.125 1.125v4.105c0 .69-.063 1.374-.183 1.882M9.14 8.25V4.5A1.5 1.5 0 0 1 10.64 3h2.72a1.5 1.5 0 0 1 1.5 1.5v3.75m-6.22 0h6.22m-6.22 0H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V10.5a2.25 2.25 0 0 0-2.25-2.25h-1.5" />
+          </svg>
+          <span>Print</span>
+        </button>
+        <button 
+          id="reset-btn" 
+          class="bg-neutral-50 hover:bg-neutral-100 text-neutral-700 py-2.5 px-4 rounded-lg text-xs font-semibold border border-neutral-200 transition-all active:scale-95 flex items-center justify-center"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Timeline Sections -->
+    <div class="space-y-8 print:space-y-6">
+      {checklistTimeline.map(section => (
+        <section class="bg-white border border-neutral-200 rounded-xl p-5 print:border-none print:p-0">
+          <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 border-b border-neutral-100 pb-2 print:border-neutral-300 print:text-xs">
+            {section.period}
+          </h2>
+          
+          <div class="space-y-3">
+            {section.items.map(item => (
+              <label 
+                class="flex items-start space-x-3 text-xs text-neutral-700 cursor-pointer py-1.5 px-2.5 rounded-lg hover:bg-neutral-50 transition-colors print:p-0 print:hover:bg-transparent print:items-center"
+                for={item.id}
+              >
+                <input 
+                  type="checkbox" 
+                  id={item.id} 
+                  class="task-checkbox rounded border-neutral-300 text-[#0066cc] focus:ring-[#0066cc] w-4 h-4 mt-0.5 flex-shrink-0 print:border-neutral-400 print:w-3.5 print:h-3.5"
+                />
+                <span class="leading-relaxed select-none">{item.text}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+  </main>
+</Layout>
+
+<style>
+  @media print {
+    /* Set page margins */
+    @page {
+      margin: 1.5cm;
+    }
+    
+    body {
+      background: white !important;
+      color: black !important;
+      font-size: 11px !important;
+    }
+
+    main {
+      padding: 0 !important;
+      max-width: 100% !important;
+    }
+
+    h1 {
+      font-size: 20px !important;
+      margin-bottom: 5px !important;
+    }
+  }
+</style>
+
+<script>
+  // DOM Elements
+  const checkboxes = document.querySelectorAll('.task-checkbox') as NodeListOf<HTMLInputElement>;
+  const overallPercentage = document.getElementById('overall-percentage');
+  const overallProgressBar = document.getElementById('overall-progress-bar');
+  const printBtn = document.getElementById('print-btn');
+  const resetBtn = document.getElementById('reset-btn');
+
+  const LOCAL_STORAGE_KEY = 'pregweeks_baby_shower_checklist';
+
+  // Load saved checklist state
+  function loadChecklistState() {
+    const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!savedData) {
+      updateProgress();
+      return;
+    }
+
+    try {
+      const checkedIds = JSON.parse(savedData) as string[];
+      checkboxes.forEach(cb => {
+        if (checkedIds.includes(cb.id)) {
+          cb.checked = true;
+        }
+      });
+    } catch (e) {
+      console.error("Error reading baby shower checklist state", e);
+    }
+    updateProgress();
+  }
+
+  // Save checklist state to LocalStorage
+  function saveChecklistState() {
+    const checkedIds: string[] = [];
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checkedIds.push(cb.id);
+      }
+    });
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(checkedIds));
+    updateProgress();
+  }
+
+  // Calculate and update progress bar
+  function updateProgress() {
+    const total = checkboxes.length;
+    let checkedCount = 0;
+    
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checkedCount++;
+      }
+    });
+
+    const percent = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+
+    if (overallPercentage) overallPercentage.textContent = `${percent}% Complete`;
+    if (overallProgressBar) overallProgressBar.style.width = `${percent}%`;
+  }
+
+  // Listen for checkbox changes
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', saveChecklistState);
+  });
+
+  // Print checklist
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+
+  // Reset checklist
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm("Are you sure you want to reset your baby shower planning progress?")) {
+        checkboxes.forEach(cb => {
+          cb.checked = false;
+        });
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        updateProgress();
+      }
+    });
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', loadChecklistState);
+  loadChecklistState();
+</script>

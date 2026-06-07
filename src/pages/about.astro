@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="About Us | PregWeeks"
+  description="Learn about the mission, medical review standards, and privacy-first engineering behind PregWeeks.com."
+>
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-8" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">About</span>
+    </nav>
+
+    <article class="space-y-8">
+      <header class="border-b border-neutral-200 pb-6">
+        <h1 class="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">About PregWeeks</h1>
+        <p class="text-sm text-neutral-500 mt-2">Empowering parent journeys through clean data and reliable clinical tools.</p>
+      </header>
+
+      <section class="space-y-4 text-sm text-neutral-700 leading-relaxed">
+        <p>
+          Welcome to <strong class="text-neutral-900">PregWeeks.com</strong>. We build comprehensive, interactive, and clinically-aligned pregnancy tracking guides designed to help expectant mothers and partners navigate gestational development with confidence.
+        </p>
+        <p>
+          Our platform is built to provide an educational, utility-driven resource that covers fetal development, common symptoms, safety parameters for nutrition/medication, and partner milestones week by week.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold text-neutral-900">Our Core Principles</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="bg-neutral-50 p-5 rounded-xl border border-neutral-200">
+            <h3 class="text-xs font-bold text-neutral-800 uppercase tracking-wider mb-2">100% Privacy</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">
+              We collect zero personal health data. All interactive tools (Contraction Timer, Kick Counter, Weight Tracker) save states locally inside your browser's <code class="bg-neutral-200/60 px-1 py-0.5 rounded text-[10px]">localStorage</code>.
+            </p>
+          </div>
+
+          <div class="bg-neutral-50 p-5 rounded-xl border border-neutral-200">
+            <h3 class="text-xs font-bold text-neutral-800 uppercase tracking-wider mb-2">Clinical Reference</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">
+              Our guides are mapped alongside standard clinical benchmarks, including ACOG and FDA recommendations for early pregnancy screening and food safety.
+            </p>
+          </div>
+
+          <div class="bg-neutral-50 p-5 rounded-xl border border-neutral-200">
+            <h3 class="text-xs font-bold text-neutral-800 uppercase tracking-wider mb-2">No Ad Clutter</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">
+              We prioritize page speed and readability. By using local system fonts and clean layouts, our pages load instantly for mothers on mobile connections.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4 text-sm text-neutral-700 leading-relaxed">
+        <h2 class="text-xl font-bold text-neutral-900">Medical Accuracy & Editorial Standards</h2>
+        <p>
+          All information on PregWeeks.com is compiled from peer-reviewed obstetrics journals, medical organizations (such as the American College of Obstetricians and Gynecologists), and federal health portals.
+        </p>
+        <p class="bg-amber-50 text-amber-900 border border-amber-200 p-4 rounded-xl text-xs">
+          <strong>Important Reminder:</strong> None of the contents on this site, including the calculators, timelines, and guides, constitute medical advice or diagnosis. Always consult your obstetrician or health team directly regarding symptoms or health decisions.
+        </p>
+      </section>
+    </article>
+  </main>
+</Layout>

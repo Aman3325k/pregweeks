@@ -1,0 +1,331 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { babyNames } from '../../data/namesData';
+
+// Get unique origins for filter dropdown/list
+const origins = Array.from(new Set(babyNames.map(n => n.origin))).sort();
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+// Pre-sort names alphabetically for render
+const sortedNames = [...babyNames].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<Layout 
+  title="Baby Names Finder | Search 500+ Names, Meanings & Origins | PregWeeks"
+  description="Search over 500 baby names. Filter by gender (boy, girl, neutral), first letter, origin (English, Sanskrit, Hebrew, Spanish, Arabic), and meaning."
+>
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Baby Names</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-2xl mx-auto mb-12">
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mb-4 sm:text-4xl">
+        Baby Names Finder
+      </h1>
+      <p class="text-base text-neutral-500 leading-relaxed">
+        Find the perfect name for your little one. Browse our curated clinical database of 500+ baby names, filter by origins, meanings, and instant letters, and save your favorites.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Sidebar Filters -->
+      <aside class="lg:col-span-1 space-y-6">
+        <div class="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
+          <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4">Filters</h2>
+
+          <!-- Gender Filter -->
+          <div class="mb-6">
+            <label class="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Gender</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button 
+                type="button" 
+                class="gender-btn active-gender bg-[#0066cc] text-white py-2 px-3 rounded-lg text-xs font-medium border border-transparent transition-all active:scale-95 text-center" 
+                data-gender="all"
+              >
+                All
+              </button>
+              <button 
+                type="button" 
+                class="gender-btn bg-white hover:bg-neutral-100 text-neutral-700 py-2 px-3 rounded-lg text-xs font-medium border border-neutral-200 transition-all active:scale-95 text-center" 
+                data-gender="boy"
+              >
+                Boy
+              </button>
+              <button 
+                type="button" 
+                class="gender-btn bg-white hover:bg-neutral-100 text-neutral-700 py-2 px-3 rounded-lg text-xs font-medium border border-neutral-200 transition-all active:scale-95 text-center" 
+                data-gender="girl"
+              >
+                Girl
+              </button>
+              <button 
+                type="button" 
+                class="gender-btn bg-white hover:bg-neutral-100 text-neutral-700 py-2 px-3 rounded-lg text-xs font-medium border border-neutral-200 transition-all active:scale-95 text-center" 
+                data-gender="neutral"
+              >
+                Neutral
+              </button>
+            </div>
+          </div>
+
+          <!-- Origin Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Origin</label>
+            <div class="space-y-2 max-h-60 overflow-y-auto pr-2">
+              {origins.map(origin => (
+                <label class="flex items-center space-x-2 text-xs text-neutral-700 cursor-pointer py-0.5 hover:text-neutral-900">
+                  <input 
+                    type="checkbox" 
+                    value={origin.toLowerCase()} 
+                    class="origin-checkbox rounded border-neutral-300 text-[#0066cc] focus:ring-[#0066cc] w-4 h-4"
+                  />
+                  <span>{origin}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Search & Results Grid -->
+      <section class="lg:col-span-3 space-y-6">
+        <!-- Search and Alphabet bar -->
+        <div class="space-y-4">
+          <!-- Search Input -->
+          <div class="relative">
+            <input 
+              type="text" 
+              id="name-search" 
+              placeholder="Search names or meanings (e.g. 'light', 'strong', 'Emma')..." 
+              class="w-full pl-4 pr-10 py-3 rounded-xl border border-neutral-300 text-sm text-neutral-900 focus:outline-none focus:ring-1 focus:ring-[#0066cc] focus:border-[#0066cc] bg-white transition-all shadow-none"
+            />
+            <span class="absolute right-3 top-3.5 text-neutral-400">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21-21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
+              </svg>
+            </span>
+          </div>
+
+          <!-- Alphabet A-Z Grid -->
+          <div class="flex flex-wrap gap-1 p-1.5 bg-neutral-100 rounded-lg overflow-x-auto">
+            <button 
+              type="button" 
+              class="letter-btn active-letter bg-[#0066cc] text-white w-7 h-7 flex items-center justify-center rounded text-xs font-semibold hover:bg-[#0055b3] transition-colors"
+              data-letter="all"
+            >
+              All
+            </button>
+            {alphabet.map(letter => (
+              <button 
+                type="button" 
+                class="letter-btn bg-white hover:bg-neutral-50 text-neutral-700 w-7 h-7 flex items-center justify-center rounded text-xs font-semibold border border-neutral-200/50 transition-colors"
+                data-letter={letter.toLowerCase()}
+              >
+                {letter}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Counter & Results Status -->
+        <div class="flex justify-between items-center text-xs text-neutral-500 px-1 border-b border-neutral-200 pb-2">
+          <div>Showing <span id="visible-count" class="font-semibold text-neutral-900">{sortedNames.length}</span> names</div>
+          <button id="reset-filters" class="text-[#0066cc] hover:underline font-medium">Clear All Filters</button>
+        </div>
+
+        <!-- Names Grid -->
+        <div id="names-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {sortedNames.map(name => {
+            let genderColor = 'bg-neutral-100 text-neutral-600';
+            if (name.gender === 'boy') genderColor = 'bg-blue-50 text-blue-700 border-blue-100';
+            if (name.gender === 'girl') genderColor = 'bg-pink-50 text-pink-700 border-pink-100';
+            if (name.gender === 'neutral') genderColor = 'bg-purple-50 text-purple-700 border-purple-100';
+
+            return (
+              <a 
+                href={`/baby-names/${name.slug}`}
+                class="name-card block bg-white border border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-all active:scale-[0.98]"
+                data-name={name.name.toLowerCase()}
+                data-gender={name.gender}
+                data-origin={name.origin.toLowerCase()}
+                data-meaning={name.meaning.toLowerCase()}
+                data-letter={name.name.charAt(0).toLowerCase()}
+              >
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="text-lg font-semibold text-neutral-900">{name.name}</h3>
+                  <span class={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border ${genderColor}`}>
+                    {name.gender}
+                  </span>
+                </div>
+                <div class="text-[11px] font-medium text-neutral-500 uppercase tracking-wider mb-2">
+                  {name.origin} Origin
+                </div>
+                <p class="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
+                  <span class="font-medium text-neutral-700">Meaning:</span> {name.meaning}
+                </p>
+              </a>
+            );
+          })}
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="hidden text-center py-16 bg-neutral-50 rounded-xl border border-dashed border-neutral-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto text-neutral-300 mb-3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+          <h3 class="text-sm font-semibold text-neutral-900 mb-1">No Baby Names Found</h3>
+          <p class="text-xs text-neutral-500">Try adjusting your search criteria or clear your filters.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Filtering logic
+    const searchInput = document.getElementById('name-search') as HTMLInputElement;
+    const genderBtns = document.querySelectorAll('.gender-btn');
+    const letterBtns = document.querySelectorAll('.letter-btn');
+    const originCheckboxes = document.querySelectorAll('.origin-checkbox') as NodeListOf<HTMLInputElement>;
+    const resetBtn = document.getElementById('reset-filters');
+    const nameCards = document.querySelectorAll('.name-card') as NodeListOf<HTMLElement>;
+    const visibleCountSpan = document.getElementById('visible-count');
+    const noResults = document.getElementById('no-results');
+
+    let currentGender = 'all';
+    let currentLetter = 'all';
+    let searchQuery = '';
+
+    function filterNames() {
+      // Get selected origins
+      const selectedOrigins = Array.from(originCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+      let visibleCount = 0;
+
+      nameCards.forEach(card => {
+        const name = card.dataset.name || '';
+        const gender = card.dataset.gender || '';
+        const origin = card.dataset.origin || '';
+        const meaning = card.dataset.meaning || '';
+        const letter = card.dataset.letter || '';
+
+        // Match search query
+        const matchesSearch = searchQuery === '' || 
+          name.includes(searchQuery) || 
+          meaning.includes(searchQuery);
+
+        // Match gender filter
+        const matchesGender = currentGender === 'all' || gender === currentGender;
+
+        // Match letter filter
+        const matchesLetter = currentLetter === 'all' || letter === currentLetter;
+
+        // Match origin filter
+        const matchesOrigin = selectedOrigins.length === 0 || selectedOrigins.includes(origin);
+
+        // Apply display
+        if (matchesSearch && matchesGender && matchesLetter && matchesOrigin) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update visibility counter
+      if (visibleCountSpan) visibleCountSpan.textContent = visibleCount.toString();
+
+      // Show/hide no results message
+      if (noResults) {
+        if (visibleCount === 0) {
+          noResults.classList.remove('hidden');
+        } else {
+          noResults.classList.add('hidden');
+        }
+      }
+    }
+
+    // Event Listeners
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        filterNames();
+      });
+    }
+
+    genderBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        genderBtns.forEach(b => {
+          b.classList.remove('active-gender', 'bg-[#0066cc]', 'text-white', 'border-transparent');
+          b.classList.add('bg-white', 'text-neutral-700', 'border-neutral-200');
+        });
+        btn.classList.add('active-gender', 'bg-[#0066cc]', 'text-white', 'border-transparent');
+        btn.classList.remove('bg-white', 'text-neutral-700', 'border-neutral-200');
+        
+        currentGender = btn.getAttribute('data-gender') || 'all';
+        filterNames();
+      });
+    });
+
+    letterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        letterBtns.forEach(b => {
+          b.classList.remove('active-letter', 'bg-[#0066cc]', 'text-white');
+          b.classList.add('bg-white', 'text-neutral-700');
+        });
+        btn.classList.add('active-letter', 'bg-[#0066cc]', 'text-white');
+        btn.classList.remove('bg-white', 'text-neutral-700');
+
+        currentLetter = btn.getAttribute('data-letter') || 'all';
+        filterNames();
+      });
+    });
+
+    originCheckboxes.forEach(cb => {
+      cb.addEventListener('change', filterNames);
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // Reset search query
+        if (searchInput) searchInput.value = '';
+        searchQuery = '';
+
+        // Reset gender buttons
+        genderBtns.forEach(b => {
+          b.classList.remove('active-gender', 'bg-[#0066cc]', 'text-white', 'border-transparent');
+          b.classList.add('bg-white', 'text-neutral-700', 'border-neutral-200');
+        });
+        const allGenderBtn = document.querySelector('[data-gender="all"]');
+        if (allGenderBtn) {
+          allGenderBtn.classList.add('active-gender', 'bg-[#0066cc]', 'text-white', 'border-transparent');
+        }
+        currentGender = 'all';
+
+        // Reset letter buttons
+        letterBtns.forEach(b => {
+          b.classList.remove('active-letter', 'bg-[#0066cc]', 'text-white');
+          b.classList.add('bg-white', 'text-neutral-700');
+        });
+        const allLetterBtn = document.querySelector('[data-letter="all"]');
+        if (allLetterBtn) {
+          allLetterBtn.classList.add('active-letter', 'bg-[#0066cc]', 'text-white');
+        }
+        currentLetter = 'all';
+
+        // Uncheck all checkboxes
+        originCheckboxes.forEach(cb => {
+          cb.checked = false;
+        });
+
+        filterNames();
+      });
+    }
+  </script>
+</Layout>

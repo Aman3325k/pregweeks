@@ -1,0 +1,342 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Ovulation Calculator & Fertility Tracker | PregWeeks"
+  description="Calculate your fertile window, ovulation day, and next period. View an interactive calendar showing peak fertility days and estimate your due date."
+>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <a href="/tools/due-date-calculator" class="hover:text-[#0066cc] transition-colors">Tools</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Ovulation Calculator</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-2xl mx-auto mb-10">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Pre-Pregnancy Planner</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-4 sm:text-4xl">
+        Ovulation & Fertility Calculator
+      </h1>
+      <p class="text-base text-neutral-500 leading-relaxed">
+        Understand your cycle and identify your most fertile days. Enter your last period and cycle details to calculate your fertile window and peak ovulation dates.
+      </p>
+    </header>
+
+    <!-- Medical Disclaimer -->
+    <div class="bg-amber-50/60 border border-amber-200/70 rounded-xl p-4 mb-8 text-xs text-amber-800 leading-relaxed max-w-3xl mx-auto">
+      <div class="flex items-start space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 flex-shrink-0 text-amber-600 mt-0.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.008v.008H12v-.008Z" />
+        </svg>
+        <span>
+          <strong>Medical Disclaimer:</strong> This tool provides estimates based on average menstrual cycle lengths and is for educational and planning purposes only. It should not be used as a method of contraception, nor does it guarantee pregnancy. Your actual fertile window may vary. Always consult a healthcare provider for personalized medical advice.
+        </span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Input Panel -->
+      <section class="md:col-span-1 bg-white border border-neutral-200 rounded-xl p-5 h-fit">
+        <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 border-b border-neutral-100 pb-2">Cycle Inputs</h2>
+        <form id="ovulation-form" class="space-y-4">
+          <!-- Last Period Date -->
+          <div>
+            <label for="last-period" class="block text-xs font-semibold text-neutral-600 uppercase mb-1.5">First Day of Last Period</label>
+            <input 
+              type="date" 
+              id="last-period" 
+              required
+              class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 text-sm text-neutral-900 focus:outline-none focus:ring-1 focus:ring-[#0066cc] focus:border-[#0066cc] bg-white transition-all shadow-none"
+            />
+          </div>
+
+          <!-- Cycle Length -->
+          <div>
+            <label for="cycle-length" class="block text-xs font-semibold text-neutral-600 uppercase mb-1.5">Average Cycle Length (Days)</label>
+            <input 
+              type="number" 
+              id="cycle-length" 
+              min="21" 
+              max="45" 
+              value="28" 
+              required
+              class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 text-sm text-neutral-900 focus:outline-none focus:ring-1 focus:ring-[#0066cc] focus:border-[#0066cc] bg-white transition-all shadow-none"
+            />
+            <span class="text-[10px] text-neutral-400 mt-1 block">Typical range: 21 - 45 days.</span>
+          </div>
+
+          <!-- Luteal Phase -->
+          <div>
+            <label for="luteal-phase" class="block text-xs font-semibold text-neutral-600 uppercase mb-1.5">Luteal Phase (Days)</label>
+            <input 
+              type="number" 
+              id="luteal-phase" 
+              min="10" 
+              max="18" 
+              value="14" 
+              required
+              class="w-full px-3 py-2.5 rounded-lg border border-neutral-300 text-sm text-neutral-900 focus:outline-none focus:ring-1 focus:ring-[#0066cc] focus:border-[#0066cc] bg-white transition-all shadow-none"
+            />
+            <span class="text-[10px] text-neutral-400 mt-1 block">Time from ovulation to period (usually 14 days).</span>
+          </div>
+
+          <button 
+            type="submit" 
+            class="w-full bg-[#0066cc] hover:bg-[#0055b3] text-white py-2.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all active:scale-[0.98] mt-2"
+          >
+            Calculate Fertile Window
+          </button>
+        </form>
+      </section>
+
+      <!-- Results Panel -->
+      <section class="md:col-span-2 space-y-6">
+        <!-- Result Box (Hidden by default) -->
+        <div id="results-box" class="hidden space-y-6">
+          <div class="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
+            <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 border-b border-neutral-200 pb-2">Fertility Forecast</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Fertile Window -->
+              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
+                <span class="text-[10px] uppercase tracking-wider text-green-700 font-semibold bg-green-50 px-2 py-0.5 rounded">Fertile Window</span>
+                <p id="fertile-range" class="text-base font-semibold text-neutral-900 mt-2">—</p>
+                <p class="text-xs text-neutral-500 mt-1">Best time to attempt conception.</p>
+              </div>
+
+              <!-- Ovulation Date -->
+              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
+                <span class="text-[10px] uppercase tracking-wider text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded">Estimated Ovulation</span>
+                <p id="ovulation-date" class="text-base font-semibold text-neutral-900 mt-2">—</p>
+                <p class="text-xs text-neutral-500 mt-1">Approximate day egg is released.</p>
+              </div>
+
+              <!-- Next Period Date -->
+              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
+                <span class="text-[10px] uppercase tracking-wider text-red-700 font-semibold bg-red-50 px-2 py-0.5 rounded">Next Expected Period</span>
+                <p id="next-period" class="text-base font-semibold text-neutral-900 mt-2">—</p>
+                <p class="text-xs text-neutral-500 mt-1">First day of your next cycle.</p>
+              </div>
+
+              <!-- Estimated Due Date -->
+              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
+                <span class="text-[10px] uppercase tracking-wider text-purple-700 font-semibold bg-purple-50 px-2 py-0.5 rounded">Due Date If Conceived</span>
+                <p id="due-date" class="text-base font-semibold text-neutral-900 mt-2">—</p>
+                <p class="text-xs text-neutral-500 mt-1">Estimated birth date of your baby.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Calendars -->
+          <div class="bg-white border border-neutral-200 rounded-xl p-5">
+            <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-2">Fertility Calendar</h2>
+            <p class="text-xs text-neutral-500 mb-6">Visual representation of your estimated fertility window across two menstrual cycles.</p>
+
+            <!-- Color legend -->
+            <div class="flex flex-wrap gap-4 text-xs mb-6 bg-neutral-50 p-3 rounded-lg border border-neutral-200/60">
+              <div class="flex items-center space-x-1.5">
+                <span class="w-3.5 h-3.5 bg-green-100 border border-green-300 rounded"></span>
+                <span class="text-neutral-600">Fertile Window</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <span class="w-3.5 h-3.5 bg-green-500 border border-green-600 rounded"></span>
+                <span class="text-neutral-600">Peak Fertility</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <span class="w-3.5 h-3.5 bg-blue-500 border border-blue-600 rounded"></span>
+                <span class="text-neutral-600">Ovulation Day</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <span class="w-3.5 h-3.5 bg-red-100 border border-red-300 rounded"></span>
+                <span class="text-neutral-600">Expected Period</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <span class="w-3.5 h-3.5 bg-yellow-100 border border-yellow-300 rounded"></span>
+                <span class="text-neutral-600">Pregnancy Test Day</span>
+              </div>
+            </div>
+
+            <!-- Calendars Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="calendars-container">
+              <!-- Calendar Month 1 and 2 will be injected here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Initial Placeholder State -->
+        <div id="calculator-placeholder" class="bg-neutral-50 border border-neutral-200 rounded-xl p-12 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto text-neutral-300 mb-3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+          </svg>
+          <h3 class="text-sm font-semibold text-neutral-800 mb-1">Forecast Ready</h3>
+          <p class="text-xs text-neutral-500">Fill in your last period date and cycle parameters to render your personalized fertility schedule.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('ovulation-form') as HTMLFormElement;
+    const resultsBox = document.getElementById('results-box');
+    const placeholder = document.getElementById('calculator-placeholder');
+    const fertileRangeSpan = document.getElementById('fertile-range');
+    const ovulationDateSpan = document.getElementById('ovulation-date');
+    const nextPeriodSpan = document.getElementById('next-period');
+    const dueDateSpan = document.getElementById('due-date');
+    const calendarsContainer = document.getElementById('calendars-container');
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const lastPeriodVal = (document.getElementById('last-period') as HTMLInputElement).value;
+      const cycleLength = parseInt((document.getElementById('cycle-length') as HTMLInputElement).value);
+      const lutealPhase = parseInt((document.getElementById('luteal-phase') as HTMLInputElement).value);
+
+      if (!lastPeriodVal) return;
+
+      const lastPeriodDate = new Date(lastPeriodVal + 'T00:00:00');
+
+      // 1. Calculations (First Cycle)
+      const ovulationOffset = cycleLength - lutealPhase;
+      const ovulationDate = new Date(lastPeriodDate.getTime() + ovulationOffset * 86400000);
+      
+      const fertileStart = new Date(ovulationDate.getTime() - 5 * 86400000);
+      const fertileEnd = new Date(ovulationDate.getTime());
+      
+      const nextPeriodDate = new Date(lastPeriodDate.getTime() + cycleLength * 86400000);
+      const testDate = new Date(nextPeriodDate.getTime()); // Missed period day
+      
+      // Estimated Due Date: Ovulation + 266 days
+      const dueDate = new Date(ovulationDate.getTime() + 266 * 86400000);
+
+      // Formatting helper
+      const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+      // Update Text Output
+      if (fertileRangeSpan) fertileRangeSpan.textContent = `${fmt(fertileStart)} - ${fmt(fertileEnd)}`;
+      if (ovulationDateSpan) ovulationDateSpan.textContent = fmt(ovulationDate);
+      if (nextPeriodSpan) nextPeriodSpan.textContent = fmt(nextPeriodDate);
+      if (dueDateSpan) dueDateSpan.textContent = fmt(dueDate);
+
+      // Show results
+      if (placeholder) placeholder.classList.add('hidden');
+      if (resultsBox) resultsBox.classList.remove('hidden');
+
+      // 2. Build 2-Month Calendar Grid
+      if (calendarsContainer) {
+        calendarsContainer.innerHTML = '';
+        
+        // We will generate the calendar starting from the month of lastPeriodDate
+        let tempDate = new Date(lastPeriodDate.getFullYear(), lastPeriodDate.getMonth(), 1);
+        
+        for (let m = 0; m < 2; m++) {
+          const year = tempDate.getFullYear();
+          const monthIndex = tempDate.getMonth();
+          const monthName = monthNames[monthIndex];
+
+          // Determine start day of month (0 = Sun, 1 = Mon, etc.)
+          const startDay = new Date(year, monthIndex, 1).getDay();
+          const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+          let calendarHtml = `
+            <div class="border border-neutral-200 rounded-lg p-4 bg-white shadow-none">
+              <h3 class="text-xs font-bold text-neutral-800 text-center mb-3">${monthName} ${year}</h3>
+              <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-neutral-400 mb-2">
+                <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+              </div>
+              <div class="grid grid-cols-7 gap-1 text-center text-xs">
+          `;
+
+          // Fill empty spots before month starts
+          for (let i = 0; i < startDay; i++) {
+            calendarHtml += `<div></div>`;
+          }
+
+          // Generate days
+          for (let day = 1; day <= daysInMonth; day++) {
+            const currentDate = new Date(year, monthIndex, day);
+            const timeVal = currentDate.getTime();
+
+            // Classes to apply
+            let cellClass = "w-8 h-8 flex items-center justify-center rounded-full mx-auto relative ";
+            let borderClass = "border border-transparent";
+            let bgClass = "text-neutral-700 hover:bg-neutral-50";
+            let dotHtml = '';
+
+            // Check date ranges for Cycle 1 and Cycle 2
+            // Cycle 1 Parameters
+            const inLmp1 = isSameDate(currentDate, lastPeriodDate);
+            const inOvulation1 = isSameDate(currentDate, ovulationDate);
+            const inPeak1 = (timeVal === ovulationDate.getTime() || timeVal === ovulationDate.getTime() - 86400000);
+            const inFertile1 = (timeVal >= fertileStart.getTime() && timeVal <= fertileEnd.getTime());
+            const inTest1 = isSameDate(currentDate, testDate);
+            const inPeriod1 = (timeVal >= lastPeriodDate.getTime() && timeVal < lastPeriodDate.getTime() + 4 * 86400000);
+
+            // Cycle 2 Parameters (Extrapolate 1 full cycle length further)
+            const lmpDate2 = new Date(lastPeriodDate.getTime() + cycleLength * 86400000);
+            const ovulationDate2 = new Date(lmpDate2.getTime() + ovulationOffset * 86400000);
+            const fertileStart2 = new Date(ovulationDate2.getTime() - 5 * 86400000);
+            const fertileEnd2 = new Date(ovulationDate2.getTime());
+            const periodDate2 = new Date(lmpDate2.getTime() + cycleLength * 86400000);
+            const testDate2 = new Date(periodDate2.getTime());
+            
+            const inLmp2 = isSameDate(currentDate, lmpDate2);
+            const inOvulation2 = isSameDate(currentDate, ovulationDate2);
+            const inPeak2 = (timeVal === ovulationDate2.getTime() || timeVal === ovulationDate2.getTime() - 86400000);
+            const inFertile2 = (timeVal >= fertileStart2.getTime() && timeVal <= fertileEnd2.getTime());
+            const inTest2 = isSameDate(currentDate, testDate2);
+            
+            const inPeriod2 = (timeVal >= lmpDate2.getTime() && timeVal < lmpDate2.getTime() + 4 * 86400000);
+
+            if (inOvulation1 || inOvulation2) {
+              // Ovulation Day
+              bgClass = "bg-blue-500 text-white font-bold";
+              borderClass = "border border-blue-600 shadow-sm";
+            } else if (inPeak1 || inPeak2) {
+              // Peak Fertility
+              bgClass = "bg-green-500 text-white font-bold";
+              borderClass = "border border-green-600 shadow-sm";
+            } else if (inFertile1 || inFertile2) {
+              // Fertile Window
+              bgClass = "bg-green-100 text-green-800 font-medium";
+              borderClass = "border border-green-300";
+            } else if (inLmp1 || inLmp2 || inPeriod1 || inPeriod2) {
+              // Period Days
+              bgClass = "bg-red-100 text-red-800 font-medium";
+              borderClass = "border border-red-300";
+            } else if (inTest1 || inTest2) {
+              // Test Date
+              bgClass = "bg-yellow-100 text-yellow-800 font-medium";
+              borderClass = "border border-yellow-300";
+            }
+
+            calendarHtml += `<div class="${cellClass} ${bgClass} ${borderClass}">${day}${dotHtml}</div>`;
+          }
+
+          calendarHtml += `
+              </div>
+            </div>
+          `;
+
+          calendarsContainer.innerHTML += calendarHtml;
+
+          // Increment month
+          tempDate = new Date(year, monthIndex + 1, 1);
+        }
+      }
+    });
+
+    // Helper to check if date matches exactly
+    function isSameDate(d1: Date, d2: Date) {
+      return d1.getFullYear() === d2.getFullYear() &&
+             d1.getMonth() === d2.getMonth() &&
+             d1.getDate() === d2.getDate();
+    }
+  </script>
+</Layout>

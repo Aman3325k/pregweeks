@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { babyNames, type BabyName } from '../../data/namesData';
+
+export async function getStaticPaths() {
+  return babyNames.map((name) => ({
+    params: { slug: name.slug },
+    props: { nameObj: name },
+  }));
+}
+
+interface Props {
+  nameObj: BabyName;
+}
+
+const { nameObj } = Astro.props;
+const { name, meaning, origin, gender, popularity } = nameObj;
+
+// Generate similar names based on origin and gender (excluding self)
+const similarNames = babyNames
+  .filter(n => n.origin === origin && n.gender === gender && n.name !== name)
+  .slice(0, 3);
+
+// Dynamic FAQs for the name
+const faqs = [
+  {
+    q: `What does the baby name ${name} mean?`,
+    a: `The baby name ${name} primarily means "${meaning}". It carries a positive, deep significance that reflects these attributes.`
+  },
+  {
+    q: `What is the origin of the name ${name}?`,
+    a: `The name ${name} has its roots in ${origin} history and culture. Over time, it has evolved into a beloved name used globally.`
+  },
+  {
+    q: `Is ${name} a boy name, girl name, or gender-neutral?`,
+    a: `${name} is categorized as a ${gender} name. It is traditionally chosen for ${gender === 'neutral' ? 'both boys and girls' : gender + 's'} by parents worldwide.`
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `https://pregweeks.com/baby-names/${nameObj.slug}/#webpage`,
+      "url": `https://pregweeks.com/baby-names/${nameObj.slug}`,
+      "name": `Meaning, Origin and Popularity of the Name ${name} | PregWeeks`,
+      "description": `Discover the meaning, origin, gender, and popularity of the baby name ${name}. Learn the cultural significance of ${name}.`
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `https://pregweeks.com/baby-names/${nameObj.slug}/#faq`,
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `https://pregweeks.com/baby-names/${nameObj.slug}/#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://pregweeks.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Baby Names",
+          "item": "https://pregweeks.com/baby-names"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": name,
+          "item": `https://pregweeks.com/baby-names/${nameObj.slug}`
+        }
+      ]
+    }
+  ]
+};
+
+let genderColor = 'bg-neutral-100 text-neutral-600';
+let genderBorder = 'border-neutral-200';
+if (gender === 'boy') {
+  genderColor = 'bg-blue-50 text-blue-700';
+  genderBorder = 'border-blue-100';
+} else if (gender === 'girl') {
+  genderColor = 'bg-pink-50 text-pink-700';
+  genderBorder = 'border-pink-100';
+} else if (gender === 'neutral') {
+  genderColor = 'bg-purple-50 text-purple-700';
+  genderBorder = 'border-purple-100';
+}
+---
+
+<Layout 
+  title={`Name ${name}: Meaning, Origin, Gender & Popularity | PregWeeks`}
+  description={`Looking for baby name ideas? Learn about the meaning, origin, gender, and popularity of the name ${name} on PregWeeks.`}
+>
+  <!-- Inject Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-8" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <a href="/baby-names" class="hover:text-[#0066cc] transition-colors">Baby Names</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">{name}</span>
+    </nav>
+
+    <!-- Main Card Container -->
+    <article class="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-10 mb-8">
+      <!-- Title & Badges -->
+      <div class="border-b border-neutral-100 pb-6 mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-neutral-900 mb-2">
+              {name}
+            </h1>
+            <p class="text-sm font-medium text-neutral-500 uppercase tracking-widest">
+              {origin} Origin Name
+            </p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class={`text-xs font-semibold uppercase tracking-wider px-3.5 py-1 rounded-full border ${genderColor} ${genderBorder}`}>
+              {gender}
+            </span>
+            <span class="text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-100 px-3.5 py-1 rounded-full">
+              Popularity #{popularity}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Sections -->
+      <div class="space-y-8">
+        <!-- Meaning -->
+        <section>
+          <h2 class="text-lg font-semibold text-neutral-900 mb-2">What does the name {name} mean?</h2>
+          <p class="text-base text-neutral-700 leading-relaxed">
+            The name <strong class="text-neutral-900">{name}</strong> traditionally translates to <span class="text-neutral-800 font-medium">"{meaning}"</span>. In many cultures, naming a child is believed to convey specific characteristics or virtues, making {name} a strong choice for parents wishing to bestow qualities of {meaning.toLowerCase()} upon their baby.
+          </p>
+        </section>
+
+        <!-- Origin & History -->
+        <section>
+          <h2 class="text-lg font-semibold text-neutral-900 mb-2">Origin & Cultural History</h2>
+          <p class="text-base text-neutral-700 leading-relaxed">
+            Rooted in <strong class="text-neutral-900">{origin}</strong> heritage, the name {name} holds a rich history. In its culture of origin, it has been associated with historical figures, folklore, or natural elements that emphasize its core meaning. In modern times, the name has transcended geographic borders and gained popularity worldwide due to its beautiful phonetic structure and timeless charm.
+          </p>
+        </section>
+
+        <!-- Popularity Trend -->
+        <section>
+          <h2 class="text-lg font-semibold text-neutral-900 mb-2">Popularity and Demographics</h2>
+          <p class="text-base text-neutral-700 leading-relaxed">
+            Ranked at <strong class="text-neutral-900">#{popularity}</strong> in our pregnancy names database, {name} remains a highly sought-after name. It appeals to contemporary parents who look for a name that is both culturally significant and modern. Its popularity reflects a global trend towards names that are easy to pronounce yet distinct.
+          </p>
+        </section>
+      </div>
+    </article>
+
+    <!-- Side-by-Side FAQs and Similar Names -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <!-- FAQs -->
+      <section class="md:col-span-2 space-y-6">
+        <h2 class="text-xl font-semibold text-neutral-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {faqs.map(faq => (
+            <div class="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
+              <h3 class="text-sm font-semibold text-neutral-900 mb-1.5">{faq.q}</h3>
+              <p class="text-xs text-neutral-600 leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Similar Names -->
+      <section class="md:col-span-1 space-y-4">
+        <h2 class="text-xl font-semibold text-neutral-900">Similar Names</h2>
+        <div class="space-y-3">
+          {similarNames.length > 0 ? (
+            similarNames.map(similar => (
+              <a 
+                href={`/baby-names/${similar.slug}`}
+                class="block bg-white hover:bg-neutral-50 border border-neutral-200 rounded-xl p-4 transition-all active:scale-[0.98]"
+              >
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm font-semibold text-neutral-900">{similar.name}</span>
+                  <span class="text-[10px] text-neutral-500 uppercase font-medium">{similar.origin}</span>
+                </div>
+                <p class="text-xs text-neutral-500 line-clamp-1">Meaning: {similar.meaning}</p>
+              </a>
+            ))
+          ) : (
+            <div class="text-xs text-neutral-500 italic py-4">
+              No similar names found in this category.
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+
+    <!-- Back to directory button -->
+    <div class="text-center">
+      <a 
+        href="/baby-names" 
+        class="inline-block bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-semibold py-3 px-6 rounded-xl border border-neutral-200 transition-all active:scale-95"
+      >
+        ← Back to Baby Names Directory
+      </a>
+    </div>
+  </main>
+</Layout>

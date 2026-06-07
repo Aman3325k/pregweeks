@@ -29,6 +29,8 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0066cc" />
     <meta name="generator" content={Astro.generator} />
     
     <!-- SEO tags -->
@@ -180,6 +182,13 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-ink-muted-48 pt-2">
           <span>&copy; {new Date().getFullYear()} PregWeeks.com. All rights reserved.</span>
+          <div class="flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <a href="/about" class="hover:text-primary hover:underline">About</a>
+            <a href="/contact" class="hover:text-primary hover:underline">Contact</a>
+            <a href="/privacy-policy" class="hover:text-primary hover:underline">Privacy Policy</a>
+            <a href="/terms" class="hover:text-primary hover:underline">Terms</a>
+            <a href="/disclaimer" class="hover:text-primary hover:underline">Disclaimer</a>
+          </div>
           <div class="flex gap-4">
             <span>Client-side Privacy Enabled (LocalStorage)</span>
           </div>

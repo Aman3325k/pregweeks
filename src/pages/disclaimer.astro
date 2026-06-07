@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Medical Disclaimer | PregWeeks"
+  description="Read the PregWeeks Medical Disclaimer. All content, calculators, and tracking tools are for educational purposes only."
+>
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-8" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Medical Disclaimer</span>
+    </nav>
+
+    <article class="space-y-8 prose prose-neutral max-w-none text-sm text-neutral-700 leading-relaxed">
+      <header class="border-b border-neutral-200 pb-6">
+        <h1 class="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">Medical Disclaimer</h1>
+        <p class="text-xs text-neutral-500 mt-2">Last Updated: June 7, 2026</p>
+      </header>
+
+      <section class="space-y-4">
+        <div class="bg-red-50 text-red-950 border border-red-200 p-5 rounded-xl text-xs font-bold leading-relaxed">
+          MANDATORY NOTICE: PregWeeks.com does not provide medical advice, professional diagnoses, or clinical treatment plans. 
+        </div>
+        <p>
+          All information, calculators, trackers, checklists, symptom checkers, and food safety indices on <strong class="text-neutral-900">PregWeeks.com</strong> are provided strictly for educational and informational planning purposes.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="text-lg font-bold text-neutral-900">No Professional Doctor-Patient Relationship</h2>
+        <p>
+          Your use of this website, its calculators, or communication via email does not establish a doctor-patient, obstetrician-patient, or clinical relationship of any kind. The content on this site should not be used as a substitute for the guidance of your OB/GYN, midwife, or primary care doctor.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="text-lg font-bold text-neutral-900">Critical Medical Circumstances</h2>
+        <p>
+          If you believe you are experiencing a medical emergency, severe abdominal pain, sudden bleeding, lack of fetal movement, or any acute gestational symptoms, <strong class="text-[#d93838]">contact your doctor immediately or dial emergency services (911 or your local emergency number)</strong>. Never delay seeking professional medical treatment due to something you read on this site.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="text-lg font-bold text-neutral-900">Calculations and Estimates</h2>
+        <p>
+          Our tools, such as the Due Date Calculator, IVF Calculator, and Ovulation Tracker, use standard mathematical formulas (like Naegele's Rule) to provide projections. Because every pregnancy is unique, actual gestational timelines, peak fertile windows, and delivery dates will vary. We make no guarantees about the accuracy of these calculators.
+        </p>
+      </section>
+    </article>
+  </main>
+</Layout>
