@@ -2,6 +2,9 @@ import type { APIRoute } from 'astro';
 import { foodItems } from '../data/foodData';
 import { symptomItems } from '../data/symptomData';
 import { babyNames } from '../data/namesData';
+import { glossaryTerms } from '../data/glossaryData';
+import { pregnancyConditions } from '../data/conditionsData';
+import { laborGuides } from '../data/laborData';
 
 export const GET: APIRoute = async () => {
   const baseUrls = [
@@ -40,6 +43,20 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/privacy-policy',
     'https://pregweeks.com/terms',
     'https://pregweeks.com/disclaimer',
+    // Phase 3 Professional Features & Guides
+    'https://pregweeks.com/glossary',
+    'https://pregweeks.com/compare',
+    'https://pregweeks.com/conditions',
+    'https://pregweeks.com/labor',
+    'https://pregweeks.com/calculators',
+    'https://pregweeks.com/when-to-take-pregnancy-test',
+    'https://pregweeks.com/early-pregnancy-signs',
+    'https://pregweeks.com/overdue',
+    'https://pregweeks.com/sources',
+    'https://pregweeks.com/tools/baby-cost-calculator',
+    'https://pregweeks.com/tools/journal',
+    'https://pregweeks.com/checklist/nursery',
+    'https://pregweeks.com/checklist/baby-gear',
   ];
 
   // Generate URLs for all 40 pregnancy weeks
@@ -70,6 +87,21 @@ export const GET: APIRoute = async () => {
   // Generate URLs for all individual baby names pages (500)
   babyNames.forEach((name) => {
     baseUrls.push(`https://pregweeks.com/baby-names/${name.slug}`);
+  });
+
+  // Generate URLs for all individual glossary term pages (105)
+  glossaryTerms.forEach((term) => {
+    baseUrls.push(`https://pregweeks.com/glossary/${term.slug}`);
+  });
+
+  // Generate URLs for all individual pregnancy condition pages (6)
+  pregnancyConditions.forEach((cond) => {
+    baseUrls.push(`https://pregweeks.com/conditions/${cond.slug}`);
+  });
+
+  // Generate URLs for all individual labor guide pages (6)
+  laborGuides.forEach((guide) => {
+    baseUrls.push(`https://pregweeks.com/labor/${guide.slug}`);
   });
 
   const today = new Date().toISOString().split('T')[0];

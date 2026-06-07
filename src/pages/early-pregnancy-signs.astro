@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const earlySigns = [
+  {
+    title: "Missed Period",
+    detail: "The most classic and reliable early sign of pregnancy. Implantation triggers the production of hCG, which signals the ovaries to maintain the uterine lining rather than shedding it."
+  },
+  {
+    title: "Implantation Bleeding & Cramping",
+    detail: "Occurs when the fertilized egg attaches to the uterine wall (6-12 days post-conception). It is usually a very light pink or brown spotting, much lighter than a standard period, accompanied by mild cramping."
+  },
+  {
+    title: "Extreme Fatigue",
+    detail: "Progesterone hormone levels rise rapidly in early pregnancy, which acts as a natural sedative. Your body is also working hard to build the placenta, draining your energy."
+  },
+  {
+    title: "Breast Sensitivity & Swelling",
+    detail: "Estrogen and progesterone trigger increased blood flow and changes in breast tissue, making breasts feel tender, sore, heavier, or tingly. The areolas may also darken."
+  },
+  {
+    title: "Nausea & Morning Sickness",
+    detail: "Can start as early as week 4 or 5. Caused by surging pregnancy hormones. Despite the name, it can occur at any time of the day or night."
+  },
+  {
+    title: "Scent Sensitivity & Food Aversions",
+    detail: "Hormonal shifts can heighten your sense of smell, making previously tolerated smells (like cooking oil, coffee, or perfume) trigger sudden nausea."
+  },
+  {
+    title: "Frequent Urination",
+    detail: "Increased blood volume causes the kidneys to process extra fluid, which ends up in the bladder, leading to frequent trips to the bathroom even before the uterus begins putting physical pressure on it."
+  },
+  {
+    title: "Bloating & Digestive Changes",
+    detail: "Progesterone relaxes smooth muscles throughout the body, including the digestive tract, slowing digestion down. This can cause abdominal bloating, gas, or mild constipation."
+  }
+];
+
+const faqs = [
+  {
+    q: "How early do pregnancy signs start?",
+    a: "Some women experience very early signs (like implantation spotting or breast tenderness) as early as 1 to 2 weeks after conception (about week 3 or 4 of pregnancy), while others don't notice anything until a missed period."
+  },
+  {
+    q: "Can pregnancy symptoms feel exactly like PMS?",
+    a: "Yes, early pregnancy symptoms overlap significantly with PMS due to progesterone being active in both cycles. Fatigue, breast soreness, cramping, and bloating can present identically."
+  },
+  {
+    q: "What is the difference between implantation spotting and a period?",
+    a: "Implantation bleeding is very light, does not fill a pad, lasts only 1 to 2 days, and is pink or light brown. A period starts light but becomes heavier with red blood and lasts 3 to 7 days."
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://pregweeks.com/early-pregnancy-signs/#webpage",
+      "url": "https://pregweeks.com/early-pregnancy-signs",
+      "name": "12 Early Pregnancy Signs & Symptoms Before a Missed Period | PregWeeks",
+      "description": "Learn the most common early pregnancy signs and symptoms before a missed period, including implantation bleeding, fatigue, nausea, and breast tenderness."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://pregweeks.com/early-pregnancy-signs/#faq",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://pregweeks.com/early-pregnancy-signs/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://pregweeks.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Early Signs",
+          "item": "https://pregweeks.com/early-pregnancy-signs"
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Early Pregnancy Signs: Symptoms Before Missed Period | PregWeeks"
+  description="Are you pregnant? Read our clinical guide on early pregnancy signs, from implantation cramps to fatigue and nausea, before taking a test."
+>
+  <!-- Inject Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <main class="max-w-4xl mx-auto px-4 py-12 space-y-10">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Early Signs</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="border-b border-neutral-200 pb-6 text-center max-w-2xl mx-auto">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Symptom Guide</span>
+      <h1 class="text-3xl font-bold tracking-tight text-neutral-900 mt-3 sm:text-4xl">
+        Early Pregnancy Signs
+      </h1>
+      <p class="text-sm text-neutral-500 mt-2">Learn the physiological indicators and hormonal shifts that occur in the first few weeks after conception.</p>
+    </header>
+    
+    <!-- Monetization Placeholder: After Header Ad Slot -->
+    <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full my-4 hidden print:hidden" style="display: none;">
+      ADVERTISEMENT
+    </div>
+
+    <!-- Warnings / EEAT disclaimer -->
+    <div class="bg-amber-50/60 border border-amber-250 rounded-xl p-4 text-xs text-amber-800 leading-relaxed">
+      <strong>Clinical Note:</strong> Many early pregnancy symptoms are caused by progesterone, which is also elevated during the luteal phase of your normal cycle (PMS). The only definitive ways to confirm pregnancy are a home urine test, clinical blood draw, or ultrasound.
+    </div>
+
+    <!-- Symptoms Grid -->
+    <section class="space-y-6">
+      <h2 class="text-xl font-bold text-neutral-900">8 Common Early Symptoms</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {earlySigns.map(sign => (
+          <div class="bg-white border border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
+            <h3 class="text-sm font-bold text-neutral-900 mb-2">{sign.title}</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">{sign.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Monetization Placeholder: Middle Ad Slot -->
+    <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full my-6 hidden print:hidden" style="display: none;">
+      ADVERTISEMENT
+    </div>
+
+    <!-- PMS vs Pregnancy Section -->
+    <section class="bg-neutral-50 border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-4">
+      <h2 class="text-lg font-bold text-neutral-900">PMS vs. Early Pregnancy</h2>
+      <p class="text-xs text-neutral-600 leading-relaxed">
+        Because progesterone is active in both cases, distinguishing them can be tricky. However, some symptoms are unique to pregnancy:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div class="bg-white border border-neutral-200 p-4 rounded-xl space-y-2">
+          <h3 class="font-bold text-neutral-800">More Likely PMS</h3>
+          <ul class="list-disc list-inside space-y-1 text-neutral-500">
+            <li>Cramping that increases and transitions to bleeding.</li>
+            <li>Nausea is extremely rare.</li>
+            <li>No spotting, or spotting that immediately turns into a heavy period flow.</li>
+          </ul>
+        </div>
+        <div class="bg-white border border-neutral-200 p-4 rounded-xl space-y-2">
+          <h3 class="font-bold text-neutral-800">More Likely Pregnancy</h3>
+          <ul class="list-disc list-inside space-y-1 text-neutral-700">
+            <li>Implantation spotting (light, pink, lasting 1-2 days).</li>
+            <li>Persistent morning sickness or food aversions.</li>
+            <li>Areolas darkening or small bumps (Montgomery's tubercles) appearing.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQs -->
+    <section id="faqs" class="space-y-6">
+      <h2 class="text-xl font-bold text-neutral-900">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        {faqs.map(faq => (
+          <div class="bg-white border border-neutral-200 rounded-xl p-5">
+            <h3 class="text-xs font-semibold text-neutral-900 mb-1.5">{faq.q}</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

@@ -59,6 +59,34 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink mb-3 tracking-apple-tight">Due Date Tracker</h2>
       <p class="text-ink-muted-80 max-w-lg mx-auto text-sm md:text-base">Input your dates below to instantly determine your gestational age and target due date.</p>
     </div>
+    
+    <!-- Homepage Pregnancy Tracker Widget (Engagement Feature) -->
+    <div id="homepage-tracker-widget" class="max-w-2xl mx-auto mb-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300" style="display: none;">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-hairline pb-4 mb-4">
+        <div>
+          <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold block">Your Pregnancy Status</span>
+          <h3 class="text-xl md:text-2xl font-bold text-primary mt-1" id="widget-weeks-title">You are -- weeks pregnant</h3>
+        </div>
+        <a id="widget-guide-link" href="#" class="bg-primary hover:bg-primary-focus text-white text-xs font-semibold py-2 px-4 rounded-apple-pill transition-all active:scale-95 text-center">
+          View Week -- Guide &rarr;
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-canvas-parchment p-3 rounded-apple-sm border border-hairline">
+          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Trimester</span>
+          <span class="text-sm font-bold text-ink mt-0.5 block" id="widget-trimester">--</span>
+        </div>
+        <div class="bg-canvas-parchment p-3 rounded-apple-sm border border-hairline">
+          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Days Until Due Date</span>
+          <span class="text-sm font-bold text-ink mt-0.5 block" id="widget-countdown">-- days</span>
+        </div>
+        <div class="bg-canvas-parchment p-3 rounded-apple-sm border border-hairline">
+          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Next Milestone</span>
+          <span class="text-sm font-bold text-ink mt-0.5 block line-clamp-1" id="widget-milestone">--</span>
+        </div>
+      </div>
+    </div>
+
     <div class="max-w-2xl mx-auto">
       <Calculator />
     </div>
@@ -198,3 +226,99 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     </div>
   </section>
 </Layout>
+
+<script>
+  const widget = document.getElementById('homepage-tracker-widget');
+  const widgetWeeksTitle = document.getElementById('widget-weeks-title');
+  const widgetGuideLink = document.getElementById('widget-guide-link') as HTMLAnchorElement;
+  const widgetTrimester = document.getElementById('widget-trimester');
+  const widgetCountdown = document.getElementById('widget-countdown');
+  const widgetMilestone = document.getElementById('widget-milestone');
+
+  function getNextMilestone(weeksNum: number) {
+    if (weeksNum < 12) return { text: "1st Trimester Scan (Wk 12)", week: 12 };
+    if (weeksNum < 20) return { text: "Anatomy Scan (Wk 20)", week: 20 };
+    if (weeksNum < 24) return { text: "Glucose Screen (Wk 24)", week: 24 };
+    if (weeksNum < 28) return { text: "3rd Trimester (Wk 28)", week: 28 };
+    if (weeksNum < 36) return { text: "GBS Test (Wk 36)", week: 36 };
+    return { text: "Due Date / Delivery!", week: 40 };
+  }
+
+  function updateWidget() {
+    const savedCalculation = localStorage.getItem('pregnancy_calc_v2');
+    if (!savedCalculation) {
+      if (widget) widget.style.display = 'none';
+      return;
+    }
+
+    try {
+      const data = JSON.parse(savedCalculation);
+      const date = new Date(data.date);
+      const mode = data.mode;
+      const now = new Date();
+      
+      date.setHours(12, 0, 0, 0);
+      now.setHours(12, 0, 0, 0);
+
+      let edd: Date;
+      let GA_days = 0;
+      if (mode === 'lmp') {
+        edd = new Date(date.getTime() + 280 * 24 * 60 * 60 * 1000);
+        GA_days = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000));
+      } else {
+        edd = new Date(date.getTime() + 266 * 24 * 60 * 60 * 1000);
+        GA_days = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000)) + 14;
+      }
+
+      if (GA_days < 0) GA_days = 0;
+      const daysRemaining = Math.max(0, Math.floor((edd.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
+      const weeks = Math.floor(GA_days / 7);
+      const remainingDays = GA_days % 7;
+
+      if (widgetWeeksTitle) {
+        if (weeks === 0 && remainingDays === 0) {
+          widgetWeeksTitle.textContent = "Pregnancy not yet started";
+        } else {
+          widgetWeeksTitle.textContent = `You are ${weeks} weeks, ${remainingDays} day${remainingDays !== 1 ? 's' : ''} pregnant`;
+        }
+      }
+
+      const currentWeek = Math.max(1, Math.min(40, weeks + 1));
+      if (widgetGuideLink) {
+        widgetGuideLink.href = `/week/${currentWeek}`;
+        widgetGuideLink.textContent = `View Week ${currentWeek} Guide →`;
+      }
+
+      let trimesterVal = "First Trimester";
+      if (weeks >= 28) trimesterVal = "Third Trimester";
+      else if (weeks >= 13) trimesterVal = "Second Trimester";
+      
+      if (widgetTrimester) widgetTrimester.textContent = trimesterVal;
+      if (widgetCountdown) widgetCountdown.textContent = `${daysRemaining} Day${daysRemaining !== 1 ? 's' : ''}`;
+      
+      const milestone = getNextMilestone(weeks);
+      if (widgetMilestone) widgetMilestone.textContent = milestone.text;
+
+      if (widget) widget.style.display = 'block';
+    } catch (e) {
+      console.error(e);
+      if (widget) widget.style.display = 'none';
+    }
+  }
+
+  // Listen for updates from the calculator component
+  document.addEventListener('pregnancy-updated', () => {
+    updateWidget();
+  });
+
+  document.addEventListener('pregnancy-reset', () => {
+    if (widget) widget.style.display = 'none';
+  });
+
+  // Run immediately on load
+  updateWidget();
+  document.addEventListener('DOMContentLoaded', () => {
+    updateWidget();
+  });
+</script>
+

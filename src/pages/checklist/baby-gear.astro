@@ -1,0 +1,227 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const gearCategories = [
+  {
+    name: "Travel & Mobility",
+    id: "gear-travel",
+    items: [
+      { id: "ger-1", text: "Infant car seat (rear-facing, crash-tested)" },
+      { id: "ger-2", text: "Stroller or travel system compatible with car seat" },
+      { id: "ger-3", text: "Ergonomic baby carrier or wrap" },
+      { id: "ger-4", text: "Diaper bag (backpack style recommended for hands-free)" },
+      { id: "ger-5", text: "Backseat car mirror (to view baby while driving)" }
+    ]
+  },
+  {
+    name: "Feeding & Nursing Supplies",
+    id: "gear-feeding",
+    items: [
+      { id: "ger-6", text: "6-8 slow-flow baby bottles (small and medium sizes)" },
+      { id: "ger-7", text: "Nursing pillow (helps support back and arms during feeding)" },
+      { id: "ger-8", text: "10-12 soft muslin burp cloths" },
+      { id: "ger-9", text: "Breast pump and milk storage bags (for pumping mothers)" },
+      { id: "ger-10", text: "Bottle brush and drying rack" }
+    ]
+  },
+  {
+    name: "Bathing & Health Care",
+    id: "gear-bath",
+    items: [
+      { id: "ger-11", text: "Ergonomic baby bath tub (with newborn support insert)" },
+      { id: "ger-12", text: "2-3 soft hooded baby towels" },
+      { id: "ger-13", text: "5-6 soft cotton washcloths" },
+      { id: "ger-14", text: "Fragrance-free baby wash and shampoo" },
+      { id: "ger-15", text: "Baby grooming kit (nail clippers, soft hairbrush, comb)" },
+      { id: "ger-16", text: "Digital baby thermometer (rectal is most accurate for infants)" }
+    ]
+  },
+  {
+    name: "Basic Clothing (Size 0-3 Months)",
+    id: "gear-clothing",
+    items: [
+      { id: "ger-17", text: "6-8 snap or zipper sleep-and-play sleepers" },
+      { id: "ger-18", text: "5-6 short-sleeve and long-sleeve onesies" },
+      { id: "ger-19", text: "2-3 soft cotton hats (for body heat retention)" },
+      { id: "ger-20", text: "3-4 pairs of baby socks or booties" }
+    ]
+  }
+];
+---
+
+<Layout 
+  title="Ultimate Baby Gear Checklist & Registry Planner | PregWeeks"
+  description="Plan your registry with our essential baby gear checklist. Tracks strollers, car seats, feeding gear, and health supplies. Save or print."
+>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6 print:hidden" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <a href="/checklist/hospital-bag" class="hover:text-[#0066cc] transition-colors">Checklists</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Baby Gear Checklist</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-xl mx-auto mb-8">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full print:hidden">Registry Checklist</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-3 sm:text-4xl">
+        Baby Gear Checklist
+      </h1>
+      <p class="text-sm text-neutral-500 leading-relaxed print:hidden">
+        Prepare for your baby's arrival with the essential gear. Track your registry checklist, save progress automatically, and print when ready.
+      </p>
+    </header>
+
+    <!-- Actions & Progress -->
+    <div class="bg-white border border-neutral-200 rounded-xl p-5 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 print:hidden">
+      <!-- Progress Indicator -->
+      <div class="w-full sm:w-2/3 space-y-2">
+        <div class="flex justify-between items-center text-xs font-semibold text-neutral-700">
+          <span>Overall Progress</span>
+          <span id="gear-percentage">0% Complete</span>
+        </div>
+        <div class="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+          <div id="gear-progress-bar" class="bg-[#0066cc] h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-2 w-full sm:w-auto justify-end">
+        <button 
+          id="print-btn" 
+          class="bg-neutral-50 hover:bg-neutral-100 text-neutral-700 py-2.5 px-4 rounded-lg text-xs font-semibold border border-neutral-200 transition-all active:scale-95 flex items-center justify-center space-x-1.5"
+        >
+          <span>🖨️</span>
+          <span>Print</span>
+        </button>
+        <button 
+          id="reset-btn" 
+          class="bg-neutral-50 hover:bg-neutral-100 text-neutral-700 py-2.5 px-4 rounded-lg text-xs font-semibold border border-neutral-200 transition-all active:scale-95 flex items-center justify-center"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Timeline Sections -->
+    <div class="space-y-8 print:space-y-6">
+      {gearCategories.map(section => (
+        <section class="bg-white border border-neutral-200 rounded-xl p-5 print:border-none print:p-0">
+          <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 border-b border-neutral-100 pb-2 print:border-neutral-300 print:text-xs">
+            {section.name}
+          </h2>
+          
+          <div class="space-y-3">
+            {section.items.map(item => (
+              <label 
+                class="flex items-start space-x-3 text-xs text-neutral-700 cursor-pointer py-1.5 px-2.5 rounded-lg hover:bg-neutral-50 transition-colors print:p-0 print:hover:bg-transparent print:items-center"
+                for={item.id}
+              >
+                <input 
+                  type="checkbox" 
+                  id={item.id} 
+                  class="gear-checkbox rounded border-neutral-300 text-[#0066cc] focus:ring-[#0066cc] w-4 h-4 mt-0.5 flex-shrink-0 print:border-neutral-400 print:w-3.5 print:h-3.5"
+                />
+                <span class="leading-relaxed select-none">{item.text}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+  </main>
+</Layout>
+
+<style>
+  @media print {
+    @page { margin: 1.5cm; }
+    body { background: white !important; color: black !important; font-size: 11px !important; }
+    main { padding: 0 !important; max-width: 100% !important; }
+    h1 { font-size: 20px !important; margin-bottom: 5px !important; }
+  }
+</style>
+
+<script>
+  const checkboxes = document.querySelectorAll('.gear-checkbox') as NodeListOf<HTMLInputElement>;
+  const percentageSpan = document.getElementById('gear-percentage');
+  const progressBar = document.getElementById('gear-progress-bar');
+  const printBtn = document.getElementById('print-btn');
+  const resetBtn = document.getElementById('reset-btn');
+
+  const LOCAL_STORAGE_KEY = 'pregweeks_gear_checklist';
+
+  function loadChecklistState() {
+    const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!savedData) {
+      updateProgress();
+      return;
+    }
+
+    try {
+      const checkedIds = JSON.parse(savedData) as string[];
+      checkboxes.forEach(cb => {
+        if (checkedIds.includes(cb.id)) {
+          cb.checked = true;
+        }
+      });
+    } catch (e) {
+      console.error("Error reading gear checklist state", e);
+    }
+    updateProgress();
+  }
+
+  function saveChecklistState() {
+    const checkedIds: string[] = [];
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checkedIds.push(cb.id);
+      }
+    });
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(checkedIds));
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    let checkedCount = 0;
+    
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checkedCount++;
+      }
+    });
+
+    const percent = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+
+    if (percentageSpan) percentageSpan.textContent = `${percent}% Complete`;
+    if (progressBar) progressBar.style.width = `${percent}%`;
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', saveChecklistState);
+  });
+
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm("Are you sure you want to reset your baby gear checklist progress?")) {
+        checkboxes.forEach(cb => {
+          cb.checked = false;
+        });
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        updateProgress();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadChecklistState);
+  loadChecklistState();
+</script>

@@ -86,23 +86,50 @@ const prevWeek = weekNum > 1 ? weekNum - 1 : null;
 const nextWeek = weekNum < 40 ? weekNum + 1 : null;
 ---
 
-<Layout title={title} description={description} canonicalUrl={pageUrl} schemas={pageSchemas}>
-  <!-- Top Navigation Progress bar -->
-  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
-    <div class="max-w-[960px] mx-auto flex items-center justify-between text-xs md:text-sm text-ink-muted-80 font-medium">
-      <a href="/" class="text-primary hover:underline flex items-center gap-1">
-        &larr; Back to Home
-      </a>
-      <span class="font-semibold text-ink">{getTrimesterLabel(data.trimester)}</span>
-      <span class="text-primary font-bold">Week {weekNum} of 40</span>
+<Layout 
+  title={title} 
+  description={description} 
+  canonicalUrl={pageUrl} 
+  ogImage={`https://pregweeks.com/og-image/week-${weekNum}.svg`}
+  schemas={pageSchemas}
+>
+  <!-- Sticky Table of Contents (Floating Desktop Only) -->
+  <aside class="hidden xl:block fixed top-44 left-6 w-48 space-y-3 z-30 print:hidden">
+    <div class="border border-hairline rounded-apple-md p-4 bg-canvas-parchment/80 backdrop-blur-md">
+      <h4 class="text-[10px] font-bold text-ink uppercase tracking-wider mb-3">On This Page</h4>
+      <nav class="space-y-2">
+        <a href="#size" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Fetal Size</a>
+        <a href="#development" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Development</a>
+        <a href="#symptoms" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Body &amp; Symptoms</a>
+        <a href="#faqs" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">FAQs</a>
+      </nav>
     </div>
-    <div class="max-w-[960px] mx-auto h-1 bg-canvas-parchment rounded-full mt-2 overflow-hidden">
+  </aside>
+
+  <!-- Top Navigation Progress bar & Breadcrumbs -->
+  <div class="bg-canvas border-b border-hairline py-3.5 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs md:text-sm text-ink-muted-80 font-medium">
+      <!-- Visual Breadcrumbs -->
+      <nav class="flex items-center space-x-1.5 text-xs text-ink-muted-80 print:hidden" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-primary transition-colors">Home</a>
+        <span class="text-ink-muted-48">&gt;</span>
+        <a href="/#weeks-directory" class="hover:text-primary transition-colors">Week Guides</a>
+        <span class="text-ink-muted-48">&gt;</span>
+        <span class="text-ink font-semibold">Week {weekNum}</span>
+      </nav>
+      
+      <div class="flex items-center gap-4">
+        <span class="font-semibold text-ink">{getTrimesterLabel(data.trimester)}</span>
+        <span class="text-primary font-bold">Week {weekNum} of 40</span>
+      </div>
+    </div>
+    <div class="max-w-[960px] mx-auto h-1 bg-canvas-parchment rounded-full mt-3 overflow-hidden">
       <div class="h-full bg-primary" style={`width: ${(weekNum / 40) * 100}%;`}></div>
     </div>
   </div>
 
   <!-- Tile 1: Size Hero Tile (Light Canvas) -->
-  <section class="bg-canvas py-16 px-4 transition-colors">
+  <section id="size" class="bg-canvas py-16 px-4 transition-colors scroll-mt-20">
     <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-12">
       <div class="flex flex-col items-start">
         <span class="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">
@@ -115,8 +142,13 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
           {data.babySize.visualDescription}
         </p>
 
+        <!-- Monetization Placeholder: After First Paragraph Ad Slot -->
+        <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full my-4 hidden print:hidden" style="display: none;">
+          ADVERTISEMENT
+        </div>
+
         {data.babySize.lengthCm > 0 ? (
-          <div class="grid grid-cols-2 gap-4 w-full">
+          <div class="grid grid-cols-2 gap-4 w-full mt-2">
             <div class="bg-canvas-parchment border border-hairline p-4 rounded-apple-sm">
               <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Length</span>
               <span class="text-xl font-bold text-primary">{data.babySize.lengthCm} cm</span>
@@ -129,7 +161,7 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
             </div>
           </div>
         ) : (
-          <div class="bg-canvas-parchment border border-hairline p-4 rounded-apple-sm w-full text-center">
+          <div class="bg-canvas-parchment border border-hairline p-4 rounded-apple-sm w-full text-center mt-2">
             <span class="text-sm text-ink-muted-80 font-medium">Fetal measurements will begin at Week 4 once organogenesis is underway.</span>
           </div>
         )}
@@ -170,7 +202,7 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
   </section>
 
   <!-- Tile 2: Baby's Development (Dark surface) -->
-  <section class="bg-surface-tile-1 text-white py-16 px-4 transition-colors">
+  <section id="development" class="bg-surface-tile-1 text-white py-16 px-4 transition-colors scroll-mt-20">
     <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
       <div class="md:col-span-3">
         <span class="text-xs uppercase tracking-widest font-bold text-primary-on-dark mb-2 block">Inside The Womb</span>
@@ -195,7 +227,7 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
   </section>
 
   <!-- Tile 3: Mom's Body & Symptoms (Parchment Surface) -->
-  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+  <section id="symptoms" class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors scroll-mt-20">
     <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
       <div>
         <span class="text-xs uppercase tracking-widest font-bold text-primary mb-2 block">Maternal Health</span>
@@ -226,12 +258,17 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
             </li>
           ))}
         </ul>
+
+        <!-- Monetization Placeholder: Sidebar Ad Slot -->
+        <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full mt-4 hidden print:hidden" style="display: none;">
+          ADVERTISEMENT
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Tile 4: FAQ Accordion Section (Light Canvas) -->
-  <section class="bg-canvas py-16 px-4 transition-colors">
+  <section id="faqs" class="bg-canvas py-16 px-4 transition-colors scroll-mt-20">
     <div class="max-w-[720px] mx-auto">
       <h2 class="font-display font-semibold text-2xl md:text-3xl text-center text-ink mb-8 tracking-apple-tight">
         Frequently Asked Questions: Week {weekNum}
@@ -250,6 +287,30 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Email Capture Banner (Engagement Feature) -->
+  <section class="bg-canvas py-12 px-4 border-t border-hairline transition-colors print:hidden">
+    <div class="max-w-[600px] mx-auto bg-canvas-parchment border border-hairline rounded-apple-lg p-6 md:p-8 text-center flex flex-col items-center gap-4">
+      <span class="text-2xl">💌</span>
+      <h3 class="font-display font-semibold text-xl text-ink tracking-apple-tight">Get weekly pregnancy updates</h3>
+      <p class="text-xs text-ink-muted-80 leading-relaxed max-w-sm">
+        Sign up to receive developmental milestones, medical symptoms, and expert tips tailored to your specific week of pregnancy.
+      </p>
+      <form action="mailto:updates@pregweeks.com" method="GET" class="w-full flex flex-col sm:flex-row gap-2 mt-2">
+        <input 
+          type="email" 
+          name="body" 
+          placeholder="Enter your email address" 
+          required 
+          class="flex-1 p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+        />
+        <input type="hidden" name="subject" value={`PregWeeks Subscription - Week ${weekNum}`} />
+        <button type="submit" class="bg-primary hover:bg-primary-focus text-white font-semibold py-2.5 px-5 rounded-apple-pill text-xs transition-all active:scale-95 cursor-pointer">
+          Subscribe
+        </button>
+      </form>
     </div>
   </section>
 
@@ -278,3 +339,29 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
     </div>
   </section>
 </Layout>
+
+<script>
+  // Highlight active link in TOC
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  window.addEventListener('scroll', () => {
+    let currentId = '';
+    sections.forEach(sec => {
+      const top = (sec as HTMLElement).offsetTop - 150;
+      if (window.pageYOffset >= top) {
+        currentId = sec.getAttribute('id') || '';
+      }
+    });
+
+    tocLinks.forEach(link => {
+      link.classList.remove('border-primary', 'text-primary', 'font-semibold');
+      link.classList.add('border-transparent', 'text-ink-muted-80');
+      if (link.getAttribute('href') === `#${currentId}`) {
+        link.classList.remove('border-transparent', 'text-ink-muted-80');
+        link.classList.add('border-primary', 'text-primary', 'font-semibold');
+      }
+    });
+  });
+</script>
+

@@ -1,0 +1,225 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const nurseryCategories = [
+  {
+    name: "Core Furniture",
+    id: "nursery-furniture",
+    items: [
+      { id: "nur-1", text: "Crib or cot (must meet current safety standards)" },
+      { id: "nur-2", text: "Firm crib mattress (snug fit inside the crib frame)" },
+      { id: "nur-3", text: "Bassinet or co-sleeper (for the first few months in parents' room)" },
+      { id: "nur-4", text: "Glider or rocking chair (comfortable for night feedings)" },
+      { id: "nur-5", text: "Changing table or secure changing pad dresser top" },
+      { id: "nur-6", text: "Dresser or clothing storage organizer" }
+    ]
+  },
+  {
+    name: "Bedding & Sleep Essentials",
+    id: "nursery-bedding",
+    items: [
+      { id: "nur-7", text: "2-3 fitted waterproof mattress protectors" },
+      { id: "nur-8", text: "3-4 fitted organic cotton crib sheets" },
+      { id: "nur-9", text: "2-3 swaddles or sleeping sacks (with velcro or zippers)" },
+      { id: "nur-10", text: "Sound machine or white noise generator" }
+    ]
+  },
+  {
+    name: "Safety & Health Utilities",
+    id: "nursery-safety",
+    items: [
+      { id: "nur-11", text: "Baby monitor (audio or video monitor with secure connection)" },
+      { id: "nur-12", text: "Cool mist humidifier (helps relieve nasal congestion)" },
+      { id: "nur-13", text: "Dimmable nightlight (for middle-of-the-night checks)" },
+      { id: "nur-14", text: "Outlet covers and furniture wall anchors (pre-baby babyproofing)" }
+    ]
+  },
+  {
+    name: "Organization & Miscellaneous",
+    id: "nursery-misc",
+    items: [
+      { id: "nur-15", text: "Baby clothes hangers (size appropriate)" },
+      { id: "nur-16", text: "Bins and toy storage baskets" },
+      { id: "nur-17", text: "Blackout curtains (crucial for daytime naps)" },
+      { id: "nur-18", text: "Diaper pail or trash bin with odor control" }
+    ]
+  }
+];
+---
+
+<Layout 
+  title="Complete Nursery Setup Checklist & Planner | PregWeeks"
+  description="Plan and track your nursery room setup. Checklist covers furniture, bedding, safety items, and organizers. Save progress or print."
+>
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6 print:hidden" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <a href="/checklist/hospital-bag" class="hover:text-[#0066cc] transition-colors">Checklists</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Nursery Checklist</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-xl mx-auto mb-8">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full print:hidden">Preparation Checklist</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-3 sm:text-4xl">
+        Nursery Setup Checklist
+      </h1>
+      <p class="text-sm text-neutral-500 leading-relaxed print:hidden">
+        Build a cozy, safe environment for your baby. Track your nursery purchases, save progress automatically, and print when ready.
+      </p>
+    </header>
+
+    <!-- Actions & Progress -->
+    <div class="bg-white border border-neutral-200 rounded-xl p-5 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 print:hidden">
+      <!-- Progress Indicator -->
+      <div class="w-full sm:w-2/3 space-y-2">
+        <div class="flex justify-between items-center text-xs font-semibold text-neutral-700">
+          <span>Overall Progress</span>
+          <span id="nursery-percentage">0% Complete</span>
+        </div>
+        <div class="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+          <div id="nursery-progress-bar" class="bg-[#0066cc] h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-2 w-full sm:w-auto justify-end">
+        <button 
+          id="print-btn" 
+          class="bg-neutral-50 hover:bg-neutral-100 text-neutral-700 py-2.5 px-4 rounded-lg text-xs font-semibold border border-neutral-200 transition-all active:scale-95 flex items-center justify-center space-x-1.5"
+        >
+          <span>🖨️</span>
+          <span>Print</span>
+        </button>
+        <button 
+          id="reset-btn" 
+          class="bg-neutral-50 hover:bg-neutral-100 text-neutral-700 py-2.5 px-4 rounded-lg text-xs font-semibold border border-neutral-200 transition-all active:scale-95 flex items-center justify-center"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Timeline Sections -->
+    <div class="space-y-8 print:space-y-6">
+      {nurseryCategories.map(section => (
+        <section class="bg-white border border-neutral-200 rounded-xl p-5 print:border-none print:p-0">
+          <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 border-b border-neutral-100 pb-2 print:border-neutral-300 print:text-xs">
+            {section.name}
+          </h2>
+          
+          <div class="space-y-3">
+            {section.items.map(item => (
+              <label 
+                class="flex items-start space-x-3 text-xs text-neutral-700 cursor-pointer py-1.5 px-2.5 rounded-lg hover:bg-neutral-50 transition-colors print:p-0 print:hover:bg-transparent print:items-center"
+                for={item.id}
+              >
+                <input 
+                  type="checkbox" 
+                  id={item.id} 
+                  class="nursery-checkbox rounded border-neutral-300 text-[#0066cc] focus:ring-[#0066cc] w-4 h-4 mt-0.5 flex-shrink-0 print:border-neutral-400 print:w-3.5 print:h-3.5"
+                />
+                <span class="leading-relaxed select-none">{item.text}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+  </main>
+</Layout>
+
+<style>
+  @media print {
+    @page { margin: 1.5cm; }
+    body { background: white !important; color: black !important; font-size: 11px !important; }
+    main { padding: 0 !important; max-width: 100% !important; }
+    h1 { font-size: 20px !important; margin-bottom: 5px !important; }
+  }
+</style>
+
+<script>
+  const checkboxes = document.querySelectorAll('.nursery-checkbox') as NodeListOf<HTMLInputElement>;
+  const percentageSpan = document.getElementById('nursery-percentage');
+  const progressBar = document.getElementById('nursery-progress-bar');
+  const printBtn = document.getElementById('print-btn');
+  const resetBtn = document.getElementById('reset-btn');
+
+  const LOCAL_STORAGE_KEY = 'pregweeks_nursery_checklist';
+
+  function loadChecklistState() {
+    const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!savedData) {
+      updateProgress();
+      return;
+    }
+
+    try {
+      const checkedIds = JSON.parse(savedData) as string[];
+      checkboxes.forEach(cb => {
+        if (checkedIds.includes(cb.id)) {
+          cb.checked = true;
+        }
+      });
+    } catch (e) {
+      console.error("Error reading nursery checklist state", e);
+    }
+    updateProgress();
+  }
+
+  function saveChecklistState() {
+    const checkedIds: string[] = [];
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checkedIds.push(cb.id);
+      }
+    });
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(checkedIds));
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    let checkedCount = 0;
+    
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        checkedCount++;
+      }
+    });
+
+    const percent = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+
+    if (percentageSpan) percentageSpan.textContent = `${percent}% Complete`;
+    if (progressBar) progressBar.style.width = `${percent}%`;
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', saveChecklistState);
+  });
+
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm("Are you sure you want to reset your nursery room checklist progress?")) {
+        checkboxes.forEach(cb => {
+          cb.checked = false;
+        });
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        updateProgress();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadChecklistState);
+  loadChecklistState();
+</script>

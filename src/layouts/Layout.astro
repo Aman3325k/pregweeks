@@ -1,6 +1,12 @@
 ---
 // src/layouts/Layout.astro
 import '../styles/global.css';
+import { pregnancyData } from '../data/pregnancyData';
+import { foodItems } from '../data/foodData';
+import { symptomItems } from '../data/symptomData';
+import { glossaryTerms } from '../data/glossaryData';
+import { pregnancyConditions } from '../data/conditionsData';
+import { laborGuides } from '../data/laborData';
 
 interface Props {
   title?: string;
@@ -20,6 +26,78 @@ const {
 
 // Format the canonical URL to ensure consistency
 const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1) : canonicalUrl;
+
+// Compile Search Index (Averages ~310 searchable nodes for instant offline access)
+const searchIndex = [
+  // Core Pages & Tools
+  { title: "Pregnancy Due Date Calculator", desc: "Calculate your due date (EDD) and gestational age based on LMP.", url: "/tools/due-date-calculator" },
+  { title: "IVF Due Date Calculator", desc: "Calculate due date based on embryo transfer or egg retrieval date.", url: "/tools/ivf-calculator" },
+  { title: "Pregnancy Weight Gain Tracker", desc: "Track weight gain against clinical IOM recommendations.", url: "/tools/weight-tracker" },
+  { title: "Ovulation & Fertility Calculator", desc: "Forecast fertile windows, ovulation day, and next period with a calendar.", url: "/tools/ovulation-calculator" },
+  { title: "Fetal Kick Counter", desc: "Count and log fetal movements to track baby well-being.", url: "/tools/kick-counter" },
+  { title: "Contraction Timer & Labor Tracker", desc: "Timer for uterine contractions with clinical 5-1-1 alarms.", url: "/tools/contraction-timer" },
+  { title: "Baby Cost Calculator", desc: "Estimate first-year expenses (childcare, diapers, gear) with sliders.", url: "/tools/baby-cost-calculator" },
+  { title: "Pregnancy Journal & Diary", desc: "Private note-taking diary with local storage and text exporter.", url: "/tools/journal" },
+  { title: "Hospital Bag Checklist", desc: "Printable hospital bag check progress for Mom, Baby, and Partner.", url: "/checklist/hospital-bag" },
+  { title: "Baby Shower Checklist & Timeline", desc: "Printable planner timeline from 8 weeks before to day-of.", url: "/checklist/baby-shower" },
+  { title: "Nursery Setup Checklist", desc: "Planning list for furniture, bedding, and safety items.", url: "/checklist/nursery" },
+  { title: "Baby Gear Checklist", desc: "Checklist for strollers, car seats, carriers, and bathing gear.", url: "/checklist/baby-gear" },
+  { title: "Shareable Milestone Cards", desc: "Render and download custom weekly pregnancy milestone cards.", url: "/milestone" },
+  { title: "Chinese Gender Predictor & Chart", desc: "Folkoric gender calendar age and heart rate indicators.", url: "/tools/gender-prediction" },
+  { title: "Early Pregnancy Signs & Symptoms", desc: "12 signs and hormonal indicators before a missed period.", url: "/early-pregnancy-signs" },
+  { title: "When to Take a Pregnancy Test", desc: "Timing guide for hCG thresholds, faint lines, and evap lines.", url: "/when-to-take-pregnancy-test" },
+  { title: "Overdue Pregnancy Guide", desc: "Schedules and monitoring for week 40, 41, and 42.", url: "/overdue" },
+  { title: "Medical Sources & Bibliography", desc: "List of ACOG, WHO, CDC, and NHS references.", url: "/sources" },
+  { title: "Pregnancy Glossary & Medical Dictionary", desc: "A-Z index of 105 pregnancy terms and clinical definitions.", url: "/glossary" },
+  { title: "Week Comparison Tool", desc: "Select two weeks of pregnancy to compare growth side-by-side.", url: "/compare" },
+  { title: "Nutrition Guide", desc: "Pregnancy safe foods, prenatal vitamins, and diet instructions.", url: "/nutrition" },
+  { title: "Pregnancy FAQ", desc: "21 common questions and clinical answers.", url: "/faq" },
+  { title: "First Trimester Guide", desc: "Development, screening (NIPT), and nutritional milestones.", url: "/trimester/first" },
+  { title: "Second Trimester Guide", desc: "Anatomy scans, glucose screening, and body changes.", url: "/trimester/second" },
+  { title: "Third Trimester Guide", desc: "GBS swabs, birth preparation, and third trimester changes.", url: "/trimester/third" },
+  
+  // Dynamic Weekly Guides (40)
+  ...pregnancyData.map(d => ({
+    title: `Week ${d.week} of Pregnancy`,
+    desc: `Fetal size (${d.babySize.name}), development milestones, and symptoms for week ${d.week}.`,
+    url: `/week/${d.week}`
+  })),
+
+  // Food Safety Items (103)
+  ...foodItems.map(f => ({
+    title: `${f.name} Pregnancy Safety`,
+    desc: `Is it safe to eat ${f.name} while pregnant? Safety status: ${f.status}.`,
+    url: `/food/${f.slug}`
+  })),
+
+  // Symptoms (32)
+  ...symptomItems.map(s => ({
+    title: `${s.name} During Pregnancy`,
+    desc: `Why ${s.name.toLowerCase()} occurs, remedies, and when to call the doctor.`,
+    url: `/symptoms/${s.slug}`
+  })),
+
+  // Glossary Terms (105)
+  ...glossaryTerms.map(t => ({
+    title: `${t.term} (Pregnancy Glossary)`,
+    desc: `Definition: ${t.definition}`,
+    url: `/glossary/${t.slug}`
+  })),
+
+  // Conditions (6)
+  ...pregnancyConditions.map(c => ({
+    title: `${c.name} in Pregnancy`,
+    desc: `Overview of ${c.name.toLowerCase()} symptoms, maternal/fetal risks, and treatments.`,
+    url: `/conditions/${c.slug}`
+  })),
+
+  // Labor Guides (6)
+  ...laborGuides.map(l => ({
+    title: `${l.title} Childbirth Guide`,
+    desc: `${l.overview}`,
+    url: `/labor/${l.slug}`
+  }))
+];
 ---
 
 <!doctype html>
@@ -31,6 +109,11 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#0066cc" />
+    
+    <!-- Performance Hints -->
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="generator" content={Astro.generator} />
     
     <!-- SEO tags -->
@@ -68,9 +151,14 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
   </head>
-  <body class="bg-canvas text-ink antialiased">
+  <body class="bg-canvas text-ink antialiased flex flex-col min-h-screen">
+    <!-- Thin Scroll Progress Bar (Top) -->
+    <div class="fixed top-0 left-0 w-full h-[3px] bg-neutral-100 z-50 print:hidden" id="global-scroll-indicator" style="display: none;">
+      <div id="global-scroll-indicator-bar" class="h-full bg-primary w-0 transition-all duration-75"></div>
+    </div>
+
     <!-- Global Black Nav Bar (44px) -->
-    <nav class="bg-surface-black text-[#eae6f3] h-11 text-[12px] flex items-center z-50 relative">
+    <nav class="bg-surface-black text-[#eae6f3] h-11 text-[12px] flex items-center z-50 relative print:hidden">
       <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center">
         <a href="/" class="flex items-center gap-1.5 font-display font-semibold hover:text-white transition-colors duration-200">
           <span>🌸</span>
@@ -81,6 +169,8 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
           <a href="/symptoms" class="hover:text-white transition-colors">Symptoms</a>
           <a href="/nutrition" class="hover:text-white transition-colors">Nutrition</a>
           <a href="/faq" class="hover:text-white transition-colors">FAQ</a>
+          <a href="/glossary" class="hover:text-white transition-colors">Glossary</a>
+          <a href="/compare" class="hover:text-white transition-colors font-semibold text-primary">Compare Weeks</a>
         </div>
 
         <button 
@@ -109,7 +199,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     </nav>
 
     <!-- Frosted Sticky Sub-Nav (52px) -->
-    <div class="sticky top-0 z-40 bg-canvas-parchment/80 backdrop-blur-md border-b border-hairline h-[52px] flex items-center transition-colors">
+    <div class="sticky top-0 z-40 bg-canvas-parchment/80 backdrop-blur-md border-b border-hairline h-[52px] flex items-center transition-colors print:hidden">
       <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center">
         <div class="flex items-center gap-4">
           <a href="/" class="font-display font-semibold text-[18px] md:text-[21px] text-ink hover:text-primary transition-colors">
@@ -118,10 +208,19 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         </div>
         
         <div class="flex items-center gap-1.5 md:gap-4 text-[12px] md:text-[14px]">
-          <a href="/tools/due-date-calculator" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Calculator</a>
-          <a href="/tools/kick-counter" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Kicks</a>
-          <a href="/tools/contraction-timer" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Timer</a>
-          <a href="/checklist/hospital-bag" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklist</a>
+          <a href="/calculators" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Tools</a>
+          <a href="/checklist/hospital-bag" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklists</a>
+          
+          <!-- Fuse.js search trigger -->
+          <button 
+            id="global-search-btn" 
+            class="text-ink hover:text-primary transition-colors px-1 py-1 font-semibold flex items-center space-x-1 cursor-pointer"
+            aria-label="Search site"
+          >
+            <span>🔍</span>
+            <span class="hidden sm:inline">Search</span>
+          </button>
+
           <a href="/tools/due-date-calculator" class="hidden sm:inline-block bg-primary text-white text-[12px] font-semibold tracking-wide uppercase px-3 py-1.5 rounded-full hover:bg-primary-focus transition-colors cursor-pointer">
             Track Week
           </a>
@@ -129,13 +228,28 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
       </div>
     </div>
 
+    <!-- Active Medical Review Banner (EEAT Signal) -->
+    <div id="medical-review-banner" class="bg-blue-50 border-b border-blue-150 py-2.5 px-4 text-center text-xs text-neutral-600 print:hidden hidden">
+      <span class="font-medium text-neutral-800">Medical Notice:</span> The articles on PregWeeks are for educational planning. Always consult your doctor. Read our <a href="/disclaimer" class="text-primary hover:underline font-semibold">Medical Disclaimer</a>.
+    </div>
+
+    <!-- Monetization Placeholder: Header Ad Slot -->
+    <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest max-w-[960px] w-full mx-auto my-4 hidden print:hidden">
+      ADVERTISEMENT
+    </div>
+
     <!-- Main Content Slot -->
     <main class="flex-1">
       <slot />
     </main>
 
+    <!-- Monetization Placeholder: Before Footer Ad Slot -->
+    <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest max-w-[960px] w-full mx-auto my-6 hidden print:hidden">
+      ADVERTISEMENT
+    </div>
+
     <!-- Apple-style Parchment Footer (64px padding) -->
-    <footer class="bg-canvas-parchment border-t border-hairline pt-12 pb-16 px-4 md:px-12 transition-colors">
+    <footer class="bg-canvas-parchment border-t border-hairline pt-12 pb-16 px-4 md:px-12 transition-colors print:hidden">
       <div class="max-w-[960px] mx-auto text-[12px] text-ink-muted-80 flex flex-col gap-6">
         <!-- Trimester Columns Grid -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-8 border-b border-hairline">
@@ -145,34 +259,38 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
               <li><a href="/symptoms" class="hover:text-primary hover:underline">Symptom Guide</a></li>
               <li><a href="/nutrition" class="hover:text-primary hover:underline">Nutrition Guide</a></li>
               <li><a href="/faq" class="hover:text-primary hover:underline">FAQs Index</a></li>
+              <li><a href="/glossary" class="hover:text-primary hover:underline">A-Z Glossary</a></li>
+              <li><a href="/early-pregnancy-signs" class="hover:text-primary hover:underline">Early Signs</a></li>
+              <li><a href="/when-to-take-pregnancy-test" class="hover:text-primary hover:underline">When to Test</a></li>
             </ul>
           </div>
           <div>
-            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Trimesters</h4>
+            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Labor & Conditions</h4>
             <ul class="space-y-2 text-ink-muted-48">
-              <li><a href="/trimester/first" class="hover:text-primary hover:underline">First Trimester</a></li>
-              <li><a href="/trimester/second" class="hover:text-primary hover:underline">Second Trimester</a></li>
-              <li><a href="/trimester/third" class="hover:text-primary hover:underline">Third Trimester</a></li>
+              <li><a href="/labor" class="hover:text-primary hover:underline">Labor & Birth Hub</a></li>
+              <li><a href="/conditions" class="hover:text-primary hover:underline">Pregnancy Conditions</a></li>
+              <li><a href="/overdue" class="hover:text-primary hover:underline">Overdue Pregnancies</a></li>
+              <li><a href="/sources" class="hover:text-primary hover:underline">Medical Sources</a></li>
             </ul>
           </div>
           <div>
             <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Interactive Tools</h4>
             <ul class="space-y-2 text-ink-muted-48">
-              <li><a href="/tools/due-date-calculator" class="hover:text-primary hover:underline">Due Date Calculator</a></li>
-              <li><a href="/tools/kick-counter" class="hover:text-primary hover:underline">Fetal Kick Counter</a></li>
-              <li><a href="/tools/contraction-timer" class="hover:text-primary hover:underline">Contraction Timer</a></li>
-              <li><a href="/checklist/hospital-bag" class="hover:text-primary hover:underline">Hospital Bag Checklist</a></li>
+              <li><a href="/calculators" class="hover:text-primary hover:underline">Calculators Hub</a></li>
+              <li><a href="/tools/due-date-calculator" class="hover:text-primary hover:underline">Due Date Tracker</a></li>
+              <li><a href="/tools/weight-tracker" class="hover:text-primary hover:underline">Weight Grapher</a></li>
+              <li><a href="/tools/ovulation-calculator" class="hover:text-primary hover:underline">Ovulation Forecast</a></li>
+              <li><a href="/tools/journal" class="hover:text-primary hover:underline">Pregnancy Journal</a></li>
             </ul>
           </div>
           <div>
-            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Weeks Directory</h4>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-ink-muted-48">
-              <a href="/week/1" class="hover:text-primary hover:underline">Week 1</a>
-              <a href="/week/10" class="hover:text-primary hover:underline">Week 10</a>
-              <a href="/week/20" class="hover:text-primary hover:underline">Week 20</a>
-              <a href="/week/30" class="hover:text-primary hover:underline">Week 30</a>
-              <a href="/week/40" class="hover:text-primary hover:underline">Week 40</a>
-            </div>
+            <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Checklists Directory</h4>
+            <ul class="space-y-2 text-ink-muted-48">
+              <li><a href="/checklist/hospital-bag" class="hover:text-primary hover:underline">Hospital Bag</a></li>
+              <li><a href="/checklist/baby-shower" class="hover:text-primary hover:underline">Baby Shower</a></li>
+              <li><a href="/checklist/nursery" class="hover:text-primary hover:underline">Nursery Setup</a></li>
+              <li><a href="/checklist/baby-gear" class="hover:text-primary hover:underline">Baby Newborn Gear</a></li>
+            </ul>
           </div>
         </div>
 
@@ -196,16 +314,162 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
       </div>
     </footer>
 
-    <!-- Script to toggle light/dark theme in LocalStorage -->
+    <!-- Back to top global button -->
+    <button 
+      id="global-back-to-top" 
+      class="fixed bottom-8 right-8 bg-[#0066cc] text-white p-3 rounded-full shadow-lg border border-blue-600 transition-all active:scale-90 scale-0 opacity-0 z-50 print:hidden cursor-pointer"
+      aria-label="Back to top"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+      </svg>
+    </button>
+
+    <!-- Search Modal Overlay (Engagement Feature) -->
+    <div id="global-search-modal" class="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-start justify-center pt-20 px-4 hidden print:hidden">
+      <div class="bg-white w-full max-w-xl rounded-2xl border border-neutral-200 overflow-hidden shadow-2xl flex flex-col max-h-[70vh]">
+        <div class="relative border-b border-neutral-200 p-4">
+          <input 
+            type="text" 
+            id="global-search-input" 
+            placeholder="Type to search terms, tools, foods, weeks..."
+            class="w-full pl-8 pr-12 py-2 text-sm text-neutral-900 bg-neutral-50 rounded-lg border border-neutral-200 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary shadow-none"
+          />
+          <span class="absolute left-7 top-6 text-neutral-400 text-xs">🔍</span>
+          <button id="close-global-search" class="absolute right-4 top-5 text-neutral-400 hover:text-neutral-700 text-xs font-semibold px-2 py-1 bg-neutral-100 rounded">
+            Esc
+          </button>
+        </div>
+        <div id="global-search-results" class="overflow-y-auto p-2 divide-y divide-neutral-100 max-h-[50vh]">
+          <!-- Results list -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Script variables definition -->
+    <script is:inline define:vars={{ searchIndex }}>
+      window.searchIndex = searchIndex;
+    </script>
+
+    <!-- Service worker and UI behaviors -->
     <script>
-      const toggle = document.getElementById('global-theme-toggle');
-      toggle?.addEventListener('click', () => {
-        const doc = document.documentElement;
-        const currentTheme = doc.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        doc.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+      import Fuse from 'fuse.js';
+
+      // Load serialized searchIndex from window
+      const searchIndex = (window as any).searchIndex || [];
+
+      // Service worker registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(reg => {
+            console.log('SW registered');
+          }).catch(err => {
+            console.error('SW registration failed:', err);
+          });
+        });
+      }
+
+      // Back to top logic
+      const globalBttBtn = document.getElementById('global-back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          globalBttBtn?.classList.remove('scale-0', 'opacity-0');
+          globalBttBtn?.classList.add('scale-100', 'opacity-100');
+        } else {
+          globalBttBtn?.classList.remove('scale-100', 'opacity-100');
+          globalBttBtn?.classList.add('scale-0', 'opacity-0');
+        }
+      });
+      globalBttBtn?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Reading progress indicator
+      const path = window.location.pathname;
+      const isScrollPage = path.includes('/week/') || path.includes('/labor/') || path.includes('/conditions/') || path.includes('/nutrition') || path.includes('/early-pregnancy-signs') || path.includes('/when-to-take-pregnancy-test');
+      const progressIndicator = document.getElementById('global-scroll-indicator');
+      const progressIndicatorBar = document.getElementById('global-scroll-indicator-bar');
+      
+      if (isScrollPage && progressIndicator && progressIndicatorBar) {
+        progressIndicator.style.display = 'block';
+        window.addEventListener('scroll', () => {
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = totalHeight > 0 ? (window.pageYOffset / totalHeight) * 100 : 0;
+          progressIndicatorBar.style.width = `${progress}%`;
+        });
+      }
+
+      // Toggle Medical Review Banner on medical pages
+      const isMedicalPage = isScrollPage || path.includes('/food/') || path.includes('/symptoms/');
+      const reviewBanner = document.getElementById('medical-review-banner');
+      if (isMedicalPage && reviewBanner) {
+        reviewBanner.classList.remove('hidden');
+      }
+
+      // Fuse.js Search Modal logic
+      const searchBtn = document.getElementById('global-search-btn');
+      const searchModal = document.getElementById('global-search-modal');
+      const closeSearch = document.getElementById('close-global-search');
+      const searchInput = document.getElementById('global-search-input') as HTMLInputElement;
+      const searchResults = document.getElementById('global-search-results');
+
+      let fuse: any = null;
+
+      function openModal() {
+        searchModal?.classList.remove('hidden');
+        searchInput?.focus();
+        if (!fuse && searchIndex.length > 0) {
+          fuse = new Fuse(searchIndex, {
+            keys: ['title', 'desc'],
+            threshold: 0.4,
+            maxResults: 8
+          });
+        }
+      }
+
+      function closeModal() {
+        searchModal?.classList.add('hidden');
+        if (searchInput) searchInput.value = '';
+        if (searchResults) searchResults.innerHTML = '';
+      }
+
+      searchBtn?.addEventListener('click', openModal);
+      closeSearch?.addEventListener('click', closeModal);
+      searchModal?.addEventListener('click', (e) => {
+        if (e.target === searchModal) closeModal();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === '/' && document.activeElement !== searchInput && !e.metaKey && !e.ctrlKey) {
+          e.preventDefault();
+          openModal();
+        }
+      });
+
+      searchInput?.addEventListener('input', (e) => {
+        const query = (e.target as HTMLInputElement).value.trim();
+        if (!searchResults) return;
+
+        if (query.length < 2) {
+          searchResults.innerHTML = '';
+          return;
+        }
+
+        if (fuse) {
+          const results = fuse.search(query).slice(0, 8);
+          if (results.length === 0) {
+            searchResults.innerHTML = '<div class="p-4 text-xs text-neutral-400 text-center">No matches found.</div>';
+            return;
+          }
+
+          searchResults.innerHTML = results.map((res: any) => `
+            <a href="${res.item.url}" class="block p-3 rounded-lg hover:bg-neutral-50 transition-colors">
+              <h4 class="text-xs font-bold text-neutral-800">${res.item.title}</h4>
+              <p class="text-[10px] text-neutral-500 mt-0.5 line-clamp-1">${res.item.desc}</p>
+            </a>
+          `).join('');
+        }
       });
     </script>
   </body>

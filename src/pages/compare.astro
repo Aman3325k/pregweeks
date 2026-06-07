@@ -1,0 +1,270 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { pregnancyData } from '../data/pregnancyData';
+
+// Pre-serialize week data for the client
+const clientWeekData = pregnancyData.map(d => ({
+  week: d.week,
+  trimester: d.trimester,
+  babySize: d.babySize,
+  babyDevelopment: d.babyDevelopment,
+  motherChanges: d.motherChanges,
+  symptoms: d.symptoms,
+  tips: d.tips,
+  milestones: d.milestones
+}));
+---
+
+<Layout 
+  title="Pregnancy Week-by-Week Comparison Tool | Compare Weeks | PregWeeks"
+  description="Select any two weeks of pregnancy (1 to 40) and compare fetal size, development milestones, symptoms, and tips side-by-side in real-time."
+>
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Compare Weeks</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-xl mx-auto mb-10">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Interactive Utility</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-4 sm:text-4xl">
+        Week Comparison Tool
+      </h1>
+      <p class="text-base text-neutral-500 leading-relaxed">
+        Select any two pregnancy weeks to compare baby growth, milestones, maternal body changes, and symptoms side-by-side.
+      </p>
+    </header>
+
+    <!-- Comparison Grid Container -->
+    <div class="space-y-6">
+      <!-- Selectors Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-neutral-50 rounded-xl p-5 border border-neutral-200">
+        <!-- Week A selector -->
+        <div class="flex items-center justify-between space-x-4">
+          <label for="select-week-a" class="text-xs font-bold text-neutral-600 uppercase tracking-wider">Compare Week</label>
+          <select 
+            id="select-week-a" 
+            class="px-4 py-2.5 rounded-lg border border-neutral-300 text-xs font-semibold text-neutral-800 focus:outline-none focus:ring-1 focus:ring-[#0066cc] focus:border-[#0066cc] bg-white w-40 cursor-pointer"
+          >
+            {pregnancyData.map(d => (
+              <option value={d.week} selected={d.week === 8}>Week {d.week}</option>
+            ))}
+          </select>
+        </div>
+
+        <!-- Week B selector -->
+        <div class="flex items-center justify-between space-x-4">
+          <label for="select-week-b" class="text-xs font-bold text-neutral-600 uppercase tracking-wider">With Week</label>
+          <select 
+            id="select-week-b" 
+            class="px-4 py-2.5 rounded-lg border border-neutral-300 text-xs font-semibold text-neutral-800 focus:outline-none focus:ring-1 focus:ring-[#0066cc] focus:border-[#0066cc] bg-white w-40 cursor-pointer"
+          >
+            {pregnancyData.map(d => (
+              <option value={d.week} selected={d.week === 20}>Week {d.week}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <!-- Main Columns Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Column A -->
+        <section id="column-a" class="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6">
+          <header class="border-b border-neutral-100 pb-4 mb-4">
+            <h2 class="text-2xl font-bold text-neutral-900">Week <span class="lbl-week-num">—</span></h2>
+            <p class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 mt-1"><span class="lbl-trimester">—</span> Trimester</p>
+          </header>
+
+          <!-- Fetal Size comparison -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Baby Size & Comparison</h3>
+            <div class="bg-neutral-50 rounded-xl p-4 border border-neutral-150 flex items-center space-x-3">
+              <span class="text-2xl" id="lbl-size-emoji">🥑</span>
+              <div>
+                <p id="lbl-size-name" class="text-sm font-bold text-neutral-800">—</p>
+                <p class="text-xs text-neutral-500 mt-0.5">
+                  Length: <span id="lbl-size-length">—</span> | Weight: <span id="lbl-size-weight">—</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Development -->
+          <div class="space-y-1.5">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Baby's Development</h3>
+            <p id="lbl-development" class="text-xs text-neutral-600 leading-relaxed">—</p>
+          </div>
+
+          <!-- Mother Changes -->
+          <div class="space-y-1.5">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Mother's Body Changes</h3>
+            <p id="lbl-mother" class="text-xs text-neutral-600 leading-relaxed">—</p>
+          </div>
+
+          <!-- Symptoms List -->
+          <div class="space-y-1.5">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Common Symptoms</h3>
+            <div id="lbl-symptoms" class="flex flex-wrap gap-1.5">—</div>
+          </div>
+
+          <!-- Doctor Tips -->
+          <div class="space-y-1.5 border-t border-neutral-100 pt-4">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Care Tips</h3>
+            <ul id="lbl-tips" class="list-disc list-inside space-y-1 text-xs text-neutral-600 leading-relaxed">—</ul>
+          </div>
+        </section>
+
+        <!-- Column B -->
+        <section id="column-b" class="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6">
+          <header class="border-b border-neutral-100 pb-4 mb-4">
+            <h2 class="text-2xl font-bold text-neutral-900">Week <span class="lbl-week-num">—</span></h2>
+            <p class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 mt-1"><span class="lbl-trimester">—</span> Trimester</p>
+          </header>
+
+          <!-- Fetal Size comparison -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Baby Size & Comparison</h3>
+            <div class="bg-neutral-50 rounded-xl p-4 border border-neutral-150 flex items-center space-x-3">
+              <span class="text-2xl" id="lbl-size-emoji-b">🍌</span>
+              <div>
+                <p id="lbl-size-name-b" class="text-sm font-bold text-neutral-800">—</p>
+                <p class="text-xs text-neutral-500 mt-0.5">
+                  Length: <span id="lbl-size-length-b">—</span> | Weight: <span id="lbl-size-weight-b">—</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Development -->
+          <div class="space-y-1.5">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Baby's Development</h3>
+            <p id="lbl-development-b" class="text-xs text-neutral-600 leading-relaxed">—</p>
+          </div>
+
+          <!-- Mother Changes -->
+          <div class="space-y-1.5">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Mother's Body Changes</h3>
+            <p id="lbl-mother-b" class="text-xs text-neutral-600 leading-relaxed">—</p>
+          </div>
+
+          <!-- Symptoms List -->
+          <div class="space-y-1.5">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Common Symptoms</h3>
+            <div id="lbl-symptoms-b" class="flex flex-wrap gap-1.5">—</div>
+          </div>
+
+          <!-- Doctor Tips -->
+          <div class="space-y-1.5 border-t border-neutral-100 pt-4">
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Care Tips</h3>
+            <ul id="lbl-tips-b" class="list-disc list-inside space-y-1 text-xs text-neutral-600 leading-relaxed">—</ul>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script define:vars={{ clientWeekData }}>
+    const selectA = document.getElementById('select-week-a');
+    const selectB = document.getElementById('select-week-b');
+
+    // Emoji size comparison map for visual accent
+    const emojiMap = {
+      1: "🎈", 2: "🌱", 3: "🌾", 4: "📍", 5: "🍎", 6: "🍒", 7: "🫐", 8: "🍇",
+      9: "🫒", 10: "🍓", 11: "🍋", 12: "🍊", 13: "🍑", 14: "🍋", 15: "🍎", 16: "🥑",
+      17: "🧅", 18: "🍠", 19: "🥭", 20: "🍌", 21: "🥕", 22: "🥥", 23: "🫚", 24: "🌽",
+      25: "🥦", 26: "🥬", 27: "🥒", 28: "🍆", 29: "🍍", 30: "🍈", 31: "🥥", 32: "🎃",
+      33: "🍉", 34: "🍈", 35: "🍍", 36: "🍉", 37: "🥬", 38: "🍉", 39: "🎃", 40: "🍉"
+    };
+
+    function updateColumn(colId, weekNum) {
+      const data = clientWeekData.find(d => d.week === weekNum);
+      if (!data) return;
+
+      const prefix = colId === 'a' ? '' : '-b';
+      const wrapper = document.getElementById(`column-${colId}`);
+      if (!wrapper) return;
+
+      // Labels
+      const numLabel = wrapper.querySelector('.lbl-week-num');
+      if (numLabel) numLabel.textContent = data.week.toString();
+
+      const trimesterLabel = wrapper.querySelector('.lbl-trimester');
+      if (trimesterLabel) {
+        const trimesters = ["First", "Second", "Third"];
+        trimesterLabel.textContent = trimesters[data.trimester - 1] || "First";
+      }
+
+      // Size Card
+      const sizeEmoji = document.getElementById(`lbl-size-emoji${prefix}`);
+      if (sizeEmoji) sizeEmoji.textContent = emojiMap[data.week] || "🥑";
+
+      const sizeName = document.getElementById(`lbl-size-name${prefix}`);
+      if (sizeName) sizeName.textContent = data.babySize.name;
+
+      const sizeLength = document.getElementById(`lbl-size-length${prefix}`);
+      if (sizeLength) {
+        const inVal = (data.babySize.lengthCm / 2.54).toFixed(1);
+        sizeLength.textContent = `${data.babySize.lengthCm} cm (${inVal} in)`;
+      }
+
+      const sizeWeight = document.getElementById(`lbl-size-weight${prefix}`);
+      if (sizeWeight) {
+        const ozVal = (data.babySize.weightG * 0.035274).toFixed(1);
+        sizeWeight.textContent = `${data.babySize.weightG} g (${ozVal} oz)`;
+      }
+
+      // Development & Mother
+      const devText = document.getElementById(`lbl-development${prefix}`);
+      if (devText) devText.textContent = data.babyDevelopment;
+
+      const motherText = document.getElementById(`lbl-mother${prefix}`);
+      if (motherText) motherText.textContent = data.motherChanges;
+
+      // Symptoms
+      const symptomsDiv = document.getElementById(`lbl-symptoms${prefix}`);
+      if (symptomsDiv) {
+        symptomsDiv.innerHTML = '';
+        data.symptoms.forEach(sym => {
+          const pill = document.createElement('span');
+          pill.className = "text-[10px] font-semibold bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded-full border border-neutral-200/50";
+          pill.textContent = sym;
+          symptomsDiv.appendChild(pill);
+        });
+      }
+
+      // Tips
+      const tipsList = document.getElementById(`lbl-tips${prefix}`);
+      if (tipsList) {
+        tipsList.innerHTML = '';
+        data.tips.forEach(tip => {
+          const li = document.createElement('li');
+          li.className = "pl-1";
+          li.textContent = tip;
+          tipsList.appendChild(li);
+        });
+      }
+    }
+
+    function init() {
+      if (selectA) {
+        selectA.addEventListener('change', (e) => {
+          updateColumn('a', parseInt(e.target.value));
+        });
+        updateColumn('a', parseInt(selectA.value));
+      }
+      if (selectB) {
+        selectB.addEventListener('change', (e) => {
+          updateColumn('b', parseInt(e.target.value));
+        });
+        updateColumn('b', parseInt(selectB.value));
+      }
+    }
+
+    init();
+  </script>
+</Layout>

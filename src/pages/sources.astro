@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const medicalSources = [
+  {
+    org: "American College of Obstetricians and Gynecologists (ACOG)",
+    purpose: "Primary guidelines for week-by-week fetal developmental milestones, gestational screening standards (NIPT, Glucose Challenge, Group B Strep), prenatal vitamin nutritional targets, and pregnancy weight gain thresholds.",
+    website: "https://www.acog.org"
+  },
+  {
+    org: "World Health Organization (WHO)",
+    purpose: "Antenatal care guidelines for a positive pregnancy experience, focusing on global nutritional safety, active lifestyles, and prenatal healthcare accessibility benchmarks.",
+    website: "https://www.who.int"
+  },
+  {
+    org: "U.S. Food and Drug Administration (FDA) & CDC",
+    purpose: "Clinical guidelines on medication safety ratings (A, B, C, D, X categories) during gestation, food safety indicators regarding listeriosis, salmonella, and methylmercury limits in seafood.",
+    website: "https://www.fda.gov"
+  },
+  {
+    org: "National Health Service (NHS)",
+    purpose: "Reference parameters for early pregnancy signs, home remedies for common symptoms (such as round ligament pain and heartburn), and postpartum maternal recovery timelines.",
+    website: "https://www.nhs.uk"
+  },
+  {
+    org: "Mayo Clinic",
+    purpose: "Medical reference documentation for gestational diabetes, preeclampsia, placenta previa symptoms, and clinical advice regarding labor induction thresholds.",
+    website: "https://www.mayoclinic.org"
+  }
+];
+---
+
+<Layout 
+  title="Medical Sources & Clinical References | PregWeeks"
+  description="Explore the list of medical sources, guidelines, and clinical references used to verify all gestational information and trackers on PregWeeks.com."
+>
+  <main class="max-w-3xl mx-auto px-4 py-12 space-y-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Medical Sources</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="border-b border-neutral-200 pb-6">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Editorial Standards</span>
+      <h1 class="text-3xl font-bold tracking-tight text-neutral-900 mt-3 sm:text-4xl">
+        Medical Sources & References
+      </h1>
+      <p class="text-sm text-neutral-500 mt-2">Our commitment to medical accuracy, editorial authority, and trustworthy pregnancy guidelines (EEAT).</p>
+    </header>
+
+    <!-- Content Sections -->
+    <article class="space-y-8 text-sm text-neutral-700 leading-relaxed">
+      <section class="space-y-3">
+        <h2 class="text-xl font-bold text-neutral-900">Our Clinical Framework</h2>
+        <p>
+          At PregWeeks.com, we prioritize evidence-based medical information to ensure that expectant parents receive accurate and reliable gestational milestones, guidelines, and calculator logic. 
+        </p>
+        <p>
+          We do not publish anecdotal health advice or unverified medical claims. Every week article, safety classification, and calculator parameter is mapped directly against guidelines published by leading health authorities.
+        </p>
+      </section>
+
+      <!-- Sources List -->
+      <section class="space-y-6">
+        <h2 class="text-xl font-bold text-neutral-900">Authoritative References</h2>
+        <div class="space-y-4">
+          {medicalSources.map(src => (
+            <div class="bg-white border border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-all">
+              <h3 class="text-sm font-bold text-neutral-900 mb-2">{src.org}</h3>
+              <p class="text-xs text-neutral-600 leading-relaxed mb-4">{src.purpose}</p>
+              <a 
+                href={src.website} 
+                target="_blank" 
+                rel="noopener" 
+                class="text-xs font-semibold text-[#0066cc] hover:underline"
+              >
+                Visit Official Site →
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    </article>
+  </main>
+</Layout>

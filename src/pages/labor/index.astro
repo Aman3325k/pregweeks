@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { laborGuides } from '../../data/laborData';
+---
+
+<Layout 
+  title="Labor, Delivery & Childbirth Guides | PregWeeks"
+  description="Prepare for labor and delivery with our clinically-aligned birth guides. In-depth information on signs of labor, epidurals, C-sections, and natural birth."
+>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Labor & Birth</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Birth Preparation</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-neutral-900 mt-3 mb-4 sm:text-4xl">
+        Labor & Childbirth Guides
+      </h1>
+      <p class="text-base text-neutral-500 leading-relaxed">
+        Equip yourself with reliable knowledge for your birth experience. Read about standard labor milestones, pain management options, C-section procedures, and natural childbirth techniques.
+      </p>
+    </header>
+
+    <!-- Grid List of Labor Guides -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      {laborGuides.map(guide => (
+        <a 
+          href={`/labor/${guide.slug}`}
+          class="bg-white border border-neutral-200 rounded-2xl p-6 hover:border-neutral-300 transition-all active:scale-[0.99] flex flex-col justify-between"
+        >
+          <div>
+            <span class="text-[9px] uppercase font-bold tracking-wider text-neutral-400">Labor Guide</span>
+            <h2 class="text-lg font-bold text-neutral-900 mt-1 mb-3">{guide.title}</h2>
+            <p class="text-xs text-neutral-600 leading-relaxed line-clamp-3 mb-6">
+              {guide.overview}
+            </p>
+          </div>
+          <span class="text-xs font-semibold text-[#0066cc] hover:underline flex items-center space-x-1">
+            <span>Read Guide</span>
+            <span>→</span>
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <!-- General Medical Disclaimer -->
+    <div class="bg-amber-50/50 border border-amber-200 rounded-xl p-5 text-xs text-amber-800 leading-relaxed">
+      <strong>Important Medical Notice:</strong> The information in these labor guides is for educational and general preparation purposes only. It is not intended as medical advice or diagnosis. Always consult with your OB/GYN, midwife, or delivery team regarding labor signs and clinical indicators.
+    </div>
+  </main>
+</Layout>

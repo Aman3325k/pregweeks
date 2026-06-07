@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const faqs = [
+  {
+    q: "When is a pregnancy officially considered overdue?",
+    a: "A pregnancy is considered late-term between 41 weeks and 41 weeks and 6 days. It is officially considered post-term (overdue) when it reaches 42 weeks or more."
+  },
+  {
+    q: "Why do some pregnancies go past the due date?",
+    a: "Due dates are estimates. Common reasons for going overdue include irregular periods before pregnancy, first-time pregnancy, carrying a boy, genetic factors, or simply an incorrectly calculated due date."
+  },
+  {
+    q: "What are the risks of going overdue?",
+    a: "As pregnancy reaches week 41-42, the placenta can begin to age and deliver nutrients less efficiently. There is also a risk of reduced amniotic fluid (oligohydramnios), meconium aspiration, or macrosomia (large birth weight)."
+  }
+];
+
+const questions = [
+  "How are we monitoring the baby's well-being (non-stress tests, biophysical profiles)?",
+  "Is my cervix favorable for induction? What is my Bishop Score?",
+  "What method of induction do you recommend, and what are the risks?",
+  "Can we do a membrane sweep first to see if labor starts naturally?",
+  "What is the maximum timeline we can safely wait before scheduled induction?"
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://pregweeks.com/overdue/#webpage",
+      "url": "https://pregweeks.com/overdue",
+      "name": "Overdue Pregnancy Guide: Weeks 40, 41 & 42 | PregWeeks",
+      "description": "Learn what happens when you go past your due date. Read about overdue pregnancy parameters, amniotic levels, induction options, and key questions to ask."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://pregweeks.com/overdue/#faq",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://pregweeks.com/overdue/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://pregweeks.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Overdue Guide",
+          "item": "https://pregweeks.com/overdue"
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Overdue Pregnancy Guide: Weeks 40, 41 & 42 | PregWeeks"
+  description="Are you overdue? Read our clinical guide on post-term pregnancies, fetal monitoring, membrane sweeps, and medical labor induction options."
+>
+  <!-- Inject Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <main class="max-w-3xl mx-auto px-4 py-12 space-y-10">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">Overdue Guide</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="border-b border-neutral-200 pb-6 text-center max-w-xl mx-auto">
+      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Guides & Timelines</span>
+      <h1 class="text-3xl font-bold tracking-tight text-neutral-900 mt-3 sm:text-4xl">
+        Overdue Pregnancy Guide
+      </h1>
+      <p class="text-sm text-neutral-500 mt-2">What to expect when your baby goes past the 40-week due date milestone.</p>
+    </header>
+    
+    <!-- Monetization Placeholder: After Header Ad Slot -->
+    <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full my-4 hidden print:hidden" style="display: none;">
+      ADVERTISEMENT
+    </div>
+
+    <!-- Warnings / EEAT disclaimer -->
+    <div class="bg-amber-50/60 border border-amber-250 rounded-xl p-4 text-xs text-amber-800 leading-relaxed">
+      <strong>Medical Guidance:</strong> Most providers will schedule a labor induction between 41 weeks and 42 weeks to avoid placental insufficiency. Always discuss a personalized fetal monitoring schedule with your midwife or OB/GYN.
+    </div>
+
+    <!-- Content sections -->
+    <article class="space-y-8 text-sm text-neutral-700 leading-relaxed">
+      
+      <section class="space-y-3">
+        <h2 class="text-xl font-bold text-neutral-900">What Happens When You're Overdue?</h2>
+        <p>
+          It is completely normal for pregnancies to go past the 40-week mark—only about 5% of babies are born exactly on their estimated due date. In most cases, a late delivery simply means the baby needs a few extra days or the conception date was slightly off.
+        </p>
+        <p>
+          When you enter weeks 41 and 42, your doctor or midwife will increase the frequency of prenatal visits to monitor your baby's health.
+        </p>
+      </section>
+
+      <!-- Fetal Monitoring -->
+      <section class="space-y-3">
+        <h2 class="text-xl font-bold text-neutral-900">Early Fetal Monitoring Tests</h2>
+        <p>
+          To make sure the baby is thriving inside the womb, your provider will schedule special checks:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-white border border-neutral-200 p-5 rounded-xl space-y-2">
+            <h3 class="font-bold text-neutral-800 text-xs uppercase tracking-wider">Non-Stress Test (NST)</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">
+              Monitors the baby's heart rate response to movements over 20-30 minutes using abdominal belts, ensuring fetal oxygen levels are optimal.
+            </p>
+          </div>
+          <div class="bg-white border border-neutral-200 p-5 rounded-xl space-y-2">
+            <h3 class="font-bold text-neutral-800 text-xs uppercase tracking-wider">Biophysical Profile (BPP)</h3>
+            <p class="text-xs text-neutral-600 leading-relaxed">
+              An ultrasound assessment measuring fetal breathing, movement, muscle tone, and the volume of amniotic fluid around the baby.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Induction Methods -->
+      <section class="space-y-3">
+        <h2 class="text-xl font-bold text-neutral-900">Medical Induction Options</h2>
+        <p>
+          If tests indicate it is time to deliver, or if you reach week 41 or 42, your doctor will discuss inducing labor. Key methods include:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-xs text-neutral-600 pl-2">
+          <li><strong>Membrane Sweep:</strong> The doctor gently separates the amniotic sac from the cervix during an exam to stimulate natural prostaglandins.</li>
+          <li><strong>Cervical Ripening:</strong> Using hormones (like prostaglandin gels) or mechanical balloon catheters to soften and dilate the cervix.</li>
+          <li><strong>Amniotomy:</strong> Artificially breaking the water to speed up contractions.</li>
+          <li><strong>Pitocin:</strong> Administering synthetic oxytocin through an IV to initiate regular uterine contractions.</li>
+        </ul>
+      </section>
+
+      <!-- Monetization Placeholder: Middle Ad Slot -->
+      <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full my-6 hidden print:hidden" style="display: none;">
+        ADVERTISEMENT
+      </div>
+
+      <!-- Questions to Ask -->
+      <section class="bg-neutral-50 border border-neutral-200 rounded-xl p-5 space-y-3">
+        <h2 class="text-sm font-bold text-neutral-800 uppercase tracking-wider">5 Questions to Ask Your Doctor</h2>
+        <ul class="space-y-2 text-xs text-neutral-600 list-decimal list-inside pl-1">
+          {questions.map(q => (
+            <li>{q}</li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- FAQs -->
+      <section id="faqs" class="space-y-6">
+        <h2 class="text-xl font-bold text-neutral-900">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {faqs.map(faq => (
+            <div class="bg-white border border-neutral-200 rounded-xl p-5">
+              <h3 class="text-xs font-semibold text-neutral-900 mb-1.5">{faq.q}</h3>
+              <p class="text-xs text-neutral-600 leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </article>
+  </main>
+</Layout>

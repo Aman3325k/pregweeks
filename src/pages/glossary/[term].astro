@@ -1,0 +1,188 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { glossaryTerms, type GlossaryTerm } from '../../data/glossaryData';
+
+export async function getStaticPaths() {
+  return glossaryTerms.map((t) => ({
+    params: { term: t.slug },
+    props: { termObj: t },
+  }));
+}
+
+interface Props {
+  termObj: GlossaryTerm;
+}
+
+const { termObj } = Astro.props;
+const { term, definition, category, slug } = termObj;
+
+// Find similar terms in same category
+const relatedTerms = glossaryTerms
+  .filter(t => t.category === category && t.term !== term)
+  .slice(0, 3);
+
+// Dynamic FAQs
+const faqs = [
+  {
+    q: `What is the definition of ${term}?`,
+    a: `In pregnancy and obstetrics, ${term} is defined as: ${definition}`
+  },
+  {
+    q: `What category does the term ${term} belong to?`,
+    a: `The term ${term} belongs to the ${category} category of pregnancy and neonatal health terminology.`
+  },
+  {
+    q: `Why is understanding ${term} important?`,
+    a: `Understanding ${term} helps expectant mothers and partners make sense of medical reports, doctor consultations, and gestational developments.`
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `https://pregweeks.com/glossary/${slug}/#webpage`,
+      "url": `https://pregweeks.com/glossary/${slug}`,
+      "name": `What is ${term}? - Pregnancy Glossary | PregWeeks`,
+      "description": `Learn the definition and meaning of the pregnancy term ${term}. Clear medical explanations in plain English.`
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `https://pregweeks.com/glossary/${slug}/#faq`,
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `https://pregweeks.com/glossary/${slug}/#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://pregweeks.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://pregweeks.com/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": term,
+          "item": `https://pregweeks.com/glossary/${slug}`
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title={`${term}: Definition & Meaning | Pregnancy Glossary | PregWeeks`}
+  description={`What is ${term}? Read our plain-English definition, clinical context, and explanations for this pregnancy term.`}
+>
+  <!-- Inject Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-8" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
+      <span class="text-neutral-300">/</span>
+      <a href="/glossary" class="hover:text-[#0066cc] transition-colors">Glossary</a>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-700 font-medium">{term}</span>
+    </nav>
+
+    <!-- Main Card -->
+    <article class="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-10 mb-8">
+      <header class="border-b border-neutral-100 pb-6 mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-[10px] uppercase font-bold tracking-wider text-[#0066cc] bg-blue-50 px-2.5 py-0.5 rounded border border-blue-100">
+              {category} Term
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mt-2">
+              {term}
+            </h1>
+          </div>
+          <span class="text-xs text-neutral-400">Last updated: June 2026</span>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="space-y-6">
+        <div>
+          <h2 class="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-2">Definition</h2>
+          <p class="text-lg text-neutral-800 font-medium leading-relaxed">
+            {definition}
+          </p>
+        </div>
+
+        <div class="border-t border-neutral-100 pt-6">
+          <h2 class="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-2">Clinical Context</h2>
+          <p class="text-sm text-neutral-600 leading-relaxed">
+            In obstetrics and maternal healthcare, terms like <strong class="text-neutral-800">{term}</strong> represent key anatomical, physiological, or developmental parameters monitored during gestation, labor, and the postpartum stages. Understanding these terms empowers parents to converse with doctors, interpret ultrasound reports, and track fetal progress.
+          </p>
+        </div>
+
+        <!-- Medical Disclaimer Banner -->
+        <div class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-xs text-neutral-500 leading-relaxed">
+          <strong>Medical Notice:</strong> This term definition is for educational and planning purposes only. It is not medical advice. If you have any clinical questions or concerns about {term.toLowerCase()} in your own pregnancy, consult your obstetrician or health team immediately.
+        </div>
+      </div>
+    </article>
+
+    <!-- Side-by-side FAQ & Related terms -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- FAQs -->
+      <section class="md:col-span-2 space-y-6">
+        <h2 class="text-xl font-bold text-neutral-900">Term FAQs</h2>
+        <div class="space-y-4">
+          {faqs.map(faq => (
+            <div class="bg-white border border-neutral-200 rounded-xl p-5">
+              <h3 class="text-xs font-semibold text-neutral-900 mb-1.5">{faq.q}</h3>
+              <p class="text-xs text-neutral-600 leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Related terms -->
+      <section class="md:col-span-1 space-y-4">
+        <h2 class="text-xl font-bold text-neutral-900">Related Terms</h2>
+        <div class="space-y-3">
+          {relatedTerms.map(related => (
+            <a 
+              href={`/glossary/${related.slug}`}
+              class="block bg-white hover:bg-neutral-50 border border-neutral-200 rounded-xl p-4 transition-all active:scale-[0.98]"
+            >
+              <h3 class="text-xs font-semibold text-neutral-900 mb-1">{related.term}</h3>
+              <p class="text-[11px] text-neutral-500 line-clamp-2">{related.definition}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-12">
+      <a 
+        href="/glossary" 
+        class="inline-block bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-semibold py-3 px-6 rounded-xl border border-neutral-200 transition-all active:scale-95"
+      >
+        ← Back to Glossary Index
+      </a>
+    </div>
+  </main>
+</Layout>
