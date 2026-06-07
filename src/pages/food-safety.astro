@@ -1,0 +1,185 @@
+---
+// src/pages/food-safety.astro
+import Layout from '../layouts/Layout.astro';
+import { foodItems } from '../data/foodData';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../utils/seo';
+
+const title = "Pregnancy Food Safety Checker | Can I Eat This? | PregWeeks";
+const description = "Search our database of 100+ pregnancy foods. Find out what is safe to eat, what to avoid, and what to consume in moderation during pregnancy.";
+const canonicalUrl = "https://pregweeks.com/food-safety";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Food Safety", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs UI -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Food Safety</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="text-center max-w-2xl mx-auto mb-10 flex flex-col gap-3">
+      <span class="text-[10px] md:text-xs font-bold tracking-widest text-primary uppercase bg-primary/10 px-3 py-1 rounded-full self-center">Clinical Database</span>
+      <h1 class="text-3xl md:text-5xl font-display font-semibold tracking-apple-tight">Pregnancy Food Safety Checker</h1>
+      <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
+        Quickly check the safety status of over 100 foods during pregnancy. Built on recommendations from the FDA, CDC, and OB-GYN guidelines.
+      </p>
+    </div>
+
+    <!-- Interactive Search and Filters -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-5 md:p-6 mb-8 transition-colors">
+      <div class="flex flex-col md:flex-row gap-4 items-center">
+        <!-- Search bar -->
+        <div class="relative w-full md:flex-1">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink-muted-48 pointer-events-none text-sm">
+            🔍
+          </span>
+          <input 
+            type="text" 
+            id="food-search" 
+            placeholder="Search foods (e.g. sushi, soft cheese, coffee)..." 
+            class="w-full pl-10 pr-4 py-3 bg-canvas-parchment border border-hairline rounded-apple-sm text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base"
+          />
+        </div>
+        
+        <!-- Filters -->
+        <div class="flex bg-canvas-parchment p-1 rounded-apple-sm border border-hairline w-full md:w-auto gap-1 text-[12px] font-semibold">
+          <button class="flex-1 md:flex-initial px-4 py-2 rounded-apple-xs cursor-pointer transition-all duration-200 active:scale-95 bg-canvas shadow-sm text-primary" data-filter="all">All</button>
+          <button class="flex-1 md:flex-initial px-3 py-2 rounded-apple-xs cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink" data-filter="safe">🟢 Safe</button>
+          <button class="flex-1 md:flex-initial px-3 py-2 rounded-apple-xs cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink" data-filter="moderate">🟡 Moderation</button>
+          <button class="flex-1 md:flex-initial px-3 py-2 rounded-apple-xs cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink" data-filter="avoid">🔴 Avoid</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grouped Food Grid -->
+    <div id="food-container" class="flex flex-col gap-10">
+      {['Dairy & Eggs', 'Seafood', 'Beverages', 'Meats & Poultry', 'Fruits & Vegetables', 'Sweets & Others'].map((category) => {
+        const categoryFoods = foodItems.filter(f => f.category === category);
+        return (
+          <section class="food-category-section" data-category={category}>
+            <h2 class="text-xl md:text-2xl font-display font-semibold border-b border-hairline pb-2.5 mb-5 text-ink tracking-apple-tight">{category}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {categoryFoods.map((food) => (
+                <div 
+                  class="food-card bg-canvas border border-hairline rounded-apple-md p-4 md:p-5 hover:border-primary/20 transition-all flex flex-col gap-3"
+                  data-status={food.status}
+                  data-name={food.name.toLowerCase()}
+                >
+                  <div class="flex justify-between items-start gap-2">
+                    <h3 class="font-semibold text-[15px] md:text-[17px] text-ink leading-tight">{food.name}</h3>
+                    <span class={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                      food.status === 'safe' ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300' :
+                      food.status === 'moderate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/40 dark:text-yellow-300' :
+                      'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300'
+                    }`}>
+                      {food.status === 'safe' ? 'Safe' : food.status === 'moderate' ? 'Moderation' : 'Avoid'}
+                    </span>
+                  </div>
+                  
+                  <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed line-clamp-2">
+                    {food.explanation}
+                  </p>
+
+                  <div class="flex justify-between items-center mt-auto pt-2 border-t border-hairline/40 text-[11px] md:text-xs">
+                    <span class="text-ink-muted-48 truncate max-w-[200px]">Alt: {food.alternatives}</span>
+                    <a href={`/food/${food.slug}`} class="text-primary font-semibold hover:underline flex items-center gap-0.5 shrink-0">
+                      Learn More <span>&rarr;</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+
+    <!-- No results indicator -->
+    <div id="no-results" class="text-center py-16 bg-canvas border border-hairline rounded-apple-lg transition-colors flex flex-col gap-2 items-center" style="display: none;">
+      <span class="text-3xl">🍽️</span>
+      <h3 class="font-semibold text-lg text-ink">No foods found</h3>
+      <p class="text-ink-muted-48 text-sm max-w-xs">We couldn't find any match for your search. Try searching for raw food, coffee, tea, cheese or fish.</p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('food-search') as HTMLInputElement;
+  const filterButtons = document.querySelectorAll('[data-filter]');
+  const foodCards = document.querySelectorAll('.food-card');
+  const categorySections = document.querySelectorAll('.food-category-section');
+  const noResults = document.getElementById('no-results');
+
+  let currentSearch = '';
+  let currentFilter = 'all';
+
+  function applyFilterAndSearch() {
+    let visibleTotal = 0;
+
+    categorySections.forEach((section) => {
+      let visibleInSection = 0;
+      const cards = section.querySelectorAll('.food-card');
+
+      cards.forEach((card) => {
+        const name = card.getAttribute('data-name') || '';
+        const status = card.getAttribute('data-status') || '';
+
+        const matchesSearch = name.includes(currentSearch);
+        const matchesFilter = currentFilter === 'all' || status === currentFilter;
+
+        if (matchesSearch && matchesFilter) {
+          (card as HTMLElement).style.display = 'flex';
+          visibleInSection++;
+          visibleTotal++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      // Hide/show category headings based on card visibility
+      if (visibleInSection > 0) {
+        (section as HTMLElement).style.display = 'block';
+      } else {
+        (section as HTMLElement).style.display = 'none';
+      }
+    });
+
+    // Show/hide no results container
+    if (visibleTotal === 0) {
+      noResults!.style.display = 'flex';
+    } else {
+      noResults!.style.display = 'none';
+    }
+  }
+
+  // Handle Search Input
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value.toLowerCase().trim();
+    applyFilterAndSearch();
+  });
+
+  // Handle Filter Buttons
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      // Toggle button styles
+      filterButtons.forEach((b) => {
+        b.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+        b.classList.add('text-ink-muted-80');
+      });
+      btn.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+      btn.classList.remove('text-ink-muted-80');
+
+      currentFilter = btn.getAttribute('data-filter') || 'all';
+      applyFilterAndSearch();
+    });
+  });
+</script>

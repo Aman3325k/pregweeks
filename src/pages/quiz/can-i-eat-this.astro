@@ -1,0 +1,319 @@
+---
+// src/pages/quiz/can-i-eat-this.astro
+import Layout from '../../layouts/Layout.astro';
+import { foodItems } from '../../data/foodData';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Pregnancy Food Safety Quiz & Quick Search | PregWeeks";
+const description = "Test your pregnancy food safety knowledge with our interactive trivia quiz and search 100+ foods instantly for Listeria, Salmonela, and mercury risk.";
+const canonicalUrl = "https://pregweeks.com/quiz/can-i-eat-this";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Food Safety Guide", url: "https://pregweeks.com/food-safety" },
+  { name: "Can I Eat This Quiz", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <a href="/food-safety" class="hover:text-primary transition-colors">Food Safety</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Food Safety Quiz</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="text-center max-w-xl mx-auto mb-10 flex flex-col gap-3">
+      <span class="text-3xl">🍏</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Can I Eat This? Quiz</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        Instantly search foods to check safety status, or test your clinical pregnancy nutrition knowledge with our interactive 5-question food safety trivia!
+      </p>
+    </div>
+
+    <!-- Mode Selector tabs -->
+    <div class="flex bg-canvas-parchment p-1 rounded-apple-sm gap-1 border border-hairline/25 mb-8 text-xs md:text-sm font-semibold">
+      <button id="tab-search" class="flex-1 py-2.5 rounded-apple-xs cursor-pointer transition-all bg-canvas shadow-sm text-primary">🔍 Instant Food Checker</button>
+      <button id="tab-trivia" class="flex-1 py-2.5 rounded-apple-xs cursor-pointer transition-all text-ink-muted-80 hover:text-ink">✏️ Food Safety Trivia</button>
+    </div>
+
+    <!-- Part 1: Instant Food Checker Panel -->
+    <div id="panel-search" class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 transition-colors flex flex-col gap-5">
+      <h2 class="font-display font-semibold text-xl text-ink tracking-apple-tight">Instant Food Safety Lookup</h2>
+      <p class="text-xs text-ink-muted-48 -mt-2">Type a food name below to see if it's safe to eat during pregnancy.</p>
+      
+      <div class="relative w-full">
+        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink-muted-48 pointer-events-none text-sm">
+          🔍
+        </span>
+        <input 
+          type="text" 
+          id="quiz-food-search" 
+          placeholder="Type food (e.g. Feta, Tuna, Coffee, Eggs)..." 
+          class="w-full pl-10 pr-4 py-3 bg-canvas-parchment border border-hairline rounded-apple-sm text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base"
+        />
+      </div>
+
+      <!-- Live Search Results Container -->
+      <div id="quiz-search-results" class="flex flex-col gap-4 mt-2" style="display: none;">
+        <div class="border border-hairline rounded-apple-md p-5 flex flex-col gap-4 bg-canvas-parchment/35" id="result-card">
+          <div class="flex justify-between items-start gap-4 pb-3 border-b border-hairline/60">
+            <h3 class="font-semibold text-lg text-ink" id="result-name">--</h3>
+            <span class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" id="result-badge">--</span>
+          </div>
+          
+          <div class="flex flex-col gap-2.5 text-xs md:text-sm">
+            <p class="leading-relaxed">
+              <strong class="text-ink">Clinical Verdict:</strong> <span id="result-explanation" class="text-ink-muted-80">--</span>
+            </p>
+            <p class="leading-relaxed">
+              <strong class="text-ink">Recommended Alternatives:</strong> <span id="result-alternatives" class="text-ink-muted-80 font-medium">--</span>
+            </p>
+            <p class="leading-relaxed">
+              <strong class="text-ink">Doctor Tip:</strong> <span id="result-tip" class="text-ink-muted-80 font-medium">--</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Match Container -->
+      <div id="quiz-no-match" class="text-center py-6 text-ink-muted-48 text-sm" style="display: none;">
+        No food match found. Try typing a simpler term like "milk", "cheese", or "fish".
+      </div>
+    </div>
+
+    <!-- Part 2: Trivia Quiz Panel -->
+    <div id="panel-trivia" class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 transition-colors flex flex-col gap-6" style="display: none;">
+      <h2 class="font-display font-semibold text-xl text-ink tracking-apple-tight border-b border-hairline pb-3">Food Safety Trivia (5 Questions)</h2>
+      
+      <div id="trivia-container" class="flex flex-col gap-6">
+        <!-- Q1 -->
+        <div class="trivia-question flex flex-col gap-3" data-q="1">
+          <h3 class="font-semibold text-sm md:text-base text-ink">1. Can you eat Brie cheese during pregnancy?</h3>
+          <div class="flex flex-col gap-2 text-xs md:text-sm">
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">A. Yes, all Brie cheese is 100% safe.</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="true">B. Yes, but only if it is explicitly labeled as made from pasteurized milk.</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">C. No, Brie must be completely avoided regardless of pasteurization.</button>
+          </div>
+          <p class="q-feedback text-xs font-semibold mt-1 hidden"></p>
+        </div>
+
+        <!-- Q2 -->
+        <div class="trivia-question flex flex-col gap-3 border-t border-hairline/60 pt-5 hidden" data-q="2">
+          <h3 class="font-semibold text-sm md:text-base text-ink">2. Which of these fish should be completely avoided due to high mercury levels?</h3>
+          <div class="flex flex-col gap-2 text-xs md:text-sm">
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="true">A. Swordfish and Shark</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">B. Salmon and Sardines</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">C. Cod and Canned Light Tuna</button>
+          </div>
+          <p class="q-feedback text-xs font-semibold mt-1 hidden"></p>
+        </div>
+
+        <!-- Q3 -->
+        <div class="trivia-question flex flex-col gap-3 border-t border-hairline/60 pt-5 hidden" data-q="3">
+          <h3 class="font-semibold text-sm md:text-base text-ink">3. What is the recommended safe limit for daily caffeine intake during pregnancy?</h3>
+          <div class="flex flex-col gap-2 text-xs md:text-sm">
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">A. 50 mg per day</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="true">B. 200 mg per day (approx. one 12 oz cup of coffee)</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">C. 400 mg per day</button>
+          </div>
+          <p class="q-feedback text-xs font-semibold mt-1 hidden"></p>
+        </div>
+
+        <!-- Q4 -->
+        <div class="trivia-question flex flex-col gap-3 border-t border-hairline/60 pt-5 hidden" data-q="4">
+          <h3 class="font-semibold text-sm md:text-base text-ink">4. Why are raw sprouts (like alfalfa or clover) unsafe during pregnancy?</h3>
+          <div class="flex flex-col gap-2 text-xs md:text-sm">
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">A. They contain high levels of caffeine.</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">B. They prevent the absorption of iron.</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="true">C. Bacteria (E. coli / Salmonella) can get inside the seeds and are impossible to wash off.</button>
+          </div>
+          <p class="q-feedback text-xs font-semibold mt-1 hidden"></p>
+        </div>
+
+        <!-- Q5 -->
+        <div class="trivia-question flex flex-col gap-3 border-t border-hairline/60 pt-5 hidden" data-q="5">
+          <h3 class="font-semibold text-sm md:text-base text-ink">5. What bacteria makes cold deli meats and hot dogs risky during pregnancy?</h3>
+          <div class="flex flex-col gap-2 text-xs md:text-sm">
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="true">A. Listeria monocytogenes</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">B. Botulism</button>
+            <button class="opt-btn w-full text-left p-3 border border-hairline rounded-apple-sm hover:bg-canvas-parchment transition-all cursor-pointer text-ink" data-correct="false">C. H. pylori</button>
+          </div>
+          <p class="q-feedback text-xs font-semibold mt-1 hidden"></p>
+        </div>
+      </div>
+
+      <!-- Score Summary -->
+      <div id="trivia-score" class="text-center py-6 flex flex-col gap-3 items-center" style="display: none;">
+        <span class="text-3xl">🏆</span>
+        <h3 class="font-semibold text-lg text-ink">Quiz Complete!</h3>
+        <p class="text-primary font-bold text-xl" id="score-text">You scored 5/5!</p>
+        <button id="restart-trivia" class="bg-primary hover:bg-primary-focus text-white font-semibold py-2 px-5 rounded-apple-pill text-xs transition-all active:scale-95 cursor-pointer mt-2">Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline define:vars={{ foodItems }}>
+  // Mode Selection Tabs
+  const tabSearch = document.getElementById('tab-search');
+  const tabTrivia = document.getElementById('tab-trivia');
+  const panelSearch = document.getElementById('panel-search');
+  const panelTrivia = document.getElementById('panel-trivia');
+
+  tabSearch?.addEventListener('click', () => {
+    tabSearch.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+    tabSearch.classList.remove('text-ink-muted-80');
+    tabTrivia?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+    tabTrivia?.classList.add('text-ink-muted-80');
+
+    panelSearch.style.display = 'flex';
+    panelTrivia.style.display = 'none';
+  });
+
+  tabTrivia?.addEventListener('click', () => {
+    tabTrivia.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+    tabTrivia.classList.remove('text-ink-muted-80');
+    tabSearch?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+    tabSearch?.classList.add('text-ink-muted-80');
+
+    panelTrivia.style.display = 'flex';
+    panelSearch.style.display = 'none';
+  });
+
+  // Food Checker Search Logic
+  const checkerInput = document.getElementById('quiz-food-search');
+  const searchResults = document.getElementById('quiz-search-results');
+  const noMatch = document.getElementById('quiz-no-match');
+
+  const rName = document.getElementById('result-name');
+  const rBadge = document.getElementById('result-badge');
+  const rExpl = document.getElementById('result-explanation');
+  const rAlts = document.getElementById('result-alternatives');
+  const rTip = document.getElementById('result-tip');
+
+  checkerInput?.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    if (!query) {
+      searchResults.style.display = 'none';
+      noMatch.style.display = 'none';
+      return;
+    }
+
+    // Find best match in foodItems
+    const match = foodItems.find(item => item.name.toLowerCase().includes(query) || item.slug.includes(query));
+
+    if (match) {
+      rName.textContent = match.name;
+      rBadge.textContent = match.status === 'safe' ? 'Safe' : match.status === 'moderate' ? 'Moderation' : 'Avoid';
+      
+      let badgeClass = 'bg-green-100 text-green-800';
+      if (match.status === 'moderate') badgeClass = 'bg-yellow-100 text-yellow-800';
+      if (match.status === 'avoid') badgeClass = 'bg-red-100 text-red-800';
+      rBadge.className = `text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider ${badgeClass}`;
+
+      rExpl.textContent = match.explanation;
+      rAlts.textContent = match.alternatives;
+      rTip.textContent = match.tip;
+
+      searchResults.style.display = 'block';
+      noMatch.style.display = 'none';
+    } else {
+      searchResults.style.display = 'none';
+      noMatch.style.display = 'block';
+    }
+  });
+
+  // Trivia Quiz Logic
+  let currentQ = 1;
+  let score = 0;
+  const totalQuestions = 5;
+
+  const questions = document.querySelectorAll('.trivia-question');
+  const scoreDiv = document.getElementById('trivia-score');
+  const scoreText = document.getElementById('score-text');
+  const restartBtn = document.getElementById('restart-trivia');
+
+  questions.forEach((qDiv) => {
+    const btns = qDiv.querySelectorAll('.opt-btn');
+    const feedback = qDiv.querySelector('.q-feedback');
+
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // Disable other buttons
+        btns.forEach(b => b.setAttribute('disabled', 'true'));
+        
+        const isCorrect = btn.getAttribute('data-correct') === 'true';
+        if (isCorrect) {
+          btn.style.borderColor = '#2a9d8f';
+          btn.style.backgroundColor = 'rgba(42, 157, 143, 0.08)';
+          feedback.textContent = '🟢 Correct! Great job.';
+          feedback.className = 'q-feedback text-xs font-semibold mt-1 text-green-600';
+          score++;
+        } else {
+          btn.style.borderColor = '#e76f51';
+          btn.style.backgroundColor = 'rgba(231, 111, 81, 0.08)';
+          feedback.textContent = '🔴 Incorrect. Read the safe food guidelines!';
+          feedback.className = 'q-feedback text-xs font-semibold mt-1 text-red-600';
+          
+          // Highlight correct one
+          btns.forEach(b => {
+            if (b.getAttribute('data-correct') === 'true') {
+              (b).style.borderColor = '#2a9d8f';
+            }
+          });
+        }
+        feedback.classList.remove('hidden');
+
+        // Wait 2 seconds and move to next
+        setTimeout(() => {
+          if (currentQ < totalQuestions) {
+            // Hide current Q
+            qDiv.classList.add('hidden');
+            
+            // Show next Q
+            currentQ++;
+            const nextQDiv = document.querySelector(`.trivia-question[data-q="${currentQ}"]`);
+            nextQDiv.classList.remove('hidden');
+          } else {
+            // Show Score
+            qDiv.classList.add('hidden');
+            scoreText.textContent = `You scored ${score} out of ${totalQuestions}!`;
+            scoreDiv.style.display = 'flex';
+          }
+        }, 1500);
+      });
+    });
+  });
+
+  restartBtn?.addEventListener('click', () => {
+    currentQ = 1;
+    score = 0;
+    scoreDiv.style.display = 'none';
+
+    // Reset all buttons & styling
+    questions.forEach((qDiv) => {
+      const btns = qDiv.querySelectorAll('.opt-btn');
+      const feedback = qDiv.querySelector('.q-feedback');
+      
+      btns.forEach(b => {
+        b.removeAttribute('disabled');
+        (b).style.borderColor = '';
+        (b).style.backgroundColor = '';
+      });
+      feedback.classList.add('hidden');
+
+      if (qDiv.getAttribute('data-q') === '1') {
+        qDiv.classList.remove('hidden');
+      } else {
+        qDiv.classList.add('hidden');
+      }
+    });
+  });
+</script>

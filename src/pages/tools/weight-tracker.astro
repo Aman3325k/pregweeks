@@ -1,0 +1,582 @@
+---
+// src/pages/tools/weight-tracker.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Pregnancy Weight Gain Tracker & Chart | BMI Calculator | PregWeeks";
+const description = "Track your pregnancy weight gain week-by-week based on pre-pregnancy BMI. Interactive calculator, weight log tracker, and recommended weight curves chart.";
+const canonicalUrl = "https://pregweeks.com/tools/weight-tracker";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Weight Tracker", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <a href="/tools/due-date-calculator" class="hover:text-primary transition-colors">Tools</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Weight Tracker</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="text-center max-w-xl mx-auto mb-10 flex flex-col gap-3">
+      <span class="text-3xl">⚖️</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Pregnancy Weight Gain Tracker</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        Monitor your pregnancy weight gain based on Institute of Medicine (IOM) guidelines. Compute your BMI, log your weekly weight, and visualize your progress on our interactive curve chart.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Column 1: Setup & Inputs -->
+      <div class="lg:col-span-1 flex flex-col gap-6">
+        <!-- Settings Card -->
+        <div class="bg-canvas border border-hairline rounded-apple-lg p-5 md:p-6 transition-colors flex flex-col gap-5">
+          <h2 class="font-display font-semibold text-lg text-ink border-b border-hairline pb-2">1. Profile Settings</h2>
+          
+          <!-- Unit Selector -->
+          <div class="flex bg-canvas-parchment p-1 rounded-apple-sm gap-1 border border-hairline/20">
+            <button type="button" id="unit-lbs" class="flex-1 py-1.5 rounded-apple-xs text-xs font-semibold cursor-pointer transition-all bg-canvas shadow-sm text-primary">Imperial (lbs/in)</button>
+            <button type="button" id="unit-kg" class="flex-1 py-1.5 rounded-apple-xs text-xs font-semibold cursor-pointer transition-all text-ink-muted-80 hover:text-ink">Metric (kg/cm)</button>
+          </div>
+
+          <form id="profile-form" class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="height" id="height-label" class="font-medium text-xs text-ink">Height (inches):</label>
+              <input type="number" step="0.1" id="height" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+            
+            <div class="flex flex-col gap-1.5">
+              <label for="pre-weight" id="pre-weight-label" class="font-medium text-xs text-ink">Pre-Pregnancy Weight (lbs):</label>
+              <input type="number" step="0.1" id="pre-weight" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-primary-focus text-white font-semibold py-2.5 rounded-apple-pill text-xs md:text-sm transition-all active:scale-95 cursor-pointer">Save Profile & Initialize</button>
+          </form>
+        </div>
+
+        <!-- Log Weight Card -->
+        <div id="log-card" class="bg-canvas border border-hairline rounded-apple-lg p-5 md:p-6 transition-colors flex flex-col gap-5 opacity-50 pointer-events-none">
+          <h2 class="font-display font-semibold text-lg text-ink border-b border-hairline pb-2">2. Log Weekly Weight</h2>
+          <form id="log-form" class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="log-week" class="font-medium text-xs text-ink">Pregnancy Week (1-40):</label>
+              <input type="number" min="1" max="40" id="log-week" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+            
+            <div class="flex flex-col gap-1.5">
+              <label for="log-weight" id="log-weight-label" class="font-medium text-xs text-ink">Current Weight (lbs):</label>
+              <input type="number" step="0.1" id="log-weight" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-primary-focus text-white font-semibold py-2.5 rounded-apple-pill text-xs md:text-sm transition-all active:scale-95 cursor-pointer">Add Weight Log</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Column 2 & 3: Results, Chart & Logs -->
+      <div class="lg:col-span-2 flex flex-col gap-6">
+        <!-- Results Dashboard -->
+        <div class="bg-canvas border border-hairline rounded-apple-lg p-6 transition-colors" id="weight-results-card" style="display: none;">
+          <h2 class="font-display font-semibold text-xl text-ink border-b border-hairline pb-3 mb-4">Pregnancy Weight Overview</h2>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+            <div class="bg-canvas-parchment p-3.5 rounded-apple-sm border border-hairline flex flex-col gap-0.5">
+              <span class="text-[9px] text-ink-muted-48 uppercase tracking-wider font-semibold">Pre-Pregnancy BMI</span>
+              <span class="text-base font-bold text-ink" id="res-bmi">--</span>
+            </div>
+            <div class="bg-canvas-parchment p-3.5 rounded-apple-sm border border-hairline flex flex-col gap-0.5">
+              <span class="text-[9px] text-ink-muted-48 uppercase tracking-wider font-semibold">BMI Category</span>
+              <span class="text-base font-bold text-ink" id="res-category">--</span>
+            </div>
+            <div class="bg-canvas-parchment p-3.5 rounded-apple-sm border border-hairline flex flex-col gap-0.5">
+              <span class="text-[9px] text-ink-muted-48 uppercase tracking-wider font-semibold">Total Recommended</span>
+              <span class="text-base font-bold text-ink" id="res-total-rec">--</span>
+            </div>
+            <div class="bg-canvas-parchment p-3.5 rounded-apple-sm border border-hairline flex flex-col gap-0.5 col-span-1">
+              <span class="text-[9px] text-ink-muted-48 uppercase tracking-wider font-semibold">Current Gain Status</span>
+              <span class="text-base font-bold text-primary" id="res-status">--</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Weight Chart Container -->
+          <div class="bg-canvas border border-hairline rounded-apple-md p-4 mb-6 flex flex-col gap-2 relative">
+            <h3 class="font-display font-semibold text-sm text-ink mb-1">Recommended Weight Gain Curve (Weeks 1-40)</h3>
+            
+            <div class="w-full aspect-[4/3] sm:aspect-[16/9] bg-canvas-parchment/30 relative border border-hairline rounded-apple-xs overflow-hidden">
+              <svg id="chart-svg" class="w-full h-full" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid Lines -->
+                <line x1="40" y1="20" x2="40" y2="180" stroke="#e0e0e0" stroke-width="1" />
+                <line x1="40" y1="180" x2="380" y2="180" stroke="#e0e0e0" stroke-width="1" />
+                
+                <line x1="40" y1="140" x2="380" y2="140" stroke="#f0f0f0" stroke-dasharray="2,2" />
+                <line x1="40" y1="100" x2="380" y2="100" stroke="#f0f0f0" stroke-dasharray="2,2" />
+                <line x1="40" y1="60" x2="380" y2="60" stroke="#f0f0f0" stroke-dasharray="2,2" />
+                
+                <line x1="125" y1="20" x2="125" y2="180" stroke="#f0f0f0" stroke-dasharray="2,2" />
+                <line x1="230" y1="20" x2="230" y2="180" stroke="#f0f0f0" stroke-dasharray="2,2" />
+                <line x1="335" y1="20" x2="335" y2="180" stroke="#f0f0f0" stroke-dasharray="2,2" />
+
+                <!-- Shaded Target Area -->
+                <path id="chart-target-area" fill="rgba(0, 102, 204, 0.08)" stroke="none" d="" />
+                <!-- Recommended Boundary Lines -->
+                <path id="chart-max-line" fill="none" stroke="rgba(0, 102, 204, 0.4)" stroke-width="1.5" stroke-dasharray="3,3" d="" />
+                <path id="chart-min-line" fill="none" stroke="rgba(0, 102, 204, 0.4)" stroke-width="1.5" stroke-dasharray="3,3" d="" />
+
+                <!-- User Plot Line -->
+                <path id="chart-user-line" fill="none" stroke="#0066cc" stroke-width="2.5" d="" />
+                <!-- User Plot Points -->
+                <g id="chart-user-points"></g>
+
+                <!-- Labels -->
+                <text x="35" y="184" font-size="8" fill="#7a7a7a" text-anchor="end">0</text>
+                <text id="label-mid-weight" x="35" y="104" font-size="8" fill="#7a7a7a" text-anchor="end">20</text>
+                <text id="label-max-weight" x="35" y="44" font-size="8" fill="#7a7a7a" text-anchor="end">40</text>
+
+                <text x="40" y="195" font-size="8" fill="#7a7a7a" text-anchor="middle">Wk 1</text>
+                <text x="125" y="195" font-size="8" fill="#7a7a7a" text-anchor="middle">Wk 12</text>
+                <text x="230" y="195" font-size="8" fill="#7a7a7a" text-anchor="middle">Wk 24</text>
+                <text x="335" y="195" font-size="8" fill="#7a7a7a" text-anchor="middle">Wk 36</text>
+              </svg>
+            </div>
+            
+            <div class="flex items-center gap-4 text-[10px] text-ink-muted-48 font-medium justify-center">
+              <span class="flex items-center gap-1"><span class="w-3 h-1.5 bg-primary/10 border-t border-b border-primary/30 border-dashed inline-block"></span> Recommended Range</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-primary rounded-full inline-block"></span> Your Weight Gain</span>
+            </div>
+          </div>
+
+          <!-- Log Table -->
+          <div class="bg-canvas border border-hairline rounded-apple-md overflow-hidden transition-colors">
+            <h3 class="font-display font-semibold text-sm text-ink p-4 border-b border-hairline bg-canvas-parchment/40">Logged Weights Log</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs md:text-sm">
+                <thead>
+                  <tr class="border-b border-hairline bg-canvas text-ink-muted-80 font-semibold text-[11px] uppercase tracking-wider">
+                    <th class="p-3">Week</th>
+                    <th class="p-3">Weight</th>
+                    <th class="p-3">Total Gain</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="log-table-body" class="divide-y divide-hairline">
+                  <tr>
+                    <td colspan="5" class="p-4 text-center text-ink-muted-48">No weight data logged yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Initial Placeholder Card -->
+        <div class="bg-canvas border border-hairline rounded-apple-lg p-12 text-center transition-colors flex flex-col gap-3 items-center justify-center min-h-[300px]" id="placeholder-card">
+          <span class="text-4xl">⚖️</span>
+          <h3 class="font-semibold text-lg text-ink mt-2">Initialize Weight Tracker</h3>
+          <p class="text-ink-muted-48 text-sm max-w-sm">
+            Enter your height and pre-pregnancy weight on the left panel to generate your recommended weight gain curves and begin logging.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
+
+<script>
+  interface WeightLog {
+    id: string;
+    week: number;
+    weight: number;
+  }
+
+  let units = 'lbs'; // 'lbs' or 'kg'
+  let height = 0;
+  let preWeight = 0;
+  let logs: WeightLog[] = [];
+  let bmi = 0;
+  let bmiCategory = 'normal';
+
+  const unitLbs = document.getElementById('unit-lbs');
+  const unitKg = document.getElementById('unit-kg');
+  
+  const heightLabel = document.getElementById('height-label');
+  const preWeightLabel = document.getElementById('pre-weight-label');
+  const logWeightLabel = document.getElementById('log-weight-label');
+  
+  const heightInput = document.getElementById('height') as HTMLInputElement;
+  const preWeightInput = document.getElementById('pre-weight') as HTMLInputElement;
+  const profileForm = document.getElementById('profile-form') as HTMLFormElement;
+  
+  const logCard = document.getElementById('log-card');
+  const logForm = document.getElementById('log-form') as HTMLFormElement;
+  const logWeekInput = document.getElementById('log-week') as HTMLInputElement;
+  const logWeightInput = document.getElementById('log-weight') as HTMLInputElement;
+  
+  const placeholderCard = document.getElementById('placeholder-card');
+  const resultsCard = document.getElementById('weight-results-card');
+  
+  const resBmi = document.getElementById('res-bmi');
+  const resCategory = document.getElementById('res-category');
+  const resTotalRec = document.getElementById('res-total-rec');
+  const resStatus = document.getElementById('res-status');
+  
+  const logTableBody = document.getElementById('log-table-body');
+  
+  const chartSvg = document.getElementById('chart-svg');
+  const chartTargetArea = document.getElementById('chart-target-area');
+  const chartMinLine = document.getElementById('chart-min-line');
+  const chartMaxLine = document.getElementById('chart-max-line');
+  const chartUserLine = document.getElementById('chart-user-line');
+  const chartUserPoints = document.getElementById('chart-user-points');
+
+  const labelMidWeight = document.getElementById('label-mid-weight');
+  const labelMaxWeight = document.getElementById('label-max-weight');
+
+  // Toggle Units
+  unitLbs?.addEventListener('click', () => {
+    if (units === 'lbs') return;
+    units = 'lbs';
+    toggleUnitUI();
+  });
+
+  unitKg?.addEventListener('click', () => {
+    if (units === 'kg') return;
+    units = 'kg';
+    toggleUnitUI();
+  });
+
+  function toggleUnitUI() {
+    if (units === 'lbs') {
+      unitLbs?.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+      unitLbs?.classList.remove('text-ink-muted-80');
+      unitKg?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+      unitKg?.classList.add('text-ink-muted-80');
+      heightLabel!.textContent = "Height (inches):";
+      preWeightLabel!.textContent = "Pre-Pregnancy Weight (lbs):";
+      logWeightLabel!.textContent = "Current Weight (lbs):";
+    } else {
+      unitKg?.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+      unitKg?.classList.remove('text-ink-muted-80');
+      unitLbs?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+      unitLbs?.classList.add('text-ink-muted-80');
+      heightLabel!.textContent = "Height (cm):";
+      preWeightLabel!.textContent = "Pre-Pregnancy Weight (kg):";
+      logWeightLabel!.textContent = "Current Weight (kg):";
+    }
+    // Clear and reload
+    loadState();
+  }
+
+  // Load state on load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+  });
+
+  function loadState() {
+    const savedProfile = localStorage.getItem(`pregweeks_weight_profile_${units}`);
+    const savedLogs = localStorage.getItem(`pregweeks_weight_logs_${units}`);
+    
+    if (savedProfile) {
+      const data = JSON.parse(savedProfile);
+      height = data.height;
+      preWeight = data.preWeight;
+      
+      heightInput.value = height.toString();
+      preWeightInput.value = preWeight.toString();
+      
+      // Compute BMI
+      calculateBMI();
+      
+      // Enable logging
+      logCard?.classList.remove('opacity-50', 'pointer-events-none');
+      placeholderCard!.style.display = 'none';
+      resultsCard!.style.display = 'block';
+
+      // Load Logs
+      if (savedLogs) {
+        logs = JSON.parse(savedLogs);
+      } else {
+        logs = [];
+      }
+      
+      // Update UI
+      updateUI();
+    } else {
+      placeholderCard!.style.display = 'flex';
+      resultsCard!.style.display = 'none';
+      logCard?.classList.add('opacity-50', 'pointer-events-none');
+    }
+  }
+
+  profileForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    height = parseFloat(heightInput.value);
+    preWeight = parseFloat(preWeightInput.value);
+    
+    localStorage.setItem(`pregweeks_weight_profile_${units}`, JSON.stringify({
+      height,
+      preWeight
+    }));
+    
+    // Reset logs if profile changed
+    localStorage.removeItem(`pregweeks_weight_logs_${units}`);
+    logs = [];
+    
+    loadState();
+  });
+
+  logForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const week = parseInt(logWeekInput.value);
+    const weight = parseFloat(logWeightInput.value);
+    
+    if (week < 1 || week > 40) return;
+    
+    // Add or update log
+    const existingIndex = logs.findIndex(l => l.week === week);
+    if (existingIndex !== -1) {
+      logs[existingIndex].weight = weight;
+    } else {
+      logs.push({
+        id: Math.random().toString(36).substring(2),
+        week,
+        weight
+      });
+    }
+    
+    // Sort logs by week
+    logs.sort((a, b) => a.week - b.week);
+    
+    // Save logs
+    localStorage.setItem(`pregweeks_weight_logs_${units}`, JSON.stringify(logs));
+    logWeekInput.value = '';
+    logWeightInput.value = '';
+    
+    updateUI();
+  });
+
+  function calculateBMI() {
+    if (units === 'lbs') {
+      bmi = (preWeight * 703) / (height * height);
+    } else {
+      const heightInMeters = height / 100;
+      bmi = preWeight / (heightInMeters * heightInMeters);
+    }
+    
+    if (bmi < 18.5) bmiCategory = 'underweight';
+    else if (bmi < 25) bmiCategory = 'normal';
+    else if (bmi < 30) bmiCategory = 'overweight';
+    else bmiCategory = 'obese';
+  }
+
+  function getIOMGuidelines() {
+    // Returns total recommended weight gain and weekly rate after week 12 (in matching units)
+    const factor = units === 'lbs' ? 1 : 0.453592; // 1 lb = 0.453592 kg
+    
+    switch (bmiCategory) {
+      case 'underweight':
+        return { totalMin: 28 * factor, totalMax: 40 * factor, ratesMin: 1.0 * factor, ratesMax: 1.3 * factor, tri1Min: 1.0 * factor, tri1Max: 4.5 * factor };
+      case 'overweight':
+        return { totalMin: 15 * factor, totalMax: 25 * factor, ratesMin: 0.5 * factor, ratesMax: 0.7 * factor, tri1Min: 1.0 * factor, tri1Max: 4.5 * factor };
+      case 'obese':
+        return { totalMin: 11 * factor, totalMax: 20 * factor, ratesMin: 0.4 * factor, ratesMax: 0.6 * factor, tri1Min: 0.5 * factor, tri1Max: 4.5 * factor };
+      case 'normal':
+      default:
+        return { totalMin: 25 * factor, totalMax: 35 * factor, ratesMin: 0.8 * factor, ratesMax: 1.0 * factor, tri1Min: 1.0 * factor, tri1Max: 4.5 * factor };
+    }
+  }
+
+  function getRecRangeForWeek(week: number) {
+    const guidelines = getIOMGuidelines();
+    if (week <= 12) {
+      const ratio = week / 12;
+      return {
+        min: ratio * guidelines.tri1Min,
+        max: ratio * guidelines.tri1Max
+      };
+    } else {
+      const remainingWeeks = week - 12;
+      return {
+        min: guidelines.tri1Min + remainingWeeks * guidelines.ratesMin,
+        max: guidelines.tri1Max + remainingWeeks * guidelines.ratesMax
+      };
+    }
+  }
+
+  function updateUI() {
+    // 1. Update text stats
+    resBmi!.textContent = bmi.toFixed(1);
+    resCategory!.textContent = bmiCategory.charAt(0).toUpperCase() + bmiCategory.slice(1);
+    
+    const guidelines = getIOMGuidelines();
+    const unitText = units === 'lbs' ? 'lbs' : 'kg';
+    resTotalRec!.textContent = `${guidelines.totalMin.toFixed(1)} - ${guidelines.totalMax.toFixed(1)} ${unitText}`;
+    
+    // 2. Status verdict based on last log
+    if (logs.length > 0) {
+      const lastLog = logs[logs.length - 1];
+      const actualGain = lastLog.weight - preWeight;
+      const rec = getRecRangeForWeek(lastLog.week);
+      
+      let status = 'Within Range';
+      let statusColor = 'text-green-600';
+      if (actualGain < rec.min) {
+        status = 'Below Range';
+        statusColor = 'text-orange-500';
+      } else if (actualGain > rec.max) {
+        status = 'Above Range';
+        statusColor = 'text-red-500';
+      }
+      resStatus!.textContent = `${status} (Week ${lastLog.week})`;
+      resStatus!.className = `text-base font-bold ${statusColor}`;
+    } else {
+      resStatus!.textContent = 'No logs';
+      resStatus!.className = 'text-base font-bold text-ink-muted-48';
+    }
+
+    // 3. Render table
+    renderLogTable();
+
+    // 4. Render chart
+    renderChart();
+  }
+
+  function renderLogTable() {
+    if (logs.length === 0) {
+      logTableBody!.innerHTML = `
+        <tr>
+          <td colspan="5" class="p-4 text-center text-ink-muted-48">No weight data logged yet.</td>
+        </tr>
+      `;
+      return;
+    }
+
+    const unitText = units === 'lbs' ? 'lbs' : 'kg';
+    logTableBody!.innerHTML = logs.map((log) => {
+      const actualGain = log.weight - preWeight;
+      const rec = getRecRangeForWeek(log.week);
+      
+      let statusText = '🟢 Within';
+      let statusColor = 'text-green-600';
+      if (actualGain < rec.min) {
+        statusText = '🟡 Below';
+        statusColor = 'text-orange-500';
+      } else if (actualGain > rec.max) {
+        statusText = '🔴 Above';
+        statusColor = 'text-red-500';
+      }
+
+      return `
+        <tr class="hover:bg-canvas-parchment/20 transition-colors">
+          <td class="p-3 font-semibold text-ink">Week ${log.week}</td>
+          <td class="p-3 text-ink-muted-80">${log.weight.toFixed(1)} ${unitText}</td>
+          <td class="p-3 text-ink-muted-80">${actualGain >= 0 ? '+' : ''}${actualGain.toFixed(1)} ${unitText}</td>
+          <td class="p-3 font-medium ${statusColor}">${statusText}</td>
+          <td class="p-3 text-right">
+            <button class="text-red-500 hover:text-red-700 font-semibold cursor-pointer delete-log-btn" data-id="${log.id}">Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Attach delete handlers
+    document.querySelectorAll('.delete-log-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.target as HTMLButtonElement).getAttribute('data-id');
+        logs = logs.filter(l => l.id !== id);
+        localStorage.setItem(`pregweeks_weight_logs_${units}`, JSON.stringify(logs));
+        updateUI();
+      });
+    });
+  }
+
+  function renderChart() {
+    // Max y axis value on chart: guidelines.totalMax + 10 units
+    const guidelines = getIOMGuidelines();
+    const maxYVal = Math.ceil((guidelines.totalMax + 10) / 10) * 10;
+    labelMaxWeight!.textContent = maxYVal.toString();
+    labelMidWeight!.textContent = (maxYVal / 2).toString();
+
+    // Chart Dimensions: viewBox="0 0 400 220"
+    // Left boundary: X=40, Right boundary: X=380 (width=340)
+    // Bottom boundary: Y=180, Top boundary: Y=20 (height=160)
+    const mapX = (week: number) => 40 + ((week - 1) / 39) * 340;
+    const mapY = (gain: number) => 180 - (gain / maxYVal) * 160;
+
+    // 1. Generate target area path & line paths
+    let minPathD = '';
+    let maxPathD = '';
+    let areaPathD = '';
+
+    for (let w = 1; w <= 40; w++) {
+      const rec = getRecRangeForWeek(w);
+      const x = mapX(w);
+      const yMin = mapY(Math.max(0, rec.min));
+      const yMax = mapY(rec.max);
+
+      if (w === 1) {
+        minPathD += `M ${x} ${yMin}`;
+        maxPathD += `M ${x} ${yMax}`;
+        areaPathD += `M ${x} ${yMin} L ${x} ${yMax}`;
+      } else {
+        minPathD += ` L ${x} ${yMin}`;
+        maxPathD += ` L ${x} ${yMax}`;
+      }
+    }
+
+    // Connect top and bottom lines to form filled polygon
+    for (let w = 40; w >= 1; w--) {
+      const rec = getRecRangeForWeek(w);
+      const x = mapX(w);
+      const yMin = mapY(Math.max(0, rec.min));
+      areaPathD += ` L ${x} ${yMin}`;
+    }
+    
+    // Connect back to the start
+    const recStart = getRecRangeForWeek(1);
+    areaPathD += ` L ${mapX(1)} ${mapY(recStart.max)} Z`;
+
+    chartTargetArea!.setAttribute('d', areaPathD);
+    chartMinLine!.setAttribute('d', minPathD);
+    chartMaxLine!.setAttribute('d', maxPathD);
+
+    // 2. Generate user curve & points
+    if (logs.length > 0) {
+      let userPathD = '';
+      let pointsHtml = '';
+
+      logs.forEach((log, index) => {
+        const actualGain = log.weight - preWeight;
+        const x = mapX(log.week);
+        const y = mapY(actualGain);
+
+        if (index === 0) {
+          userPathD += `M ${x} ${y}`;
+        } else {
+          userPathD += ` L ${x} ${y}`;
+        }
+
+        pointsHtml += `<circle cx="${x}" cy="${y}" r="4.5" fill="#0066cc" stroke="#ffffff" stroke-width="1.5" />`;
+      });
+
+      chartUserLine!.setAttribute('d', userPathD);
+      chartUserLine!.style.display = 'block';
+      chartUserPoints!.innerHTML = pointsHtml;
+    } else {
+      chartUserLine!.style.display = 'none';
+      chartUserPoints!.innerHTML = '';
+    }
+  }
+</script>

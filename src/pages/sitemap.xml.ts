@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro';
+import { foodItems } from '../data/foodData';
+import { symptomItems } from '../data/symptomData';
 
 export const GET: APIRoute = async () => {
   const baseUrls = [
@@ -13,12 +15,44 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/symptoms',
     'https://pregweeks.com/nutrition',
     'https://pregweeks.com/faq',
+    // New pages
+    'https://pregweeks.com/food-safety',
+    'https://pregweeks.com/tools/ivf-calculator',
+    'https://pregweeks.com/tools/weight-tracker',
+    'https://pregweeks.com/tools/birth-plan',
+    'https://pregweeks.com/partner',
+    'https://pregweeks.com/milestone',
+    'https://pregweeks.com/postpartum',
+    'https://pregweeks.com/tools/gender-prediction',
+    'https://pregweeks.com/quiz/can-i-eat-this',
+    'https://pregweeks.com/medication-safety',
+    'https://pregweeks.com/prenatal-vitamins',
   ];
 
   // Generate URLs for all 40 pregnancy weeks
   for (let i = 1; i <= 40; i++) {
     baseUrls.push(`https://pregweeks.com/week/${i}`);
   }
+
+  // Generate URLs for all 40 weekly partner guides
+  for (let i = 1; i <= 40; i++) {
+    baseUrls.push(`https://pregweeks.com/partner/${i}`);
+  }
+
+  // Generate URLs for all 12 weekly postpartum recovery guides
+  for (let i = 1; i <= 12; i++) {
+    baseUrls.push(`https://pregweeks.com/postpartum/${i}`);
+  }
+
+  // Generate URLs for all individual food safety pages
+  foodItems.forEach((food) => {
+    baseUrls.push(`https://pregweeks.com/food/${food.slug}`);
+  });
+
+  // Generate URLs for all individual symptom guide pages
+  symptomItems.forEach((symptom) => {
+    baseUrls.push(`https://pregweeks.com/symptoms/${symptom.slug}`);
+  });
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -35,8 +69,11 @@ export const GET: APIRoute = async () => {
     } else if (url.includes('/week/')) {
       priority = '0.8';
       freq = 'monthly';
-    } else if (url.includes('/tools/')) {
+    } else if (url.includes('/tools/') || url.includes('/milestone') || url.includes('/quiz/')) {
       priority = '0.7';
+      freq = 'monthly';
+    } else if (url.includes('/food-safety') || url.includes('/medication-safety') || url.includes('/prenatal-vitamins')) {
+      priority = '0.75';
       freq = 'monthly';
     }
 

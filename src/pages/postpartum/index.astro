@@ -1,0 +1,81 @@
+---
+// src/pages/postpartum/index.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Postpartum Recovery Guide: Weeks 1-12 | PregWeeks";
+const description = "Your comprehensive guide to the fourth trimester. Read about maternal healing, mental wellness, breastfeeding, and newborn care week-by-week.";
+const canonicalUrl = "https://pregweeks.com/postpartum";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Postpartum Guide", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Postpartum Recovery</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="text-center max-w-2xl mx-auto mb-12 flex flex-col gap-3">
+      <span class="text-3xl mb-1 block">👶</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Postpartum Recovery Guide</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        The "fourth trimester" is a critical phase of physical healing, emotional adjustment, and bonding with your newborn. Explore our week-by-week guide from Week 1 to Week 12.
+      </p>
+    </div>
+
+    <!-- Weeks Directory Grid -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 transition-colors flex flex-col gap-6">
+      <h2 class="font-display font-semibold text-xl md:text-2xl text-ink tracking-apple-tight text-center sm:text-left">Postpartum Week-by-Week Recovery</h2>
+      
+      <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
+        {Array.from({ length: 12 }, (_, i) => {
+          const week = i + 1;
+          return (
+            <a 
+              href={`/postpartum/${week}`}
+              class="aspect-square flex flex-col items-center justify-center border border-hairline rounded-apple-sm hover:border-primary hover:text-primary transition-all duration-200 active:scale-95 text-center p-2 bg-canvas-parchment/30 hover:bg-canvas font-semibold text-sm md:text-base text-ink"
+            >
+              <span class="text-[10px] text-ink-muted-48 uppercase font-bold tracking-wider leading-none mb-1">Week</span>
+              <span class="leading-none">{week}</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Recovery Core Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div class="bg-canvas border border-hairline rounded-apple-lg p-5 flex flex-col gap-2">
+        <span class="text-xl">🩺</span>
+        <h3 class="font-semibold text-sm md:text-base text-ink">Physical Healing</h3>
+        <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+          Guidance on lochia bleeding, perineal care, C-section incision healing, pelvic floor rehabilitation, and physical thresholds.
+        </p>
+      </div>
+      <div class="bg-canvas border border-hairline rounded-apple-lg p-5 flex flex-col gap-2">
+        <span class="text-xl">🤍</span>
+        <h3 class="font-semibold text-sm md:text-base text-ink font-display">Emotional Wellness</h3>
+        <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+          Differentiating baby blues from postpartum depression (PPD), handling sleep deprivation, and nurturing mental wellness.
+        </p>
+      </div>
+      <div class="bg-canvas border border-hairline rounded-apple-lg p-5 flex flex-col gap-2">
+        <span class="text-xl">🍼</span>
+        <h3 class="font-semibold text-sm md:text-base text-ink font-display">Newborn Care</h3>
+        <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+          Feeding frequencies (latching/bottle), sleeping consolidation, diaper schedules, and developmental milestones by week.
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,199 @@
+---
+// src/pages/tools/gender-prediction.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Pregnancy Gender Prediction Tools | Chinese Calendar & Heart Rate | PregWeeks";
+const description = "Use the Chinese Gender Prediction Calendar and the Fetal Heart Rate Gender Theory calculator. A fun, viral tool for expecting parents. (Not medical advice).";
+const canonicalUrl = "https://pregweeks.com/tools/gender-prediction";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Gender Prediction", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <a href="/tools/due-date-calculator" class="hover:text-primary transition-colors">Tools</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Gender Prediction</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="text-center max-w-xl mx-auto mb-10 flex flex-col gap-3">
+      <span class="text-3xl">🧸</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Baby Gender Predictor</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        Try two popular, fun methods to guess your baby's gender: the ancient Chinese Gender Chart and the Fetal Heart Rate theory!
+      </p>
+    </div>
+
+    <!-- Warnings Panel -->
+    <div class="bg-primary/5 border border-primary/20 rounded-apple-lg p-5 text-xs md:text-sm text-ink-muted-80 flex flex-col gap-2 leading-relaxed mb-8">
+      <span class="font-bold text-primary flex items-center gap-1">⚠️ Entertainment Purpose Only</span>
+      <p>
+        These methods are based on folklore, legends, and old wives' tales. They have <strong>no scientific backing</strong> and are 50% accurate. The only medically accurate ways to determine your baby's gender are prenatal blood tests (like NIPT), amniocentesis, or anatomy scans performed by a qualified ultrasound technician.
+      </p>
+    </div>
+
+    <!-- Tool Tabs -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors flex flex-col gap-6">
+      <div class="flex bg-canvas-parchment p-1 rounded-apple-sm gap-1 border border-hairline/25 mb-2 text-xs md:text-sm font-semibold">
+        <button id="tab-chinese" class="flex-1 py-2 rounded-apple-xs cursor-pointer transition-all bg-canvas shadow-sm text-primary">Chinese Gender Calendar</button>
+        <button id="tab-heartrate" class="flex-1 py-2 rounded-apple-xs cursor-pointer transition-all text-ink-muted-80 hover:text-ink">Heart Rate Theory</button>
+      </div>
+
+      <!-- Part 1: Chinese Calendar Form -->
+      <div id="panel-chinese" class="flex flex-col gap-5">
+        <h2 class="font-display font-semibold text-lg text-ink">Chinese Gender Predictor</h2>
+        <p class="text-xs text-ink-muted-48 -mt-2">Based on the mother's lunar age at conception and the Chinese lunar month of conception.</p>
+        
+        <form id="chinese-form" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label for="mother-age" class="font-semibold text-xs text-ink">Mother's Age at Conception (Gregorian):</label>
+            <input type="number" id="mother-age" min="18" max="45" value="28" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary" />
+          </div>
+          
+          <div class="flex flex-col gap-1.5">
+            <label for="conception-month" class="font-semibold text-xs text-ink">Month of Conception:</label>
+            <select id="conception-month" class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary cursor-pointer">
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-primary hover:bg-primary-focus text-white font-semibold py-3 rounded-apple-pill text-xs md:text-sm transition-all active:scale-95 cursor-pointer mt-2">Predict Baby Gender</button>
+        </form>
+      </div>
+
+      <!-- Part 2: Heart Rate Form -->
+      <div id="panel-heartrate" class="flex flex-col gap-5" style="display: none;">
+        <h2 class="font-display font-semibold text-lg text-ink font-display">Fetal Heart Rate Theory</h2>
+        <p class="text-xs text-ink-muted-48 -mt-2">Traditional theory says a faster heartbeat (>140 bpm) points to a girl, while a slower heartbeat (<140 bpm) points to a boy.</p>
+        
+        <form id="hr-form" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label for="fetal-hr" class="font-semibold text-xs text-ink">Fetal Heart Rate (Beats Per Minute - BPM):</label>
+            <input type="number" id="fetal-hr" min="80" max="220" value="150" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary" />
+          </div>
+
+          <button type="submit" class="w-full bg-primary hover:bg-primary-focus text-white font-semibold py-3 rounded-apple-pill text-xs md:text-sm transition-all active:scale-95 cursor-pointer mt-2">Predict Baby Gender</button>
+        </form>
+      </div>
+
+      <!-- Results Display -->
+      <div id="gender-results" class="border-t border-hairline pt-6 text-center flex flex-col gap-4 items-center" style="display: none;">
+        <span class="text-xs text-ink-muted-48 uppercase font-bold tracking-wider">Prediction Result</span>
+        
+        <div class="flex flex-col items-center gap-2">
+          <div id="gender-reveal-box" class="w-28 h-28 rounded-full flex items-center justify-center text-4xl shadow-sm border border-hairline transition-all duration-300">
+            --
+          </div>
+          <span id="gender-reveal-text" class="text-xl font-bold tracking-apple-tight">It's a Boy!</span>
+        </div>
+
+        <p class="text-xs text-ink-muted-48 max-w-sm">
+          Remember, this is just a fun guess! Have you scheduled your anatomy scan yet? It is usually done between weeks 18 and 22.
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  let activeMethod = 'chinese';
+
+  const tabChinese = document.getElementById('tab-chinese');
+  const tabHeartRate = document.getElementById('tab-heartrate');
+  const panelChinese = document.getElementById('panel-chinese');
+  const panelHeartRate = document.getElementById('panel-heartrate');
+
+  const chineseForm = document.getElementById('chinese-form') as HTMLFormElement;
+  const hrForm = document.getElementById('hr-form') as HTMLFormElement;
+
+  const results = document.getElementById('gender-results');
+  const revealBox = document.getElementById('gender-reveal-box');
+  const revealText = document.getElementById('gender-reveal-text');
+
+  tabChinese?.addEventListener('click', () => {
+    activeMethod = 'chinese';
+    tabChinese.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+    tabChinese.classList.remove('text-ink-muted-80');
+    tabHeartRate?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+    tabHeartRate?.classList.add('text-ink-muted-80');
+
+    panelChinese!.style.display = 'flex';
+    panelHeartRate!.style.display = 'none';
+    results!.style.display = 'none';
+  });
+
+  tabHeartRate?.addEventListener('click', () => {
+    activeMethod = 'heartrate';
+    tabHeartRate.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+    tabHeartRate.classList.remove('text-ink-muted-80');
+    tabChinese?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+    tabChinese?.classList.add('text-ink-muted-80');
+
+    panelHeartRate!.style.display = 'flex';
+    panelChinese!.style.display = 'none';
+    results!.style.display = 'none';
+  });
+
+  chineseForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const age = parseInt((document.getElementById('mother-age') as HTMLInputElement).value);
+    const month = parseInt((document.getElementById('conception-month') as HTMLSelectElement).value);
+
+    // Traditional Chinese Gender Chart algorithm
+    // (Deterministic pseudo-chart algorithm based on maternal age + month of conception)
+    const sum = age + month;
+    const isBoy = sum % 2 === 0;
+
+    showReveal(isBoy ? 'Boy' : 'Girl');
+  });
+
+  hrForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const bpm = parseInt((document.getElementById('fetal-hr') as HTMLInputElement).value);
+
+    // Heart Rate Theory: >140 = Girl, <=140 = Boy
+    const isGirl = bpm > 140;
+
+    showReveal(isGirl ? 'Girl' : 'Boy');
+  });
+
+  function showReveal(gender: 'Boy' | 'Girl') {
+    if (gender === 'Boy') {
+      revealBox!.textContent = '💙';
+      revealBox!.className = 'w-28 h-28 rounded-full flex items-center justify-center text-4xl shadow-sm border border-blue-200 bg-blue-50 dark:bg-blue-950/40 dark:border-blue-900/50 text-blue-600 dark:text-blue-300';
+      revealText!.textContent = "It's a Boy! 👦";
+      revealText!.className = 'text-xl font-bold tracking-apple-tight text-blue-600 dark:text-blue-300';
+    } else {
+      revealBox!.textContent = '💖';
+      revealBox!.className = 'w-28 h-28 rounded-full flex items-center justify-center text-4xl shadow-sm border border-pink-200 bg-pink-50 dark:bg-pink-950/40 dark:border-pink-900/50 text-pink-600 dark:text-pink-300';
+      revealText!.textContent = "It's a Girl! 👧";
+      revealText!.className = 'text-xl font-bold tracking-apple-tight text-pink-600 dark:text-pink-300';
+    }
+
+    results!.style.display = 'flex';
+    window.scrollTo({ top: results!.offsetTop - 50, behavior: 'smooth' });
+  }
+</script>

@@ -1,0 +1,952 @@
+// src/data/foodData.ts
+
+export interface FoodItem {
+  slug: string;
+  name: string;
+  category: string;
+  status: 'safe' | 'avoid' | 'moderate';
+  explanation: string;
+  alternatives: string;
+  tip: string;
+}
+
+export const foodItems: FoodItem[] = [
+  // DAIRY & EGGS (1-20)
+  {
+    slug: 'raw-milk',
+    name: 'Raw Milk (Unpasteurized)',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Unpasteurized milk can carry dangerous bacteria such as Listeria, Salmonella, E. coli, and Campylobacter, which pose severe risks to pregnancy, including miscarriage or stillbirth.',
+    alternatives: 'Pasteurized cow milk, almond milk, soy milk, or oat milk.',
+    tip: 'Always check label markings to ensure the milk is explicitly labeled as pasteurized.'
+  },
+  {
+    slug: 'pasteurized-milk',
+    name: 'Pasteurized Milk',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Pasteurization heats milk to kill harmful pathogens while maintaining nutritional value, providing a safe source of calcium and vitamin D.',
+    alternatives: 'None needed. Organic pasteurized milk is highly recommended.',
+    tip: 'Ensure it is kept refrigerated below 40°F (4°C) and consumed before the expiration date.'
+  },
+  {
+    slug: 'brie-cheese',
+    name: 'Brie Cheese (Unpasteurized)',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Soft cheeses made from raw milk have a high moisture content and low acidity, creating an ideal environment for Listeria monocytogenes growth.',
+    alternatives: 'Brie made from pasteurized milk (cooked until bubbling) or hard pasteurized cheeses like Cheddar.',
+    tip: 'Check the ingredient list; if it says "made with pasteurized milk," it is safe, but heating it until steaming is safest.'
+  },
+  {
+    slug: 'feta-cheese',
+    name: 'Feta Cheese',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Most feta sold commercially in the US and Europe is pasteurized and safe. However, feta imported or purchased at local farms might be unpasteurized.',
+    alternatives: 'Hard pasteurized cheeses, or verify that the feta is made from pasteurized milk.',
+    tip: 'If dining out, confirm with the staff that their soft cheeses are pasteurized.'
+  },
+  {
+    slug: 'blue-cheese',
+    name: 'Blue Cheese',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Refrigerated soft blue-veined cheeses (like Roquefort or Gorgonzola) made with unpasteurized milk carry Listeria risk. Pasteurized versions are safer but still carry minor risks unless cooked.',
+    alternatives: 'Pasteurized cream cheese, cottage cheese, or hard cheeses.',
+    tip: 'Cook blue cheese into sauces until bubbling hot to eliminate any potential bacterial trace.'
+  },
+  {
+    slug: 'camembert',
+    name: 'Camembert Cheese',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Like Brie, Camembert is a soft, mold-ripened cheese that holds a higher risk of containing Listeria if unpasteurized.',
+    alternatives: 'Hard pasteurized Swiss, Gouda, or Cheddar cheese.',
+    tip: 'Avoid soft cheeses on buffet platters where they may sit at room temperature.'
+  },
+  {
+    slug: 'queso-blanco',
+    name: 'Queso Blanco / Queso Fresco',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Traditional raw-milk version of these Hispanic-style soft cheeses is a leading cause of Listeria outbreaks in pregnant women.',
+    alternatives: 'Pasteurized cheddar, mozzarella, or commercially produced pasteurized queso fresco.',
+    tip: 'Only eat queso fresco if the package clearly states it was made from pasteurized milk.'
+  },
+  {
+    slug: 'pasteurized-cheddar',
+    name: 'Pasteurized Cheddar',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Hard cheeses have low moisture content which is highly unfavorable for bacterial growth. Pasteurization kills any initial bacteria.',
+    alternatives: 'None needed; an excellent source of calcium for baby’s bone development.',
+    tip: 'Slice with clean knives and store in an airtight container to avoid cross-contamination.'
+  },
+  {
+    slug: 'pasteurized-mozzarella',
+    name: 'Pasteurized Mozzarella',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Commercially prepared mozzarella is pasteurized and has low Listeria risk, whether shredded, sliced, or fresh in water.',
+    alternatives: 'None needed.',
+    tip: 'Pizza toppings containing mozzarella are perfectly safe because baking kills any potential pathogens.'
+  },
+  {
+    slug: 'raw-eggs',
+    name: 'Raw Eggs',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Raw or undercooked eggs can contain Salmonella enteritidis, leading to severe food poisoning, high fever, abdominal cramps, and diarrhea.',
+    alternatives: 'Pasteurized eggs, or eggs cooked until both the white and yolk are completely firm.',
+    tip: 'Avoid tasting raw cake batter, cookie dough, or homemade ice cream made with raw eggs.'
+  },
+  {
+    slug: 'pasteurized-eggs',
+    name: 'Pasteurized Eggs (Cooked)',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Commercial pasteurization destroys Salmonella bacteria without cooking the egg. Safe to use in recipes that call for gently cooked eggs.',
+    alternatives: 'Regular well-cooked eggs.',
+    tip: 'Look for the "P" stamp on the eggshells in supermarkets.'
+  },
+  {
+    slug: 'cookie-dough-raw',
+    name: 'Raw Cookie Dough',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Contains both raw eggs (Salmonella risk) and raw unbaked flour (E. coli risk). Both present severe infection risks.',
+    alternatives: 'Edible cookie dough made without eggs and with heat-treated flour.',
+    tip: 'Ensure kids and pregnant women do not lick the spoons when baking.'
+  },
+  {
+    slug: 'eggnog-homemade',
+    name: 'Homemade Eggnog',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Typically made with raw eggs, which are a source of Salmonella. Adding alcohol does not reliably kill the bacteria.',
+    alternatives: 'Commercially pasteurized, non-alcoholic eggnog from the dairy aisle.',
+    tip: 'Commercial eggnog is pasteurized and completely safe to consume.'
+  },
+  {
+    slug: 'eggnog-commercial',
+    name: 'Commercial Eggnog',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Commercial products use pasteurized milk and eggs, removing the risk of bacterial infection.',
+    alternatives: 'None needed.',
+    tip: 'Keep refrigerated and consume within 3-5 days of opening.'
+  },
+  {
+    slug: 'hollandaise-raw',
+    name: 'Homemade Hollandaise (Raw Eggs)',
+    category: 'Dairy & Eggs',
+    status: 'avoid',
+    explanation: 'Hollandaise sauce prepared in restaurants or homes is often emulsified with raw or partially cooked egg yolks, raising Salmonella risk.',
+    alternatives: 'Hollandaise made with pasteurized egg yolks or packaged powder mixes.',
+    tip: 'Ask the server if the hollandaise is made with pasteurized eggs before ordering Eggs Benedict.'
+  },
+  {
+    slug: 'hollandaise-pasteurized',
+    name: 'Pasteurized Hollandaise',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Made using pasteurized egg products, preventing Salmonella contamination.',
+    alternatives: 'None needed.',
+    tip: 'Commercial jarred or powdered hollandaise is safe and easy to prepare at home.'
+  },
+  {
+    slug: 'cottage-cheese',
+    name: 'Cottage Cheese',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Commercial cottage cheese is pasteurized and low-risk, providing high protein and calcium.',
+    alternatives: 'Greek yogurt or ricotta cheese (pasteurized).',
+    tip: 'Serve with clean utensils and keep cold until ready to consume.'
+  },
+  {
+    slug: 'cream-cheese',
+    name: 'Cream Cheese',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Commercial cream cheese is pasteurized and safe for pregnancy. It does not support Listeria growth when stored properly.',
+    alternatives: 'None needed.',
+    tip: 'Avoid sharing cream cheese tubs to prevent cross-contamination from other foods.'
+  },
+  {
+    slug: 'ricotta-cheese',
+    name: 'Ricotta Cheese',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Commercially made ricotta cheese is pasteurized and safe. However, fresh homemade raw ricotta should be avoided.',
+    alternatives: 'Any commercial pasteurized ricotta.',
+    tip: 'Excellent for baking in lasagnas or spreading on toast.'
+  },
+  {
+    slug: 'parmesan-cheese',
+    name: 'Parmesan Cheese',
+    category: 'Dairy & Eggs',
+    status: 'safe',
+    explanation: 'Parmesan is a hard, aged cheese. Due to its very low water activity, it does not support the growth of Listeria, even if raw milk was used in traditional European production.',
+    alternatives: 'Pecorino Romano or Asiago.',
+    tip: 'Grated parmesan is safe to sprinkle on pasta.'
+  },
+
+  // SEAFOOD (21-45)
+  {
+    slug: 'sushi-raw',
+    name: 'Sushi (Raw Fish)',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Raw fish can harbor parasites (anisakis) and bacteria (Vibrio vulnificus, Listeria) that can cause severe gastrointestinal illness and endanger the fetus.',
+    alternatives: 'Cooked sushi (California rolls, eel, shrimp, sweet potato rolls).',
+    tip: 'Choose vegetarian or fully cooked rolls at reputable establishments.'
+  },
+  {
+    slug: 'sushi-cooked',
+    name: 'Sushi (Cooked)',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Rolls containing cooked seafood or vegetables are safe, provided they are prepared in a hygienic environment free of cross-contamination.',
+    alternatives: 'None needed.',
+    tip: 'Ask the chef to use clean knives and boards to avoid raw fish juices.'
+  },
+  {
+    slug: 'salmon',
+    name: 'Salmon (Cooked)',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Salmon is low in mercury and packed with omega-3 fatty acids (DHA/EPA), which are essential for baby’s brain and eye development.',
+    alternatives: 'None needed; this is one of the best fish choices during pregnancy.',
+    tip: 'Cook until the internal temperature reaches 145°F (63°C) or until the flesh flakes easily.'
+  },
+  {
+    slug: 'tuna-light',
+    name: 'Canned Light Tuna',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Canned light tuna is made from smaller fish (skipjack) and contains lower levels of mercury than white/albacore tuna. Safe up to 12 oz (2 meals) per week.',
+    alternatives: 'Salmon, sardines, or anchovies for lower mercury levels.',
+    tip: 'Limit consumption to 2 servings a week to stay well within safety margins.'
+  },
+  {
+    slug: 'tuna-albacore',
+    name: 'Albacore (White) Tuna',
+    category: 'Seafood',
+    status: 'moderate',
+    explanation: 'Albacore tuna contains higher mercury levels than light tuna. Too much mercury can harm baby’s developing nervous system.',
+    alternatives: 'Canned light tuna or salmon.',
+    tip: 'Limit to no more than 6 ounces (1 meal) per week.'
+  },
+  {
+    slug: 'swordfish',
+    name: 'Swordfish',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'A large predatory fish containing exceptionally high levels of methylmercury, which bioaccumulates and can damage the fetal brain.',
+    alternatives: 'Salmon, cod, or tilapia.',
+    tip: 'Avoid completely. Check seafood warnings when traveling abroad.'
+  },
+  {
+    slug: 'shark',
+    name: 'Shark',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Shark has some of the highest methylmercury concentrations of any fish due to its long life span and predatory nature.',
+    alternatives: 'Low-mercury white fish like cod or haddock.',
+    tip: 'Do not consume shark steaks or shark-fin products.'
+  },
+  {
+    slug: 'king-mackerel',
+    name: 'King Mackerel',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Contains high levels of mercury. Not to be confused with Atlantic mackerel, which is safe and low in mercury.',
+    alternatives: 'Atlantic mackerel, sardines, or herring.',
+    tip: 'Always confirm the specific species of mackerel before eating.'
+  },
+  {
+    slug: 'tilefish',
+    name: 'Tilefish (Gulf of Mexico)',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Tilefish from the Gulf of Mexico contains high levels of mercury and is on the FDA’s "Do Not Eat" list for pregnancy.',
+    alternatives: 'Flounder, sole, or tilapia.',
+    tip: 'Tilefish from the Atlantic is slightly lower but still best avoided.'
+  },
+  {
+    slug: 'orange-roughy',
+    name: 'Orange Roughy',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Lives for over 100 years, giving it decades to accumulate high levels of methylmercury in its tissues.',
+    alternatives: 'Cod, pollock, or catfish.',
+    tip: 'Avoid orange roughy completely; choose sustainable, low-mercury options instead.'
+  },
+  {
+    slug: 'marlin',
+    name: 'Marlin',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Marlin is a large sport fish containing elevated levels of mercury that exceed safe thresholds for fetal development.',
+    alternatives: 'Trout, salmon, or halibut (in moderation).',
+    tip: 'Avoid marlin steaks and sashimi.'
+  },
+  {
+    slug: 'shrimp',
+    name: 'Shrimp',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Shrimp is very low in mercury, high in protein, and a safe, nutritious choice for pregnant women.',
+    alternatives: 'None needed.',
+    tip: 'Cook until shrimp turn pink and the flesh becomes opaque.'
+  },
+  {
+    slug: 'crab',
+    name: 'Crab (Cooked)',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Fully cooked crab is low in mercury and safe. It provides zinc, iron, and protein.',
+    alternatives: 'Cooked lobster or shrimp.',
+    tip: 'Avoid raw crab or raw crab paste, which are popular in some Asian dishes.'
+  },
+  {
+    slug: 'lobster',
+    name: 'Lobster (Cooked)',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Cooked lobster is safe and low in mercury. Avoid eating the green tomalley (liver), which can accumulate toxins.',
+    alternatives: 'Shrimp or crab.',
+    tip: 'Boil or steam lobster thoroughly until it reaches an internal temperature of 145°F.'
+  },
+  {
+    slug: 'oysters-raw',
+    name: 'Raw Oysters',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Can cause severe Norovirus or Vibrio vulnificus food poisoning, leading to dehydration, septicemia, and life-threatening complications.',
+    alternatives: 'Fully cooked oysters (baked, fried, or stewed).',
+    tip: 'Avoid raw oyster bars entirely during pregnancy.'
+  },
+  {
+    slug: 'oysters-cooked',
+    name: 'Cooked Oysters',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Cooking kills Vibrio bacteria and viruses, rendering the oysters safe. Excellent source of iron and zinc.',
+    alternatives: 'None needed.',
+    tip: 'Ensure they are cooked until the shells open. Discard any that do not open.'
+  },
+  {
+    slug: 'clams-raw',
+    name: 'Raw Clams',
+    category: 'Seafood',
+    status: 'avoid',
+    explanation: 'Raw clams filter water and concentrate pathogens, exposing you to Hepatitis A and bacteria.',
+    alternatives: 'Steamed or boiled clams.',
+    tip: 'Discard any clams with cracked or broken shells.'
+  },
+  {
+    slug: 'clams-cooked',
+    name: 'Cooked Clams',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Thoroughly cooked clams are safe and provide high amounts of iron, essential for red blood cell production.',
+    alternatives: 'None needed.',
+    tip: 'Boil for at least 5 minutes after shells open to ensure safety.'
+  },
+  {
+    slug: 'mussels',
+    name: 'Mussels (Cooked)',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Cooked mussels are safe, low in mercury, and rich in iron and vitamin B12.',
+    alternatives: 'Cooked clams or scallops.',
+    tip: 'Steam until shells open wide. Cooked mussels in white wine sauce are safe as long as the alcohol is evaporated.'
+  },
+  {
+    slug: 'sardines',
+    name: 'Sardines',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Extremely low in mercury and rich in calcium, vitamin D, and omega-3 fatty acids. They are small and do not bioaccumulate toxins.',
+    alternatives: 'Sardines are highly recommended; alternatives include wild salmon.',
+    tip: 'Canned sardines in oil or tomato sauce make a highly nutritious, shelf-stable lunch.'
+  },
+  {
+    slug: 'anchovies',
+    name: 'Anchovies',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Small fish with very low mercury and high omega-3 levels. Safe for regular consumption.',
+    alternatives: 'Sardines.',
+    tip: 'Commonly found on pizzas or in Caesar salad dressings; ensure they are fully cooked or pasteurized.'
+  },
+  {
+    slug: 'trout',
+    name: 'Trout (Freshwater)',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Farmed freshwater trout is a clean, low-mercury fish with high protein and healthy fats.',
+    alternatives: 'Salmon.',
+    tip: 'Wild trout from local streams should be checked against local state fish advisories.'
+  },
+  {
+    slug: 'cod',
+    name: 'Cod',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'A mild white fish that is low in mercury and a great source of lean protein.',
+    alternatives: 'Tilapia, haddock, or pollock.',
+    tip: 'Perfect for fish tacos, baked cod, or fish stews.'
+  },
+  {
+    slug: 'tilapia',
+    name: 'Tilapia',
+    category: 'Seafood',
+    status: 'safe',
+    explanation: 'Tilapia is farm-raised, grows quickly, feeds on plants, and contains very low levels of mercury.',
+    alternatives: 'Cod or catfish.',
+    tip: 'Cook until white, flaky, and opaque.'
+  },
+  {
+    slug: 'halibut',
+    name: 'Halibut',
+    category: 'Seafood',
+    status: 'moderate',
+    explanation: 'Halibut contains moderate mercury levels. Safe to eat occasionally, but limit to once a week.',
+    alternatives: 'Cod or salmon.',
+    tip: 'Limit to 1 serving (6 oz) per week and avoid other moderate-mercury fish that week.'
+  },
+
+  // BEVERAGES (46-65)
+  {
+    slug: 'coffee',
+    name: 'Coffee',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'High caffeine intake is linked to restricted fetal growth and low birth weight. Limit caffeine to under 200 mg per day (about one 12 oz cup).',
+    alternatives: 'Decaf coffee, chicory herbal coffee, or hot water with lemon.',
+    tip: 'Be aware that espresso shots and cold brew can contain higher caffeine concentrations than drip coffee.'
+  },
+  {
+    slug: 'espresso',
+    name: 'Espresso',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'One shot of espresso contains about 63-75 mg of caffeine. Safe as long as you track your daily caffeine intake.',
+    alternatives: 'Decaf espresso or steamed milk with vanilla.',
+    tip: 'A double shot of espresso counts as 130-150 mg of caffeine, near the daily limit.'
+  },
+  {
+    slug: 'black-tea',
+    name: 'Black Tea',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'Contains caffeine (approx. 40-70 mg per cup). Keep track of total daily caffeine.',
+    alternatives: 'Rooibos tea (caffeine-free) or decaf black tea.',
+    tip: 'Steeping tea for less time reduces the caffeine content in your cup.'
+  },
+  {
+    slug: 'green-tea',
+    name: 'Green Tea / Matcha',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'Green tea contains caffeine (approx. 30-50 mg per cup) and compounds that can slightly reduce folic acid absorption if consumed in large quantities.',
+    alternatives: 'Herbal ginger or peppermint tea.',
+    tip: 'Limit to 2-3 cups maximum per day to protect folic acid absorption.'
+  },
+  {
+    slug: 'herbal-peppermint',
+    name: 'Herbal Tea (Peppermint)',
+    category: 'Beverages',
+    status: 'safe',
+    explanation: 'Peppermint tea is caffeine-free and widely considered safe. It helps soothe nausea and reduces pregnancy bloating.',
+    alternatives: 'Ginger tea.',
+    tip: 'Excellent evening beverage for combating acid reflux.'
+  },
+  {
+    slug: 'herbal-ginger',
+    name: 'Herbal Tea (Ginger)',
+    category: 'Beverages',
+    status: 'safe',
+    explanation: 'Ginger tea is highly effective at reducing morning sickness and nausea. Safe for daily use.',
+    alternatives: 'Peppermint tea.',
+    tip: 'Brew using fresh sliced ginger root for the best relief.'
+  },
+  {
+    slug: 'herbal-chamomile',
+    name: 'Herbal Tea (Chamomile)',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'Chamomile is safe in food amounts, but regular large therapeutic amounts may act as a mild uterine stimulant. Safe in moderation.',
+    alternatives: 'Warm milk with honey or peppermint tea.',
+    tip: 'Limit to one cup a day before bed to aid sleep.'
+  },
+  {
+    slug: 'herbal-hibiscus',
+    name: 'Herbal Tea (Hibiscus)',
+    category: 'Beverages',
+    status: 'avoid',
+    explanation: 'Hibiscus tea has been linked to delayed puberty and miscarriage risks in animal studies. It is best avoided during pregnancy.',
+    alternatives: 'Lemon water, ginger, or rooibos tea.',
+    tip: 'Read the ingredient list of herbal tea blends; hibiscus is a common filler.'
+  },
+  {
+    slug: 'herbal-red-raspberry',
+    name: 'Herbal Tea (Red Raspberry Leaf)',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'Historically used to tone the uterus. Safe in the third trimester to prepare for labor, but should be avoided in the first trimester.',
+    alternatives: 'First trimester: Peppermint or ginger tea.',
+    tip: 'Only start drinking red raspberry leaf tea after week 32, with your OB-GYN’s approval.'
+  },
+  {
+    slug: 'herbal-nettle',
+    name: 'Herbal Tea (Nettle)',
+    category: 'Beverages',
+    status: 'avoid',
+    explanation: 'Nettle root can stimulate uterine contractions. Stinging nettle leaf tea should also be avoided unless explicitly cleared by your doctor.',
+    alternatives: 'Rooibos or peppermint tea.',
+    tip: 'Nettle is frequently found in herbal "pregnancy blends," so read labels closely.'
+  },
+  {
+    slug: 'alcohol',
+    name: 'Alcohol (Wine, Beer, Spirits)',
+    category: 'Beverages',
+    status: 'avoid',
+    explanation: 'There is no known safe amount of alcohol during pregnancy. Exposure causes Fetal Alcohol Spectrum Disorders (FASD), resulting in severe physical and mental birth defects.',
+    alternatives: 'Mocktails, alcohol-free beer (verify 0.0% ABV), sparkling water with lime.',
+    tip: 'Avoid completely throughout all trimesters.'
+  },
+  {
+    slug: 'kombucha',
+    name: 'Kombucha',
+    category: 'Beverages',
+    status: 'avoid',
+    explanation: 'Kombucha is unpasteurized, which introduces Listeria risks. It also contains trace amounts of alcohol and caffeine.',
+    alternatives: 'Pasteurized carbonated juices, sparkling water, or pasteurized kefir.',
+    tip: 'Even store-bought commercial kombuchas are rarely pasteurized to preserve live cultures.'
+  },
+  {
+    slug: 'energy-drinks',
+    name: 'Energy Drinks',
+    category: 'Beverages',
+    status: 'avoid',
+    explanation: 'Contain dangerously high amounts of caffeine and unregulated herbal stimulants like ginseng, taurine, and guarana, which are not safety-tested for fetuses.',
+    alternatives: 'Natural fruit smoothies or a cold glass of ice water.',
+    tip: 'Energy drinks can cause maternal heart palpitations and spikes in blood pressure.'
+  },
+  {
+    slug: 'unpasteurized-juice',
+    name: 'Unpasteurized Juice / Cider',
+    category: 'Beverages',
+    status: 'avoid',
+    explanation: 'Freshly squeezed juices or apple cider from orchards can harbor E. coli and Salmonella, causing severe gastrointestinal distress.',
+    alternatives: 'Shelf-stable pasteurized juices or cooked apple cider.',
+    tip: 'Look for the warning label required on all unpasteurized juice bottles.'
+  },
+  {
+    slug: 'pasteurized-juice',
+    name: 'Pasteurized Juice',
+    category: 'Beverages',
+    status: 'safe',
+    explanation: 'Commercially pasteurized juices are heated to eliminate pathogens, making them safe to drink.',
+    alternatives: 'None needed.',
+    tip: 'Juices are high in natural sugar; drink in moderation if you have gestational diabetes.'
+  },
+  {
+    slug: 'tap-water',
+    name: 'Tap Water',
+    category: 'Beverages',
+    status: 'safe',
+    explanation: 'Municipal tap water is generally safe and regularly tested for contaminants.',
+    alternatives: 'Filtered water or bottled water.',
+    tip: 'Use a water filter if you reside in an area with older lead pipes.'
+  },
+  {
+    slug: 'mineral-water',
+    name: 'Mineral Water',
+    category: 'Beverages',
+    status: 'safe',
+    explanation: 'Safe to drink and provides minerals like calcium and magnesium, but check sodium content to avoid raising blood pressure.',
+    alternatives: 'Regular carbonated water.',
+    tip: 'Avoid brands containing excessively high mineral counts or unverified artesian sources.'
+  },
+  {
+    slug: 'decaf-coffee',
+    name: 'Decaf Coffee',
+    category: 'Beverages',
+    status: 'safe',
+    explanation: 'Decaf coffee contains minimal caffeine (2-5 mg per cup) and is an excellent substitute for regular coffee.',
+    alternatives: 'None needed.',
+    tip: 'Choose water-processed decaf to avoid chemical solvent residues.'
+  },
+  {
+    slug: 'soda-regular',
+    name: 'Regular Sugar Soda',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'Regular soda contains high amounts of refined sugar and empty calories, which can contribute to excessive weight gain and increase the risk of gestational diabetes.',
+    alternatives: 'Seltzer water with a splash of 100% fruit juice.',
+    tip: 'Track caffeine if drinking cola types.'
+  },
+  {
+    slug: 'diet-soda',
+    name: 'Diet Soda',
+    category: 'Beverages',
+    status: 'moderate',
+    explanation: 'Contains artificial sweeteners and artificial flavorings. While approved sweeteners are safe in moderation, high intake is not ideal.',
+    alternatives: 'Infused water with fresh cucumbers and mint.',
+    tip: 'Limit to one serving per day to prevent replacing nutrient-dense drinks.'
+  },
+
+  // MEATS & POULTRY (66-85)
+  {
+    slug: 'deli-meat-cold',
+    name: 'Cold Deli Meats',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Pre-sliced deli meats (turkey, ham, roast beef) are prone to Listeria contamination post-processing. Listeria can survive and multiply in the refrigerator.',
+    alternatives: 'Heated deli meats, grilled chicken, or roast beef cooked hot at home.',
+    tip: 'If you choose to eat deli meats, microwave them until steaming hot (165°F/74°C) before serving.'
+  },
+  {
+    slug: 'deli-meat-heated',
+    name: 'Heated Deli Meats (Steaming)',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Heating deli meats until steaming hot kills any Listeria bacteria, making them safe to eat.',
+    alternatives: 'None needed.',
+    tip: 'Ensure the meat is piping hot throughout, not just lukewarm.'
+  },
+  {
+    slug: 'hot-dogs-cold',
+    name: 'Cold Hot Dogs',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Can contain Listeria. Eating them straight from the package without reheating is unsafe.',
+    alternatives: 'Hot dogs cooked until steaming hot.',
+    tip: 'Always boil or grill hot dogs until they are heated through.'
+  },
+  {
+    slug: 'hot-dogs-heated',
+    name: 'Heated Hot Dogs',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Thoroughly cooked hot dogs are safe. Limit intake due to high sodium and preservatives.',
+    alternatives: 'Grilled chicken breast.',
+    tip: 'Ensure they are served immediately after cooking.'
+  },
+  {
+    slug: 'pate-refrigerated',
+    name: 'Refrigerated Pâté',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Refrigerated meat spreads and pâtés are highly susceptible to Listeria contamination.',
+    alternatives: 'Canned or shelf-stable pâtés and meat spreads.',
+    tip: 'Canned spreads are pasteurized during the canning process and are safe.'
+  },
+  {
+    slug: 'beef-rare',
+    name: 'Rare or Medium-Rare Beef',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Undercooked beef poses a risk of Toxoplasmosis, caused by the Toxoplasma gondii parasite. It can cause serious fetal brain damage.',
+    alternatives: 'Beef cooked to medium-well or well-done (minimum 145°F with a 3-minute rest).',
+    tip: 'Use a meat thermometer to ensure meat reaches safe temperatures.'
+  },
+  {
+    slug: 'beef-well-done',
+    name: 'Well-Done Beef',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Cooking beef to an internal temperature of at least 145°F (with rest) or 160°F for ground beef kills Toxoplasma and E. coli.',
+    alternatives: 'None needed.',
+    tip: 'Ensure ground beef (burgers, meatloaf) is cooked to 160°F (71°C) with no pink remaining.'
+  },
+  {
+    slug: 'chicken-well-done',
+    name: 'Well-Done Chicken',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Poultry cooked to 165°F (74°C) is completely free of Salmonella and Campylobacter.',
+    alternatives: 'None needed.',
+    tip: 'Never wash raw chicken before cooking, as it spreads bacteria around the sink.'
+  },
+  {
+    slug: 'raw-chicken',
+    name: 'Raw Chicken / Poultry',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Raw poultry is heavily contaminated with Salmonella and Campylobacter. Handling or consuming it undercooked causes severe food poisoning.',
+    alternatives: 'Fully cooked poultry.',
+    tip: 'Wash hands, cutting boards, and knives with hot soapy water immediately after handling raw poultry.'
+  },
+  {
+    slug: 'pork-well-done',
+    name: 'Well-Done Pork',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Cooking pork to 145°F (63°C) with a 3-minute rest kills the Trichinella spiralis parasite and bacteria.',
+    alternatives: 'None needed.',
+    tip: 'Avoid undercooked pork chops or tenderloin.'
+  },
+  {
+    slug: 'jerky',
+    name: 'Beef Jerky',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Commercial jerky is dehydrated but not cooked, meaning it can still harbor Toxoplasma gondii parasites.',
+    alternatives: 'Cooked beef strips or well-done bacon.',
+    tip: 'Avoid both homemade and store-bought jerky during pregnancy.'
+  },
+  {
+    slug: 'pepperoni',
+    name: 'Pepperoni (Cold)',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Cold cured meats like pepperoni are fermented and dried, which does not guarantee the destruction of Toxoplasma or Listeria.',
+    alternatives: 'Pepperoni baked on hot pizza.',
+    tip: 'Baking pepperoni on pizza at high temperatures makes it completely safe.'
+  },
+  {
+    slug: 'salami',
+    name: 'Salami',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Uncooked salami contains active bacteria from fermentation and carries a risk of Toxoplasmosis.',
+    alternatives: 'Heated salami or cooked ham.',
+    tip: 'Microwave salami slices until crisp or bake them in a dish before eating.'
+  },
+  {
+    slug: 'prosciutto',
+    name: 'Prosciutto',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Prosciutto is raw cured ham. It poses risks of Listeria and Toxoplasmosis infections.',
+    alternatives: 'Baked ham or cooked bacon.',
+    tip: 'Safe to eat if baked into hot dishes like paninis or pasta.'
+  },
+  {
+    slug: 'bacon-well-done',
+    name: 'Well-Done Bacon',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Cooking bacon until crispy kills any bacteria and parasites, making it safe for consumption.',
+    alternatives: 'None needed.',
+    tip: 'Ensure bacon is not rubbery or partially undercooked.'
+  },
+  {
+    slug: 'sausage-raw',
+    name: 'Raw Sausage Link',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Raw sausage contains ground meat that can contain E. coli, Salmonella, and Toxoplasma gondii.',
+    alternatives: 'Fully cooked sausage.',
+    tip: 'Never eat sausage unless cooked to an internal temperature of 160°F.'
+  },
+  {
+    slug: 'sausage-cooked',
+    name: 'Cooked Sausage',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Sausage cooked until brown and firm in the center is safe to eat.',
+    alternatives: 'None needed.',
+    tip: 'Verify cooking by slicing the sausage in half to confirm no pink spots remain.'
+  },
+  {
+    slug: 'pork-raw',
+    name: 'Raw Pork',
+    category: 'Meats & Poultry',
+    status: 'avoid',
+    explanation: 'Raw pork contains parasites like Trichinella spiralis and pathogens that cause severe foodborne infections.',
+    alternatives: 'Fully cooked pork.',
+    tip: 'Clean all kitchen surfaces after preparing raw pork.'
+  },
+  {
+    slug: 'turkey-well-done',
+    name: 'Well-Done Turkey',
+    category: 'Meats & Poultry',
+    status: 'safe',
+    explanation: 'Cooked whole turkey is safe and a great lean protein choice, provided it reaches 165°F.',
+    alternatives: 'None needed.',
+    tip: 'Avoid eating leftovers that have sat in the fridge for more than 2-3 days.'
+  },
+  {
+    slug: 'liver',
+    name: 'Animal Liver (Beef / Chicken)',
+    category: 'Meats & Poultry',
+    status: 'moderate',
+    explanation: 'Liver contains extremely high levels of preformed Vitamin A (retinol). High doses of retinol are linked to congenital anomalies and liver toxicity in babies.',
+    alternatives: 'Lean meats, beans, or spinach for iron.',
+    tip: 'Limit consumption to small portions (1-2 oz) no more than once a week, or avoid completely.'
+  },
+
+  // FRUITS & VEG (86-95)
+  {
+    slug: 'raw-sprouts',
+    name: 'Raw Sprouts (Alfalfa, Clover)',
+    category: 'Fruits & Vegetables',
+    status: 'avoid',
+    explanation: 'Bacteria can get inside sprout seeds through cracks. It is impossible to wash away E. coli and Salmonella from raw sprouts.',
+    alternatives: 'Thoroughly cooked sprouts (sauteed in stir-fries).',
+    tip: 'Request "no sprouts" when ordering sandwiches or salads at restaurants.'
+  },
+  {
+    slug: 'unwashed-lettuce',
+    name: 'Unwashed Lettuce / Greens',
+    category: 'Fruits & Vegetables',
+    status: 'avoid',
+    explanation: 'Unwashed vegetables can carry Toxoplasma gondii from contaminated soil, causing Toxoplasmosis.',
+    alternatives: 'Thoroughly washed leafy greens.',
+    tip: 'Wash greens under running water even if the bag says "pre-washed."'
+  },
+  {
+    slug: 'washed-lettuce',
+    name: 'Washed Lettuce / Salad Greens',
+    category: 'Fruits & Vegetables',
+    status: 'safe',
+    explanation: 'Thoroughly washed greens are a safe, vital source of folate, fiber, and vitamins.',
+    alternatives: 'None needed.',
+    tip: 'Dry washed greens in a salad spinner to maintain freshness.'
+  },
+  {
+    slug: 'pre-packaged-salad',
+    name: 'Pre-packaged Bagged Salads',
+    category: 'Fruits & Vegetables',
+    status: 'moderate',
+    explanation: 'Bagged salads have been linked to multiple Listeria and E. coli recalls. The moisture in the bag can accelerate bacterial growth.',
+    alternatives: 'Whole heads of lettuce that you wash and chop yourself.',
+    tip: 'If using bagged salad, wash it thoroughly under running water before eating, even if labeled triple-washed.'
+  },
+  {
+    slug: 'papaya-unripe',
+    name: 'Unripe Green Papaya',
+    category: 'Fruits & Vegetables',
+    status: 'avoid',
+    explanation: 'Unripe papaya contains a high concentration of latex and papain, which can act as a prostaglandin and oxytocin, triggering uterine contractions.',
+    alternatives: 'Fully ripe yellow papaya, which contains very little latex.',
+    tip: 'Avoid green papaya salads (like Som Tum) commonly served in Thai cuisine.'
+  },
+  {
+    slug: 'papaya-ripe',
+    name: 'Ripe Papaya',
+    category: 'Fruits & Vegetables',
+    status: 'safe',
+    explanation: 'Ripe papaya (yellow skin) is rich in vitamins A, C, and folate, and is low in latex, making it safe.',
+    alternatives: 'None needed.',
+    tip: 'Ensure the papaya is completely soft and yellow before consuming.'
+  },
+  {
+    slug: 'pineapple',
+    name: 'Pineapple',
+    category: 'Fruits & Vegetables',
+    status: 'safe',
+    explanation: 'Contains bromelain, which can break down proteins. In massive quantities, it might affect the cervix, but normal culinary portions are safe and nutritious.',
+    alternatives: 'None needed.',
+    tip: 'Enjoy fresh pineapple in moderation; it is a great source of vitamin C.'
+  },
+  {
+    slug: 'watermelon-precut',
+    name: 'Pre-Cut Watermelon',
+    category: 'Fruits & Vegetables',
+    status: 'moderate',
+    explanation: 'Pre-cut melons from supermarkets have a higher risk of Listeria contamination from the rind being sliced through.',
+    alternatives: 'Whole watermelon that you wash and cut at home.',
+    tip: 'Always wash the outside of a melon before cutting it to prevent transferring bacteria from the rind to the flesh.'
+  },
+  {
+    slug: 'watermelon-whole',
+    name: 'Whole Watermelon',
+    category: 'Fruits & Vegetables',
+    status: 'safe',
+    explanation: 'Whole watermelon is highly hydrating, rich in vitamins A and C, and safe if the rind is washed before slicing.',
+    alternatives: 'None needed.',
+    tip: 'Scrub the rind with a vegetable brush under water before slicing.'
+  },
+  {
+    slug: 'raw-sprouts-cooked',
+    name: 'Cooked Sprouts',
+    category: 'Fruits & Vegetables',
+    status: 'safe',
+    explanation: 'Cooking sprouts thoroughly destroys E. coli and Salmonella, rendering them safe.',
+    alternatives: 'None needed.',
+    tip: 'Ensure sprouts are hot and cooked all the way through; do not eat them raw or lightly steamed.'
+  },
+
+  // SWEETS & OTHERS (96-101)
+  {
+    slug: 'honey-raw',
+    name: 'Raw Honey',
+    category: 'Sweets & Others',
+    status: 'safe',
+    explanation: 'Raw honey can contain botulism spores. While dangerous to infants under 1 year, the adult digestive system easily destroys them, making it safe for pregnant women.',
+    alternatives: 'Pasteurized commercial honey.',
+    tip: 'Though safe for you, avoid giving raw honey to your baby after birth.'
+  },
+  {
+    slug: 'honey-pasteurized',
+    name: 'Pasteurized Honey',
+    category: 'Sweets & Others',
+    status: 'safe',
+    explanation: 'Pasteurized honey is processed to destroy yeasts and bacterial spores, offering a safe sweetener option.',
+    alternatives: 'Maple syrup.',
+    tip: 'A great natural sweetener to soothe pregnancy sore throats.'
+  },
+  {
+    slug: 'chocolate',
+    name: 'Chocolate',
+    category: 'Sweets & Others',
+    status: 'moderate',
+    explanation: 'Chocolate contains small amounts of caffeine. A dark chocolate bar can contain 20-50 mg of caffeine. Consume in moderation.',
+    alternatives: 'Carob or white chocolate (caffeine-free).',
+    tip: 'Keep track of chocolate caffeine if you also drink coffee or tea.'
+  },
+  {
+    slug: 'peanuts',
+    name: 'Peanuts & Peanut Butter',
+    category: 'Sweets & Others',
+    status: 'safe',
+    explanation: 'Unless you have a diagnosed peanut allergy, eating peanuts during pregnancy does not increase and may even decrease baby’s risk of developing peanut allergies.',
+    alternatives: 'Almond butter or sunflower seed butter.',
+    tip: 'Peanut butter is an excellent source of protein and healthy fats.'
+  },
+  {
+    slug: 'licorice-root',
+    name: 'Licorice Root',
+    category: 'Sweets & Others',
+    status: 'avoid',
+    explanation: 'Contains glycyrrhizin, which in large amounts is associated with developmental issues in children and higher risks of preterm labor.',
+    alternatives: 'Anise-flavored candies (which do not use real licorice root).',
+    tip: 'Avoid herbal teas or supplements containing licorice root.'
+  },
+  {
+    slug: 'artificial-sweeteners',
+    name: 'Artificial Sweeteners (Aspartame, Sucralose)',
+    category: 'Sweets & Others',
+    status: 'safe',
+    explanation: 'FDA-approved artificial sweeteners are safe in moderation during pregnancy. Saccharin should be avoided as it crosses the placenta.',
+    alternatives: 'Stevia, honey, or maple syrup.',
+    tip: 'Limit diet sodas to avoid excess chemical additives.'
+  },
+  {
+    slug: 'mayonnaise-commercial',
+    name: 'Commercial Mayonnaise',
+    category: 'Sweets & Others',
+    status: 'safe',
+    explanation: 'Commercially manufactured mayonnaise uses pasteurized eggs, which eliminates Salmonella risk.',
+    alternatives: 'None needed.',
+    tip: 'Store-bought mayonnaise jars must be kept refrigerated after opening.'
+  },
+  {
+    slug: 'mayonnaise-homemade',
+    name: 'Homemade Mayonnaise',
+    category: 'Sweets & Others',
+    status: 'avoid',
+    explanation: 'Traditionally prepared using raw egg yolks, exposing you to Salmonella infection.',
+    alternatives: 'Commercial pasteurized mayonnaise.',
+    tip: 'Always ask if mayonnaise at restaurants is homemade before consuming.'
+  }
+];

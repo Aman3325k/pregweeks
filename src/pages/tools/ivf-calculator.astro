@@ -1,0 +1,244 @@
+---
+// src/pages/tools/ivf-calculator.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "IVF Due Date Calculator | Embryo Transfer & Retrieval | PregWeeks";
+const description = "Calculate your estimated pregnancy due date (EDD) and gestational age for IVF cycles. Supports Egg Retrieval, 3-Day Embryo, and 5-Day Embryo transfers.";
+const canonicalUrl = "https://pregweeks.com/tools/ivf-calculator";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "IVF Due Date Calculator", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <a href="/tools/due-date-calculator" class="hover:text-primary transition-colors">Tools</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">IVF Calculator</span>
+    </nav>
+
+    <!-- Calculator Card -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors flex flex-col gap-6" id="ivf-calculator">
+      <div class="text-center max-w-md mx-auto">
+        <span class="text-3xl mb-2 block">🧫</span>
+        <h1 class="font-display font-semibold text-2xl md:text-3xl text-ink tracking-apple-tight">IVF Due Date Calculator</h1>
+        <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed mt-2">
+          Calculate your due date based on embryo transfer or egg retrieval dates.
+        </p>
+      </div>
+
+      <form class="flex flex-col gap-5 mt-2" id="ivf-form">
+        <!-- Cycle Type Selection -->
+        <div class="flex flex-col gap-2">
+          <label for="ivf-type" class="font-semibold text-xs md:text-sm text-ink">Select IVF Cycle Type:</label>
+          <select id="ivf-type" class="p-3 border border-hairline rounded-apple-sm bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base cursor-pointer">
+            <option value="transfer5">5-Day Embryo Transfer (Blastocyst)</option>
+            <option value="transfer3">3-Day Embryo Transfer (Cleavage Stage)</option>
+            <option value="retrieval">Egg Retrieval / ICSI Date</option>
+          </select>
+        </div>
+
+        <!-- Date Input -->
+        <div class="flex flex-col gap-2">
+          <label id="ivf-date-label" for="ivf-date" class="font-semibold text-xs md:text-sm text-ink">Date of embryo transfer:</label>
+          <input type="date" id="ivf-date" required class="p-3 border border-hairline rounded-apple-sm bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base font-sans" />
+        </div>
+
+        <div class="flex gap-3 mt-2">
+          <button type="submit" class="flex-2 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base">Calculate IVF Due Date</button>
+          <button type="button" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base" id="ivf-reset" style="display: none;">Reset</button>
+        </div>
+      </form>
+
+      <!-- Calculator Results -->
+      <div class="border-t border-hairline pt-6" id="ivf-results" style="display: none;">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+            <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">IVF Estimated Due Date</span>
+            <span class="text-lg md:text-xl font-bold text-primary" id="edd-val">--</span>
+          </div>
+          
+          <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+            <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Current Gestational Age</span>
+            <span class="text-lg md:text-xl font-bold text-primary" id="age-val">--</span>
+          </div>
+
+          <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+            <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Current Trimester</span>
+            <span class="text-lg md:text-xl font-bold text-primary" id="trimester-val">--</span>
+          </div>
+
+          <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+            <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Days to Delivery</span>
+            <span class="text-lg md:text-xl font-bold text-primary" id="remaining-val">--</span>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="mt-4">
+          <div class="flex justify-between text-xs text-ink-muted-48 mb-2 font-medium">
+            <span>Conception</span>
+            <span id="percent-val" class="text-primary font-semibold">0% Complete</span>
+            <span>Due Date</span>
+          </div>
+          <div class="h-2 bg-canvas-parchment rounded-full overflow-hidden border border-hairline/30">
+            <div class="h-full bg-primary rounded-full transition-all duration-700 ease-out" id="progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clinical Disclaimer -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-5 md:p-6 transition-colors text-xs md:text-sm text-ink-muted-80 flex flex-col gap-3">
+      <h2 class="font-display font-semibold text-base text-ink tracking-apple-tight flex items-center gap-1.5">
+        <span>👨‍⚕️</span>
+        <span>IVF Due Date & Gestational Age Calculation</span>
+      </h2>
+      <p class="leading-relaxed">
+        IVF due dates are typically more precise than natural conception due dates because the exact time of fertilization or embryo transfer is known. 
+      </p>
+      <ul class="list-disc list-inside space-y-1.5 text-xs text-ink-muted-48 pl-2">
+        <li><strong>5-Day Embryo Transfer</strong>: Due date is calculated by adding 261 days from transfer. Gestational age begins 19 days prior to transfer.</li>
+        <li><strong>3-Day Embryo Transfer</strong>: Due date is calculated by adding 263 days from transfer. Gestational age begins 17 days prior to transfer.</li>
+        <li><strong>Egg Retrieval</strong>: Due date is calculated by adding 266 days from retrieval. Gestational age begins 14 days prior to retrieval.</li>
+      </ul>
+      <p class="leading-relaxed text-[11px] border-t border-hairline/40 pt-3 text-red-500 font-medium">
+        Disclaimer: This calculator is for educational purposes only. Always verify your official gestational age and EDD with your fertility clinic or OB-GYN provider.
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const ivfType = document.getElementById('ivf-type') as HTMLSelectElement;
+  const ivfDate = document.getElementById('ivf-date') as HTMLInputElement;
+  const ivfLabel = document.getElementById('ivf-date-label') as HTMLLabelElement;
+  const ivfForm = document.getElementById('ivf-form') as HTMLFormElement;
+  const ivfReset = document.getElementById('ivf-reset') as HTMLButtonElement;
+  const ivfResults = document.getElementById('ivf-results');
+
+  const eddVal = document.getElementById('edd-val');
+  const ageVal = document.getElementById('age-val');
+  const trimesterVal = document.getElementById('trimester-val');
+  const remainingVal = document.getElementById('remaining-val');
+  const percentVal = document.getElementById('percent-val');
+  const progressFill = document.getElementById('progress-fill');
+
+  // Change input label based on cycle selection
+  ivfType?.addEventListener('change', () => {
+    if (ivfType.value === 'retrieval') {
+      ivfLabel.textContent = "Date of egg retrieval:";
+    } else {
+      ivfLabel.textContent = "Date of embryo transfer:";
+    }
+  });
+
+  // Load saved state
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('pregweeks_ivf_calc');
+    if (saved) {
+      const data = JSON.parse(saved);
+      ivfType.value = data.type;
+      ivfDate.value = data.date;
+      
+      // Update label
+      if (data.type === 'retrieval') {
+        ivfLabel.textContent = "Date of egg retrieval:";
+      } else {
+        ivfLabel.textContent = "Date of embryo transfer:";
+      }
+
+      calculate(new Date(data.date), data.type);
+    }
+  });
+
+  ivfForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!ivfDate.value) return;
+
+    const date = new Date(ivfDate.value);
+    const type = ivfType.value;
+
+    calculate(date, type);
+  });
+
+  ivfReset?.addEventListener('click', () => {
+    localStorage.removeItem('pregweeks_ivf_calc');
+    ivfDate.value = '';
+    ivfResults!.style.display = 'none';
+    ivfReset.style.display = 'none';
+  });
+
+  function calculate(date: Date, type: string) {
+    // Middays to protect timezone shifting
+    date.setHours(12, 0, 0, 0);
+    const now = new Date();
+    now.setHours(12, 0, 0, 0);
+
+    let edd: Date;
+    let gestationalAgeDays = 0;
+
+    if (type === 'transfer5') {
+      // 5-day transfer: Due is transfer + 261 days. Gestational age is transfer + 19 days.
+      edd = new Date(date.getTime() + 261 * 24 * 60 * 60 * 1000);
+      const conceptionEst = new Date(date.getTime() - 19 * 24 * 60 * 60 * 1000);
+      gestationalAgeDays = Math.floor((now.getTime() - conceptionEst.getTime()) / (24 * 60 * 60 * 1000));
+    } else if (type === 'transfer3') {
+      // 3-day transfer: Due is transfer + 263 days. Gestational age is transfer + 17 days.
+      edd = new Date(date.getTime() + 263 * 24 * 60 * 60 * 1000);
+      const conceptionEst = new Date(date.getTime() - 17 * 24 * 60 * 60 * 1000);
+      gestationalAgeDays = Math.floor((now.getTime() - conceptionEst.getTime()) / (24 * 60 * 60 * 1000));
+    } else {
+      // Retrieval: Due is retrieval + 266 days. Gestational age is retrieval + 14 days.
+      edd = new Date(date.getTime() + 266 * 24 * 60 * 60 * 1000);
+      const conceptionEst = new Date(date.getTime() - 14 * 24 * 60 * 60 * 1000);
+      gestationalAgeDays = Math.floor((now.getTime() - conceptionEst.getTime()) / (24 * 60 * 60 * 1000));
+    }
+
+    if (gestationalAgeDays < 0) gestationalAgeDays = 0;
+    const daysRemaining = Math.max(0, Math.floor((edd.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
+
+    const weeks = Math.floor(gestationalAgeDays / 7);
+    const days = gestationalAgeDays % 7;
+
+    // Save
+    localStorage.setItem('pregweeks_ivf_calc', JSON.stringify({
+      type,
+      date: ivfDate.value
+    }));
+
+    // Update UI
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    eddVal!.textContent = edd.toLocaleDateString('en-US', options);
+
+    if (weeks === 0 && days === 0) {
+      ageVal!.textContent = "Not started / Cycle stage";
+    } else {
+      ageVal!.textContent = `${weeks} Weeks, ${days} Day${days !== 1 ? 's' : ''}`;
+    }
+
+    let trimester = "First Trimester";
+    if (weeks >= 28) trimester = "Third Trimester";
+    else if (weeks >= 13) trimester = "Second Trimester";
+    trimesterVal!.textContent = trimester;
+
+    remainingVal!.textContent = `${daysRemaining} Day${daysRemaining !== 1 ? 's' : ''}`;
+
+    const percent = Math.min(100, Math.max(0, Math.floor((gestationalAgeDays / 280) * 100)));
+    progressFill!.style.width = `${percent}%`;
+    percentVal!.textContent = `${percent}% Complete`;
+
+    ivfResults!.style.display = 'block';
+    ivfReset.style.display = 'inline-block';
+  }
+</script>

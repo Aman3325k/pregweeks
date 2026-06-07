@@ -1,0 +1,163 @@
+---
+// src/pages/prenatal-vitamins.astro
+import Layout from '../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../utils/seo';
+
+const title = "Prenatal Vitamin Guide: Critical Nutrients & Buying Tips | PregWeeks";
+const description = "Learn when to start prenatal vitamins, critical dosage requirements (Folic Acid, Iron, DHA, Vitamin D), and how to select the best supplement for your pregnancy.";
+const canonicalUrl = "https://pregweeks.com/prenatal-vitamins";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Prenatal Vitamins Guide", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Prenatal Vitamins</span>
+    </nav>
+
+    <!-- Hero Card -->
+    <article class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors flex flex-col gap-6">
+      <div class="text-center border-b border-hairline pb-5 flex flex-col gap-2">
+        <span class="text-3xl">💊</span>
+        <h1 class="font-display font-semibold text-2xl md:text-4xl text-ink tracking-apple-tight">Prenatal Vitamin Guide</h1>
+        <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          Understanding folic acid, iron, DHA, and key supplement guidelines for a healthy pregnancy.
+        </p>
+      </div>
+
+      <!-- Introduction -->
+      <div class="flex flex-col gap-3">
+        <h2 class="font-display font-semibold text-lg md:text-xl text-ink tracking-apple-tight">Why Prenatal Vitamins Matter</h2>
+        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
+          During pregnancy, your daily nutritional requirements increase significantly to support placental growth and fetal development. While a balanced diet is crucial, prenatal vitamins serve as an essential safety net to prevent nutritional deficiencies.
+        </p>
+      </div>
+
+      <!-- Critical Nutrients Table/Cards -->
+      <div class="flex flex-col gap-4 mt-2">
+        <h2 class="font-display font-semibold text-lg md:text-xl text-ink tracking-apple-tight">6 Key Nutrients to Check on Your Label</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Folic Acid -->
+          <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-2">
+            <span class="font-bold text-sm text-primary">1. Folic Acid / Methylfolate (400 - 800 mcg)</span>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">
+              Crucial in the first 28 days of pregnancy to prevent neural tube defects (NTDs) like spina bifida. Ideally, start taking this 3 months before trying to conceive.
+            </p>
+          </div>
+          
+          <!-- Iron -->
+          <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-2">
+            <span class="font-bold text-sm text-primary">2. Iron (27 mg)</span>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">
+              Required to manufacture extra hemoglobin for your expanded blood volume. Helps prevent maternal anemia, which causes fatigue and increases preterm labor risks.
+            </p>
+          </div>
+
+          <!-- Calcium -->
+          <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-2">
+            <span class="font-bold text-sm text-primary">3. Calcium (150 mg - 250 mg)</span>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">
+              Builds baby's bones and teeth. Most prenatals don't contain the full 1000 mg daily requirement because it makes the pill too large; supplement via dairy or fortified foods.
+            </p>
+          </div>
+
+          <!-- Vitamin D -->
+          <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-2">
+            <span class="font-bold text-sm text-primary">4. Vitamin D (600 IU / 15 mcg)</span>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">
+              Aids the absorption of calcium. Vital for maternal bone density, immune function, and baby's healthy skeletal development.
+            </p>
+          </div>
+
+          <!-- DHA -->
+          <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-2">
+            <span class="font-bold text-sm text-primary">5. DHA / Omega-3 (200 mg)</span>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">
+              Essential for baby's brain development and retinal growth. Often sold as a separate companion softgel if not included in the main prenatal.
+            </p>
+          </div>
+
+          <!-- Iodine -->
+          <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-2">
+            <span class="font-bold text-sm text-primary">6. Iodine (150 mcg)</span>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">
+              Critical for maternal thyroid hormone synthesis and the development of baby's central nervous system and cognitive functions.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gummy vs Pill Checklist -->
+      <div class="flex flex-col gap-3 border-t border-hairline/60 pt-5 mt-2">
+        <h2 class="font-display font-semibold text-lg md:text-xl text-ink tracking-apple-tight">Pill vs. Gummy Prenatal Vitamins</h2>
+        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
+          Gummy vitamins are easier to digest if you suffer from severe morning sickness, but they hold two important limitations:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-sm text-ink-muted-80 pl-1">
+          <li><strong>Zero Iron</strong>: Gummies almost never contain iron because iron reacts poorly with the gelatin bases. If you take gummies, you may need a separate iron supplement if your doctor detects low ferritin.</li>
+          <li><strong>Lower Calcium/DHA</strong>: Gummies usually contain less calcium and vitamin D than large solid capsules or tablets.</li>
+        </ul>
+      </div>
+
+      <!-- Third Party Testing Checklist -->
+      <div class="flex flex-col gap-3 border-t border-hairline/60 pt-5 mt-2">
+        <h2 class="font-display font-semibold text-lg md:text-xl text-ink tracking-apple-tight">How to Select a Quality Brand</h2>
+        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
+          Supplements are not strictly regulated by the FDA. To ensure your prenatal contains exactly what is on the label without heavy metals or contaminants, look for products with a seal from:
+        </p>
+        <div class="flex gap-4 font-semibold text-xs text-primary justify-center sm:justify-start">
+          <span>🇺🇸 USP Verified</span>
+          <span>🛡️ NSF International</span>
+          <span>🔬 ConsumerLab.com Approved</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Interactive FAQs -->
+    <section class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors">
+      <h2 class="text-xl md:text-2xl font-display font-semibold mb-6 text-ink tracking-apple-tight">Prenatal Vitamin FAQs</h2>
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-1.5 border-b border-hairline/60 pb-4">
+          <h3 class="font-semibold text-sm md:text-base text-ink">Q1: When is the best time to start taking prenatal vitamins?</h3>
+          <p class="text-ink-muted-80 text-xs md:text-sm leading-relaxed">
+            Ideally, start taking them at least 1-3 months before trying to conceive. The neural tube closes within the first 28 days after conception, before many women realize they are pregnant.
+          </p>
+        </div>
+        
+        <div class="flex flex-col gap-1.5 border-b border-hairline/60 pb-4">
+          <h3 class="font-semibold text-sm md:text-base text-ink">Q2: What should I do if my prenatal vitamin makes me nauseous?</h3>
+          <p class="text-ink-muted-80 text-xs md:text-sm leading-relaxed">
+            Nausea is often triggered by the high iron content. Try taking the vitamin right before bed with a small snack, or switch to a gummy formula temporarily (discussing iron alternatives with your doctor).
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <h3 class="font-semibold text-sm md:text-base text-ink">Q3: Do I still need prenatal vitamins if I eat a very healthy diet?</h3>
+          <p class="text-ink-muted-80 text-xs md:text-sm leading-relaxed">
+            Yes. Certain nutrients, particularly folic acid and iron, are extremely difficult to consume in therapeutic quantities through diet alone during pregnancy. A supplement acts as clinical insurance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Action -->
+    <div class="flex justify-between items-center text-sm md:text-base">
+      <a href="/nutrition" class="text-primary font-semibold hover:underline flex items-center gap-1.5">
+        <span>&larr;</span> Back to Nutrition Guide
+      </a>
+      <a href="/tools/due-date-calculator" class="text-ink hover:text-primary transition-colors font-medium">
+        LMP Due Date Calculator
+      </a>
+    </div>
+  </div>
+</Layout>

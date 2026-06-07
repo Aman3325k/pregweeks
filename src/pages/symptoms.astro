@@ -1,176 +1,112 @@
 ---
 // src/pages/symptoms.astro
 import Layout from '../layouts/Layout.astro';
+import { symptomItems } from '../data/symptomData';
 import { getMedicalPageSchema, getBreadcrumbSchema } from '../utils/seo';
 
-const title = "Common Pregnancy Symptoms: Causes & Safe Relief Tips | PregWeeks";
-const description = "Discover 15+ common pregnancy symptoms from morning sickness to round ligament pain. Learn why they occur and clinical strategies to manage them safely.";
+const title = "Common Pregnancy Symptoms Directory: Causes & Safe Relief | PregWeeks";
+const description = "Search our directory of 30+ pregnancy symptoms from early cramping and morning sickness to third trimester Braxton Hicks. Learn safe relief options.";
 const url = "https://pregweeks.com/symptoms";
 
 const schemas = [
   getMedicalPageSchema(title, description, url),
   getBreadcrumbSchema([
     { name: "Home", url: "https://pregweeks.com" },
-    { name: "Guides", url: "https://pregweeks.com/symptoms" },
-    { name: "Pregnancy Symptoms Guide", url: url }
+    { name: "Symptoms Guide", url: url }
   ])
-];
-
-// Define symptoms data
-const symptomsData = [
-  {
-    name: "Morning Sickness & Nausea",
-    trimester: "Trimester 1",
-    why: "Triggered by a rapid surge of hCG (human chorionic gonadotropin) and estrogen hormones, which slows down digestion.",
-    relief: "Eat small, frequent protein-rich meals. Keep dry crackers by your bedside. Ginger tea or peppermint can help settle stomach walls."
-  },
-  {
-    name: "Extreme Fatigue",
-    trimester: "Trimester 1 & 3",
-    why: "Your body is producing more blood, increasing heart rate, and building the placenta—a massive energy-intensive task.",
-    relief: "Listen to your body. Rest or nap when tired. Maintain a nutrient-dense diet and stay hydrated."
-  },
-  {
-    name: "Frequent Urination",
-    trimester: "Trimester 1 & 3",
-    why: "In T1, hormonal changes increase blood flow to kidneys. In T3, the growing uterus physically presses down against the bladder.",
-    relief: "Do not restrict fluids, but limit drinking 2 hours before bedtime. Avoid caffeine which acts as a diuretic."
-  },
-  {
-    name: "Tender, Swollen Breasts",
-    trimester: "Trimester 1",
-    why: "Surging estrogen and progesterone prepare milk ducts and increase breast fat tissue.",
-    relief: "Invest in a supportive, soft cotton bra without underwires. Sleep with a crop top or maternity bra if tender at night."
-  },
-  {
-    name: "Food Cravings & Aversions",
-    trimester: "Trimester 1 & 2",
-    why: "Rapid hormonal shifts alter taste buds and sense of smell, sometimes linked to nutritional needs.",
-    relief: "Indulge cravings in moderation. Choose healthy alternatives. Avoid smells that trigger aversion."
-  },
-  {
-    name: "Heartburn & Acid Reflux",
-    trimester: "Trimester 2 & 3",
-    why: "Progesterone relaxes the valve between stomach and esophagus, allowing stomach acid to splash upwards.",
-    relief: "Eat smaller meals. Avoid greasy, spicy, or acidic foods. Sit upright for at least 30-45 minutes after eating."
-  },
-  {
-    name: "Constipation",
-    trimester: "Trimester 1, 2 & 3",
-    why: "Pregnancy hormones relax intestinal tract muscles, slowing down the passage of food.",
-    relief: "Eat high-fiber foods (beans, fruits, vegetables). Drink 8-10 glasses of water daily. Engage in light exercise."
-  },
-  {
-    name: "Headaches & Dizziness",
-    trimester: "Trimester 1 & 2",
-    why: "Expanded circulatory volume and hormone changes can dilate blood vessels, dropping blood pressure.",
-    relief: "Stand up slowly from sitting or lying. Stay hydrated and maintain stable blood sugar with regular snacks."
-  },
-  {
-    name: "Round Ligament Pain",
-    trimester: "Trimester 2",
-    why: "The thick bands of tissue supporting your uterus stretch and pull, causing sharp, sudden groin or side cramps.",
-    relief: "Avoid sudden twisting motions. Apply warmth or take a warm bath. Support your belly with a maternity band."
-  },
-  {
-    name: "Braxton Hicks Contractions",
-    trimester: "Trimester 3",
-    why: "Your uterus's way of practicing for active labor. Contractions are irregular, painless, and don't get closer together.",
-    relief: "Change positions. Drink a large glass of water. Take slow, deep breaths to relax abdominal walls."
-  },
-  {
-    name: "Swelling (Edema) in Feet & Ankles",
-    trimester: "Trimester 3",
-    why: "The growing uterus restricts blood return from lower limbs, combined with increased fluid volume.",
-    relief: "Elevate feet whenever possible. Avoid standing for long intervals. Wear comfortable, supportive shoes."
-  },
-  {
-    name: "Leg Cramps at Night",
-    trimester: "Trimester 2 & 3",
-    why: "Usually triggered by pressure on nerves, fatigue, or minor imbalances in calcium or magnesium.",
-    relief: "Stretch your calves before bedtime. Drink plenty of water. Elevate your legs slightly with a pillow."
-  },
-  {
-    name: "Insomnia & Sleeplessness",
-    trimester: "Trimester 3",
-    why: "Physical discomfort, active baby movements, frequent bladder trips, and natural anxieties about birth.",
-    relief: "Create a relaxing bedtime routine. Use multiple pillows or a body pillow to support your back and hips."
-  },
-  {
-    name: "Shortness of Breath",
-    trimester: "Trimester 3",
-    why: "Your growing uterus pushes your diaphragm up, compressing your lung capacity.",
-    relief: "Maintain good posture to give your lungs maximum space. Move slowly and take frequent breaks."
-  },
-  {
-    name: "Backaches & Sciatica",
-    trimester: "Trimester 2 & 3",
-    why: "Your center of gravity shifts forward, and the hormone relaxin loosens joints and ligaments.",
-    relief: "Wear supportive flat shoes. Sleep on your side with a pillow between your knees. Use gentle heating pads."
-  },
-  {
-    name: "Linea Nigra & Skin Changes",
-    trimester: "Trimester 2 & 3",
-    why: "Increased melanocyte-stimulating hormone causes temporary hyperpigmentation (like a dark line down the belly).",
-    relief: "Wear sunscreen to prevent dark spots from deepening. Avoid skin bleaches; lines will fade postpartum."
-  }
 ];
 ---
 
 <Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
-  <!-- Header Breadcrumb -->
+  <!-- Breadcrumbs -->
   <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
     <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
       <a href="/" class="text-primary hover:underline">Home</a>
-      <span class="mx-2 text-hairline">/</span>
-      <span class="text-ink-muted-48">Guides</span>
       <span class="mx-2 text-hairline">/</span>
       <span class="text-ink">Symptoms Guide</span>
     </div>
   </div>
 
-  <!-- Hero Tile (Light Canvas) -->
+  <!-- Hero Section -->
   <section class="bg-canvas py-12 px-4 transition-colors">
-    <div class="max-w-[720px] mx-auto text-center mb-8">
-      <span class="text-3xl mb-3 block">🩺</span>
-      <h1 class="font-display font-semibold text-3xl md:text-4xl text-ink tracking-apple-tight mb-4">
-        Pregnancy Symptoms Guide
+    <div class="max-w-[720px] mx-auto text-center flex flex-col gap-3">
+      <span class="text-3xl">🩺</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">
+        Pregnancy Symptoms Directory
       </h1>
-      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
-        Your body undergoes massive anatomical changes during pregnancy. Explore the physiological causes and clinical strategies to manage symptoms safely.
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed max-w-xl mx-auto">
+        Your body undergoes incredible changes during pregnancy. Explore clinical causes, relief strategies, and doctor advice for over 30 symptoms.
       </p>
     </div>
   </section>
 
-  <!-- Symptoms Grid Tile (Parchment Surface) -->
-  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
-    <div class="max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-      {symptomsData.map((symptom) => (
-        <div class="bg-canvas border border-hairline p-6 rounded-apple-lg hover:border-primary/20 transition-all flex flex-col gap-4">
-          <div class="flex justify-between items-baseline border-b border-hairline pb-2">
-            <h2 class="font-display font-semibold text-lg md:text-xl text-ink tracking-apple-tight">{symptom.name}</h2>
-            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-              {symptom.trimester}
-            </span>
-          </div>
-          
-          <div class="flex flex-col gap-2.5 text-xs md:text-sm text-ink-muted-80">
-            <p class="leading-relaxed">
-              <strong class="text-ink">Why it happens:</strong> {symptom.why}
+  <!-- Interactive Search -->
+  <section class="max-w-[960px] mx-auto px-4 mb-8">
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-5 transition-colors">
+      <div class="relative w-full">
+        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink-muted-48 pointer-events-none text-sm">
+          🔍
+        </span>
+        <input 
+          type="text" 
+          id="symptom-search" 
+          placeholder="Search symptoms (e.g. cramping, spotting, heartburn, sciatica)..." 
+          class="w-full pl-10 pr-4 py-3 bg-canvas-parchment border border-hairline rounded-apple-sm text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptoms Grid Directory (Parchment Surface) -->
+  <section class="bg-canvas-parchment py-12 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[960px] mx-auto">
+      <div id="symptoms-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {symptomItems.map((symptom) => (
+          <div 
+            class="symptom-card bg-canvas border border-hairline p-5 md:p-6 rounded-apple-lg hover:border-primary/20 transition-all flex flex-col gap-4"
+            data-name={symptom.name.toLowerCase()}
+            data-desc={symptom.description.toLowerCase()}
+          >
+            <div class="flex justify-between items-baseline border-b border-hairline pb-2.5">
+              <h2 class="font-display font-semibold text-[17px] md:text-lg text-ink tracking-apple-tight">{symptom.name}</h2>
+              <span class="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                {symptom.weeks}
+              </span>
+            </div>
+            
+            <p class="text-ink-muted-80 text-xs md:text-sm leading-relaxed line-clamp-3">
+              {symptom.description}
             </p>
-            <p class="leading-relaxed">
-              <strong class="text-ink">Safe relief tips:</strong> {symptom.relief}
-            </p>
+
+            <div class="mt-auto pt-3 border-t border-hairline/40 flex justify-between items-center text-xs">
+              <span class={`font-bold uppercase tracking-wider text-[10px] ${
+                symptom.normalcy === 'normal' ? 'text-green-600 dark:text-green-400' :
+                symptom.normalcy === 'common' ? 'text-blue-600 dark:text-blue-400' :
+                'text-orange-600 dark:text-orange-400'
+              }`}>
+                {symptom.normalcy}
+              </span>
+              <a href={`/symptoms/${symptom.slug}`} class="text-primary font-semibold hover:underline flex items-center gap-0.5">
+                Causes & Relief Guidelines <span>&rarr;</span>
+              </a>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+
+      <!-- No Results -->
+      <div id="no-symptoms" class="text-center py-16 bg-canvas border border-hairline rounded-apple-lg transition-colors flex flex-col gap-2 items-center" style="display: none;">
+        <span class="text-3xl">🩺</span>
+        <h3 class="font-semibold text-lg text-ink">No symptoms found</h3>
+        <p class="text-ink-muted-48 text-sm max-w-xs">Try searching for cramping, nausea, back pain, or fatigue.</p>
+      </div>
     </div>
   </section>
 
   <!-- Medical Alert and Warnings (Light Canvas) -->
   <section class="bg-canvas py-16 px-4 transition-colors">
-    <div class="max-w-[720px] mx-auto bg-[#e07a5f]/10 border border-[#e07a5f] p-6 rounded-apple-lg flex flex-col gap-3">
-      <h3 class="font-display font-semibold text-lg text-ink tracking-apple-tight flex items-center gap-2">
+    <div class="max-w-[720px] mx-auto bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 p-6 rounded-apple-lg flex flex-col gap-3">
+      <h3 class="font-display font-semibold text-lg text-red-800 dark:text-red-300 tracking-apple-tight flex items-center gap-2">
         <span>⚠️</span>
         <span>When to Call Your Doctor</span>
       </h3>
@@ -188,3 +124,32 @@ const symptomsData = [
     </div>
   </section>
 </Layout>
+
+<script>
+  const searchInput = document.getElementById('symptom-search') as HTMLInputElement;
+  const cards = document.querySelectorAll('.symptom-card');
+  const noSymptoms = document.getElementById('no-symptoms');
+
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const name = card.getAttribute('data-name') || '';
+      const desc = card.getAttribute('data-desc') || '';
+
+      if (name.includes(query) || desc.includes(query)) {
+        (card as HTMLElement).style.display = 'flex';
+        visibleCount++;
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0) {
+      noSymptoms!.style.display = 'flex';
+    } else {
+      noSymptoms!.style.display = 'none';
+    }
+  });
+</script>

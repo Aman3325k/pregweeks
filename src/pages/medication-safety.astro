@@ -1,0 +1,237 @@
+---
+// src/pages/medication-safety.astro
+import Layout from '../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../utils/seo';
+
+const title = "Pregnancy Medication Safety Directory | Safe OTC Drugs | PregWeeks";
+const description = "Search our clinical directory of 50+ common OTC and prescription medications to check their safety status during pregnancy. (Not medical advice).";
+const canonicalUrl = "https://pregweeks.com/medication-safety";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Medication Safety", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+
+// 52 Common Medications Database
+const medications = [
+  // Pain & Fever
+  { name: "Acetaminophen / Paracetamol (Tylenol)", category: "Pain & Fever", status: "safe", description: "The preferred medication for pain and fever relief throughout all trimesters when used at recommended doses.", alts: "None needed." },
+  { name: "Ibuprofen (Advil, Motrin)", category: "Pain & Fever", status: "avoid", description: "Avoid during pregnancy, especially after week 20. It can cause premature closure of the ductus arteriosus in baby's heart and reduce amniotic fluid.", alts: "Acetaminophen." },
+  { name: "Naproxen (Aleve)", category: "Pain & Fever", status: "avoid", description: "Non-steroidal anti-inflammatory drug (NSAID). Carries similar cardiovascular risks for the baby as Ibuprofen.", alts: "Acetaminophen." },
+  { name: "Aspirin (High Dose)", category: "Pain & Fever", status: "avoid", description: "Standard pain relief doses can cause maternal and fetal bleeding complications. Low-dose (81 mg) is safe only if prescribed by an OB-GYN to prevent preeclampsia.", alts: "Acetaminophen." },
+  { name: "Celecoxib (Celebrex)", category: "Pain & Fever", status: "avoid", description: "NSAID, poses high risks of kidney issues and arterial duct closure in the baby during late pregnancy.", alts: "Acetaminophen." },
+
+  // Allergy & Cold
+  { name: "Loratadine (Claritin)", category: "Allergies & Cold", status: "safe", description: "Second-generation antihistamine. Extensively studied and considered safe for allergy relief during pregnancy.", alts: "Cetirizine or Fexofenadine." },
+  { name: "Cetirizine (Zyrtec)", category: "Allergies & Cold", status: "safe", description: "Non-drowsy antihistamine with strong safety profiles during pregnancy.", alts: "Loratadine." },
+  { name: "Diphenhydramine (Benadryl)", category: "Allergies & Cold", status: "safe", description: "First-generation antihistamine. Safe for allergies and often recommended by doctors as a sleep aid or for nausea.", alts: "None needed." },
+  { name: "Pseudoephedrine (Sudafed)", category: "Allergies & Cold", status: "avoid", description: "Decongestant. Poses risk of birth defects (gastroschisis) in the first trimester and can raise maternal blood pressure.", alts: "Saline nasal sprays, steam inhalation, or neti pots." },
+  { name: "Phenylephrine (Sudafed PE)", category: "Allergies & Cold", status: "avoid", description: "Avoid. Limits blood flow to the placenta and has insufficient safety data during pregnancy.", alts: "Saline nasal spray." },
+  { name: "Dextromethorphan (Robitussin)", category: "Allergies & Cold", status: "caution", description: "Common cough suppressant. Safe in standard doses, but avoid alcohol-containing formulations.", alts: "Warm honey water (if not diabetic) or steam." },
+  { name: "Guaifenesin (Mucinex)", category: "Allergies & Cold", status: "caution", description: "Expectorant. Generally safe in the second and third trimesters, but avoid in the first trimester unless directed by a doctor.", alts: "Increase fluid intake to thin mucus naturally." },
+  { name: "Chlorpheniramine", category: "Allergies & Cold", status: "safe", description: "One of the oldest antihistamines with a long history of safe use during pregnancy.", alts: "Loratadine." },
+  { name: "Fexofenadine (Allegra)", category: "Allergies & Cold", status: "safe", description: "Antihistamine considered safe, though Loratadine or Cetirizine are usually preferred due to more extensive data.", alts: "Loratadine." },
+  { name: "Fluticasone (Flonase)", category: "Allergies & Cold", status: "safe", description: "Nasal steroid spray. Minimal systemic absorption; safe for seasonal allergies.", alts: "Saline nasal spray." },
+
+  // Stomach & Digestion
+  { name: "Calcium Carbonate (Tums)", category: "Stomach & Digestion", status: "safe", description: "Excellent and safe for acid reflux and heartburn. Also provides extra calcium.", alts: "None needed." },
+  { name: "Ranitidine (Zantac)", category: "Stomach & Digestion", status: "consult", description: "H2 Blocker. Note: Many brands have been recalled. Consult your doctor for current safe heartburn blockers.", alts: "Famotidine." },
+  { name: "Famotidine (Pepcid)", category: "Stomach & Digestion", status: "safe", description: "H2 blocker used to treat severe heartburn and GERD. Deemed safe in pregnancy.", alts: "Calcium carbonate." },
+  { name: "Bismuth Subsalicylate (Pepto-Bismol)", category: "Stomach & Digestion", status: "avoid", description: "Contains salicylates (related to aspirin), which increase bleeding risks and can cause heart issues in the baby in late pregnancy.", alts: "Antacids (Tums), Simethicone for gas." },
+  { name: "Loperamide (Imodium)", category: "Stomach & Digestion", status: "caution", description: "Anti-diarrheal. Generally safe for short-term use in 2nd and 3rd trimesters. Avoid in the 1st trimester without consulting your doctor.", alts: "Hydration with electrolytes, BRAT diet (Bananas, Rice, Applesauce, Toast)." },
+  { name: "Simethicone (Gas-X)", category: "Stomach & Digestion", status: "safe", description: "Not absorbed into the bloodstream. Completely safe for relieving gas and bloating.", alts: "None needed." },
+  { name: "Docusate Sodium (Colace)", category: "Stomach & Digestion", status: "safe", description: "Stool softener. Safe for treating pregnancy-induced constipation.", alts: "Increase dietary fiber and hydration." },
+  { name: "Senna (Senokot)", category: "Stomach & Digestion", status: "caution", description: "Stimulant laxative. Use only occasionally if stool softeners fail, as it can cause abdominal cramping.", alts: "Docusate sodium." },
+  { name: "Polyethylene Glycol (Miralax)", category: "Stomach & Digestion", status: "safe", description: "Osmotic laxative. Minimally absorbed; safe for short-term relief of constipation.", alts: "Fiber supplements." },
+
+  // Antibiotics & Antivirals
+  { name: "Amoxicillin", category: "Infections", status: "safe", description: "Penicillin-class antibiotic. Widely used and highly safe for bacterial infections during pregnancy.", alts: "Consult doctor for specific infections." },
+  { name: "Penicillin", category: "Infections", status: "safe", description: "The standard and safest antibiotic for bacterial infections and GBS treatment in pregnancy.", alts: "Cephalosporins." },
+  { name: "Doxycycline", category: "Infections", status: "avoid", description: "Tetracycline class. Can stain baby's developing teeth permanently and affect bone growth.", alts: "Amoxicillin, Azithromycin." },
+  { name: "Tetracycline", category: "Infections", status: "avoid", description: "Carries high risk of maternal liver toxicity and discoloration of baby's deciduous teeth.", alts: "Safe antibiotics." },
+  { name: "Azithromycin", category: "Infections", status: "safe", description: "Macrolide antibiotic. Deemed safe for chlamydia, sinus infections, and strep throat.", alts: "Penicillin." },
+  { name: "Nitrofurantoin (Macrobid)", category: "Infections", status: "safe", description: "Commonly used to treat UTIs. Highly safe, but should be avoided at term (weeks 38-40) due to newborn red blood cell risks.", alts: "Cephalexin." },
+  { name: "Cephalexin (Keflex)", category: "Infections", status: "safe", description: "Cephalosporin-class antibiotic. Safe for treating urinary tract and skin infections.", alts: "Penicillin." },
+  { name: "Acyclovir (Zovirax)", category: "Infections", status: "consult", description: "Antiviral for herpes. Safe and commonly prescribed in late pregnancy to prevent active outbreak during delivery.", alts: "Valacyclovir." },
+
+  // Skin & Acne
+  { name: "Salicylic Acid (High Dose)", category: "Skin & Acne", status: "avoid", description: "Oral salicylic acid and high-concentration chemical peels should be avoided. Low-dose OTC washes (<2%) are generally safe.", alts: "Glycolic acid or Azelaic acid." },
+  { name: "Isotretinoin (Accutane)", category: "Skin & Acne", status: "avoid", description: "Extremely dangerous teratogen. Causes severe, life-threatening birth defects in baby's brain, face, and heart. Must be avoided completely.", alts: "Consult a dermatologist for safe topical options." },
+  { name: "Benzoyl Peroxide", category: "Skin & Acne", status: "caution", description: "Topical acne treatment. Only 5% is absorbed through skin. Safe in low concentrations (5% or less), but use sparingly.", alts: "Azelaic acid." },
+  { name: "Retinol / Retinoids (Topical)", category: "Skin & Acne", status: "avoid", description: "Topical vitamin A derivatives. While absorption is low, clinical guidelines recommend avoiding them completely due to oral retinoid toxicity risks.", alts: "Hyaluronic acid, glycolic acid." },
+  { name: "Azelaic Acid", category: "Skin & Acne", status: "safe", description: "Topical cream safe for treating pregnancy acne and melasma.", alts: "None needed." },
+
+  // Other Common Drugs
+  { name: "Metformin", category: "Chronic Conditions", status: "consult", description: "Oral diabetes medication. Often continued for gestational diabetes or PCOS, but requires close endocrinologist management.", alts: "Insulin (preferred standard)." },
+  { name: "Insulin", category: "Chronic Conditions", status: "safe", description: "Does not cross the placenta. The gold-standard and safest treatment for controlling gestational diabetes.", alts: "None needed." },
+  { name: "Albuterol (ProAir)", category: "Chronic Conditions", status: "safe", description: "Rescue asthma inhaler. Ensuring maternal oxygenation is vital; benefits outweigh minor risks.", alts: "None needed." },
+  { name: "Levothyroxine (Synthroid)", category: "Chronic Conditions", status: "safe", description: "Synthetic thyroid hormone. Crucial for treating maternal hypothyroidism. Dosage needs regular monitoring.", alts: "None needed." },
+  { name: "Lisinopril", category: "Chronic Conditions", status: "avoid", description: "ACE inhibitor for blood pressure. Can cause severe fetal kidney failure, skull malformations, and death.", alts: "Labetalol, Methyldopa." },
+  { name: "Labetalol", category: "Chronic Conditions", status: "safe", description: "The preferred, safe beta-blocker for treating high blood pressure / gestational hypertension.", alts: "Methyldopa." },
+  { name: "Methyldopa", category: "Chronic Conditions", status: "safe", description: "Anti-hypertensive with a long-standing safety record in pregnancy.", alts: "Labetalol." },
+  { name: "Fluoxetine (Prozac)", category: "Chronic Conditions", status: "consult", description: "SSRI antidepressant. Managing maternal mental health is critical; benefits often outweigh risks, but consult your psychiatrist.", alts: "Sertraline (Zoloft) is often preferred due to lower infant withdrawal risks." },
+  { name: "Sertraline (Zoloft)", category: "Chronic Conditions", status: "consult", description: "The most widely studied SSRI in pregnancy, generally preferred for depression due to low placental transfer.", alts: "Consult doctor." },
+  { name: "Fluconazole (Diflucan)", category: "Infections", status: "avoid", description: "Oral yeast infection pill. Associated with increased miscarriage risks. Use topical yeast creams instead.", alts: "Miconazole or Clotrimazole topical creams." },
+  { name: "Miconazole (Monistat)", category: "Infections", status: "safe", description: "Topical OTC vaginal cream. Safe for treating yeast infections during all trimesters.", alts: "Clotrimazole." },
+  { name: "Warfarin (Coumadin)", category: "Chronic Conditions", status: "avoid", description: "Blood thinner. Can cause severe congenital anomalies (fetal warfarin syndrome) and bleeding.", alts: "Heparin or Lovenox (low molecular weight heparin)." },
+  { name: "Heparin", category: "Chronic Conditions", status: "safe", description: "Injectable blood thinner. Large molecule that does not cross the placenta. Safe for blood clotting disorders.", alts: "Lovenox." },
+  { name: "Guaifenesin with Codeine", category: "Allergies & Cold", status: "avoid", description: "Narcotic cough syrup. Can cause newborn breathing depression and neonatal withdrawal syndrome.", alts: "Plain guaifenesin (caution) or non-pharmacological relief." }
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Medication Safety</span>
+    </nav>
+
+    <!-- Header & Disclaimer -->
+    <div class="text-center max-w-xl mx-auto mb-8 flex flex-col gap-3">
+      <span class="text-3xl">💊</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Medication Safety Directory</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        Search pregnancy safety statuses for 50+ common over-the-counter (OTC) and prescription medications.
+      </p>
+    </div>
+
+    <!-- Critical Clinical Disclaimer Panel -->
+    <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-apple-lg p-5 text-xs md:text-sm text-ink-muted-80 flex flex-col gap-3 mb-8">
+      <h3 class="font-display font-semibold text-red-800 dark:text-red-300 text-sm md:text-base flex items-center gap-1.5">
+        <span>⚠️</span>
+        <span>Critical Medical Disclaimer</span>
+      </h3>
+      <p class="leading-relaxed">
+        <strong>Never start, stop, or change the dose of any medication during pregnancy without consulting your obstetrician, doctor, or midwife.</strong> 
+      </p>
+      <p class="leading-relaxed text-ink-muted-48 text-[11px] md:text-xs">
+        This database is for informational purposes only and does not replace medical consultation. Every pregnancy is unique, and medications must be evaluated on a case-by-case risk/benefit ratio by your licensed healthcare provider.
+      </p>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-5 mb-8 transition-colors flex flex-col sm:flex-row gap-4 items-center">
+      <div class="relative w-full sm:flex-1">
+        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink-muted-48 pointer-events-none text-sm">
+          🔍
+        </span>
+        <input 
+          type="text" 
+          id="med-search" 
+          placeholder="Search medications (e.g. Advil, Tylenol, Claritin)..." 
+          class="w-full pl-10 pr-4 py-3 bg-canvas-parchment border border-hairline rounded-apple-sm text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm md:text-base"
+        />
+      </div>
+
+      <div class="flex bg-canvas-parchment p-1 rounded-apple-sm border border-hairline w-full sm:w-auto gap-1 text-[11px] font-semibold">
+        <button class="flex-1 sm:flex-initial px-3 py-1.5 rounded-apple-xs cursor-pointer transition-all bg-canvas shadow-sm text-primary" data-med-filter="all">All</button>
+        <button class="flex-1 sm:flex-initial px-2.5 py-1.5 rounded-apple-xs cursor-pointer transition-all text-ink-muted-80 hover:text-ink" data-med-filter="safe">🟢 Safe</button>
+        <button class="flex-1 sm:flex-initial px-2.5 py-1.5 rounded-apple-xs cursor-pointer transition-all text-ink-muted-80 hover:text-ink" data-med-filter="caution">🟡 Caution</button>
+        <button class="flex-1 sm:flex-initial px-2.5 py-1.5 rounded-apple-xs cursor-pointer transition-all text-ink-muted-80 hover:text-ink" data-med-filter="avoid">🔴 Avoid</button>
+      </div>
+    </div>
+
+    <!-- Medication Cards List -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="med-list">
+      {medications.map((med) => (
+        <div 
+          class="med-card bg-canvas border border-hairline p-5 rounded-apple-lg hover:border-primary/20 transition-all flex flex-col gap-3"
+          data-med-status={med.status}
+          data-med-name={med.name.toLowerCase()}
+          data-med-desc={med.description.toLowerCase()}
+        >
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-[9px] uppercase font-bold tracking-wider text-ink-muted-48">{med.category}</span>
+              <h2 class="font-display font-semibold text-[15px] md:text-base text-ink leading-tight mt-0.5">{med.name}</h2>
+            </div>
+            
+            <span class={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+              med.status === 'safe' ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300' :
+              med.status === 'caution' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/40 dark:text-yellow-300' :
+              med.status === 'avoid' ? 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300' :
+              'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300'
+            }`}>
+              {med.status === 'safe' ? 'Safe' : med.status === 'caution' ? 'Caution' : med.status === 'avoid' ? 'Avoid' : 'Consult'}
+            </span>
+          </div>
+
+          <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+            {med.description}
+          </p>
+
+          <div class="mt-auto pt-2 border-t border-hairline/40 text-[11px] text-ink-muted-48">
+            <strong>Safe Alternative:</strong> {med.alts}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- No Match -->
+    <div id="no-meds" class="text-center py-16 bg-canvas border border-hairline rounded-apple-lg transition-colors flex flex-col gap-2 items-center" style="display: none;">
+      <span class="text-3xl">💊</span>
+      <h3 class="font-semibold text-lg text-ink">No medications found</h3>
+      <p class="text-ink-muted-48 text-sm max-w-xs">We couldn't find any match for your search. Try searching for Tylenol, Advil, or Motrin.</p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('med-search') as HTMLInputElement;
+  const filterBtns = document.querySelectorAll('[data-med-filter]');
+  const cards = document.querySelectorAll('.med-card');
+  const noMeds = document.getElementById('no-meds');
+
+  let currentSearch = '';
+  let currentFilter = 'all';
+
+  function filterMeds() {
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const name = card.getAttribute('data-med-name') || '';
+      const desc = card.getAttribute('data-med-desc') || '';
+      const status = card.getAttribute('data-med-status') || '';
+
+      const matchesSearch = name.includes(currentSearch) || desc.includes(currentSearch);
+      // 'consult' maps into 'caution' filter for search aggregation or remains custom
+      const matchesFilter = currentFilter === 'all' || status === currentFilter || (currentFilter === 'caution' && status === 'consult');
+
+      if (matchesSearch && matchesFilter) {
+        (card as HTMLElement).style.display = 'flex';
+        visibleCount++;
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0) {
+      noMeds!.style.display = 'flex';
+    } else {
+      noMeds!.style.display = 'none';
+    }
+  }
+
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value.toLowerCase().trim();
+    filterMeds();
+  });
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+        b.classList.add('text-ink-muted-80');
+      });
+      btn.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+      btn.classList.remove('text-ink-muted-80');
+
+      currentFilter = btn.getAttribute('data-med-filter') || 'all';
+      filterMeds();
+    });
+  });
+</script>

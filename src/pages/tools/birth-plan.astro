@@ -1,0 +1,530 @@
+---
+// src/pages/tools/birth-plan.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Interactive Birth Plan Builder | Customize & Print | PregWeeks";
+const description = "Create a customized, printable birth plan. Choose your labor environment, pain management, delivery, newborn care, and postpartum preferences.";
+const canonicalUrl = "https://pregweeks.com/tools/birth-plan";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Birth Plan Builder", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[840px] mx-auto px-4 py-8 md:py-12 printable-container">
+    
+    <!-- Breadcrumbs (Hidden in Print) -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5 no-print" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <a href="/tools/due-date-calculator" class="hover:text-primary transition-colors">Tools</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Birth Plan Builder</span>
+    </nav>
+
+    <!-- Header Section (Hidden in Print) -->
+    <div class="text-center max-w-xl mx-auto mb-10 flex flex-col gap-3 no-print">
+      <span class="text-3xl">📝</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Birth Plan Builder</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        Customize your preferences for labor, birth, and newborn care. Fill out this simple form, save your options, and print a clean copy for your OB-GYN, midwives, and hospital staff.
+      </p>
+    </div>
+
+    <!-- Active Form (Hidden in Print when viewing printed document) -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors flex flex-col gap-6 no-print" id="form-container">
+      <form id="birth-plan-form" class="flex flex-col gap-8">
+        
+        <!-- Section 1: Basic Info -->
+        <fieldset class="flex flex-col gap-4 border-b border-hairline pb-6">
+          <legend class="font-display font-semibold text-lg text-ink mb-2">1. Personal Information</legend>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="mother-name" class="font-semibold text-xs text-ink">Mother's Full Name:</label>
+              <input type="text" id="mother-name" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="partner-name" class="font-semibold text-xs text-ink">Partner / Support Name:</label>
+              <input type="text" id="partner-name" class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="obgyn-name" class="font-semibold text-xs text-ink">Obstetrician / Midwife Name:</label>
+              <input type="text" id="obgyn-name" required class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="hospital-name" class="font-semibold text-xs text-ink">Planned Delivery Location:</label>
+              <input type="text" id="hospital-name" placeholder="e.g. Memorial Hospital, Birth Center" class="p-2.5 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary" />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Section 2: Environment -->
+        <fieldset class="flex flex-col gap-4 border-b border-hairline pb-6">
+          <legend class="font-display font-semibold text-lg text-ink mb-2">2. Birth Environment</legend>
+          <p class="text-xs text-ink-muted-48 -mt-2">Select how you would like your birthing room to feel:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="env" value="low-lighting" class="mt-1" />
+              <span>Low/dimmed lighting in the room</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="env" value="music" class="mt-1" />
+              <span>Play my own music playlist</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="env" value="minimal-staff" class="mt-1" />
+              <span>Minimal staff present during labor</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="env" value="own-clothes" class="mt-1" />
+              <span>Wear my own clothes instead of hospital gown</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="env" value="aromatherapy" class="mt-1" />
+              <span>Use aromatherapy/diffuser in the room</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="env" value="photography" class="mt-1" />
+              <span>Permit photography/videography</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Section 3: Labor & Pain Management -->
+        <fieldset class="flex flex-col gap-4 border-b border-hairline pb-6">
+          <legend class="font-display font-semibold text-lg text-ink mb-2">3. Labor & Pain Management</legend>
+          <p class="text-xs text-ink-muted-48 -mt-2">Choose your preferred pain relief and mobility strategies:</p>
+          
+          <div class="flex flex-col gap-2">
+            <span class="font-semibold text-xs text-ink">Pain Management Path:</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <label class="flex items-center gap-2 text-sm text-ink-muted-80 cursor-pointer">
+                <input type="radio" name="pain" value="natural" checked />
+                <span>Natural (No Epidural)</span>
+              </label>
+              <label class="flex items-center gap-2 text-sm text-ink-muted-80 cursor-pointer">
+                <input type="radio" name="pain" value="epidural-early" />
+                <span>Epidural as early as possible</span>
+              </label>
+              <label class="flex items-center gap-2 text-sm text-ink-muted-80 cursor-pointer">
+                <input type="radio" name="pain" value="epidural-later" />
+                <span>Epidural only if requested</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 mt-2">
+            <span class="font-semibold text-xs text-ink">Comfort & Comforting Techniques:</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+                <input type="checkbox" name="labor" value="mobility" />
+                <span>I wish to walk around and remain mobile during labor</span>
+              </label>
+              <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+                <input type="checkbox" name="labor" value="tub-shower" />
+                <span>Use of labor tub or shower for pain relief</span>
+              </label>
+              <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 pointer-events-auto cursor-pointer">
+                <input type="checkbox" name="labor" value="eating" />
+                <span>I would like to eat light snacks and drink clear fluids</span>
+              </label>
+              <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+                <input type="checkbox" name="labor" value="heplock" />
+                <span>Hep-lock only (no continuous IV lines unless needed)</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Section 4: Delivery -->
+        <fieldset class="flex flex-col gap-4 border-b border-hairline pb-6">
+          <legend class="font-display font-semibold text-lg text-ink mb-2">4. Delivery Preferences</legend>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="delivery" value="positions" />
+              <span>Allow freedom to push in different positions (squatting, hands/knees)</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="delivery" value="mirror" />
+              <span>Provide a mirror to view baby crowning</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="delivery" value="partner-cut" />
+              <span>My partner would like to cut the umbilical cord</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="delivery" value="episiotomy" />
+              <span>Avoid episiotomy unless medically necessary (prefer natural tearing)</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Section 5: Newborn Care & Postpartum -->
+        <fieldset class="flex flex-col gap-4 border-b border-hairline pb-6">
+          <legend class="font-display font-semibold text-lg text-ink mb-2">5. Newborn & Postpartum</legend>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="newborn" value="skin-to-skin" />
+              <span>Immediate skin-to-skin contact for at least 1 hour after birth</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="newborn" value="delayed-cord" />
+              <span>Delayed cord clamping (wait until cord stops pulsing)</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="newborn" value="breastfeeding" />
+              <span>Exclusive breastfeeding; no formula or pacifiers unless required</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="newborn" value="rooming-in" />
+              <span>Baby should stay in my room at all times (rooming-in)</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="newborn" value="delay-bath" />
+              <span>Delay baby's first bath for at least 24 hours</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm text-ink-muted-80 cursor-pointer">
+              <input type="checkbox" name="newborn" value="vitamin-k" />
+              <span>Administer standard Vitamin K shot and eye ointment</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Section 6: Special Requests -->
+        <fieldset class="flex flex-col gap-2">
+          <legend class="font-display font-semibold text-lg text-ink mb-2">6. Special Requests / Comments</legend>
+          <textarea id="special-requests" rows="3" placeholder="Add any specific cultural preferences, fears, or C-section backup plans..." class="p-3 border border-hairline rounded-apple-sm bg-canvas text-ink text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 w-full resize-y font-sans"></textarea>
+        </fieldset>
+
+        <div class="flex gap-4">
+          <button type="submit" class="flex-1 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base">Generate Printable Birth Plan</button>
+          <button type="button" id="clear-plan" class="border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-5 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm">Clear Saved</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Generated Plan Section (Will be displayed alone in Print) -->
+    <div id="output-plan" class="bg-canvas border border-hairline rounded-apple-lg p-8 md:p-12 transition-colors flex flex-col gap-6" style="display: none;">
+      <div class="text-center border-b-2 border-primary pb-5 flex flex-col gap-2">
+        <h1 class="text-3xl font-display font-bold text-ink uppercase tracking-wider">My Birth Plan</h1>
+        <p class="text-xs text-ink-muted-48">Prepared via PregWeeks.com &bull; Please keep this with my hospital charts</p>
+      </div>
+
+      <!-- Basic Details Table -->
+      <div class="grid grid-cols-2 gap-4 border-b border-hairline pb-5 text-sm">
+        <div><strong class="text-ink">Mother:</strong> <span id="out-mother-name">--</span></div>
+        <div><strong class="text-ink">Partner:</strong> <span id="out-partner-name">--</span></div>
+        <div><strong class="text-ink">OB-GYN / Midwife:</strong> <span id="out-obgyn-name">--</span></div>
+        <div><strong class="text-ink">Location:</strong> <span id="out-hospital-name">--</span></div>
+      </div>
+
+      <!-- Plan Sections -->
+      <div class="flex flex-col gap-6 text-sm">
+        <!-- Environment Preferences -->
+        <div id="out-section-env" class="flex flex-col gap-1.5">
+          <h2 class="font-semibold text-primary uppercase text-xs tracking-wider border-b border-hairline pb-1">Room & Environment Preferences</h2>
+          <ul class="list-disc list-inside space-y-1 text-ink-muted-80 pl-2" id="out-env-list"></ul>
+        </div>
+        
+        <!-- Labor Preferences -->
+        <div id="out-section-labor" class="flex flex-col gap-1.5">
+          <h2 class="font-semibold text-primary uppercase text-xs tracking-wider border-b border-hairline pb-1">Labor & Pain Management</h2>
+          <ul class="list-disc list-inside space-y-1 text-ink-muted-80 pl-2" id="out-labor-list"></ul>
+        </div>
+
+        <!-- Delivery Preferences -->
+        <div id="out-section-delivery" class="flex flex-col gap-1.5">
+          <h2 class="font-semibold text-primary uppercase text-xs tracking-wider border-b border-hairline pb-1">Delivery & Crowning Preferences</h2>
+          <ul class="list-disc list-inside space-y-1 text-ink-muted-80 pl-2" id="out-delivery-list"></ul>
+        </div>
+
+        <!-- Newborn Preferences -->
+        <div id="out-section-newborn" class="flex flex-col gap-1.5">
+          <h2 class="font-semibold text-primary uppercase text-xs tracking-wider border-b border-hairline pb-1">Immediate Newborn Care & Postpartum</h2>
+          <ul class="list-disc list-inside space-y-1 text-ink-muted-80 pl-2" id="out-newborn-list"></ul>
+        </div>
+
+        <!-- Special Requests -->
+        <div id="out-section-special" class="flex flex-col gap-1.5" style="display: none;">
+          <h2 class="font-semibold text-primary uppercase text-xs tracking-wider border-b border-hairline pb-1">Special Requests & Medical Backup Plans</h2>
+          <p class="text-ink-muted-80 pl-2 leading-relaxed whitespace-pre-line" id="out-special-val"></p>
+        </div>
+      </div>
+
+      <!-- Patient & Provider Signature Lines (Important for Clinical Use) -->
+      <div class="grid grid-cols-2 gap-8 border-t border-hairline pt-10 mt-6 text-xs text-ink-muted-48">
+        <div class="flex flex-col gap-6">
+          <div class="border-b border-ink/40 w-full h-8"></div>
+          <span>Patient Signature / Date</span>
+        </div>
+        <div class="flex flex-col gap-6">
+          <div class="border-b border-ink/40 w-full h-8"></div>
+          <span>Lead Attending Clinician Signature / Date</span>
+        </div>
+      </div>
+
+      <!-- Action buttons (Hidden in Print) -->
+      <div class="flex gap-4 mt-8 pt-4 border-t border-hairline/40 no-print">
+        <button type="button" id="print-plan" class="flex-2 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm">🖨️ Print Plan</button>
+        <button type="button" id="edit-plan" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm">✏️ Edit Details</button>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  /* Print Stylesheet integration */
+  @media print {
+    /* Hide all headers, footers, sidebars, buttons, and form inputs */
+    nav, footer, .no-print, button, form {
+      display: none !important;
+    }
+    
+    /* Center the document and expand to full width */
+    body {
+      background: white !important;
+      color: black !important;
+      font-size: 12pt !important;
+    }
+
+    .printable-container {
+      max-width: 100% !important;
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+    }
+
+    #output-plan {
+      display: block !important;
+      border: none !important;
+      padding: 0 !important;
+      background: transparent !important;
+    }
+
+    /* Keep signature lines spaced nicely */
+    .grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 20px !important;
+    }
+  }
+</style>
+
+<script>
+  const birthForm = document.getElementById('birth-plan-form') as HTMLFormElement;
+  const formContainer = document.getElementById('form-container');
+  const outputPlan = document.getElementById('output-plan');
+  
+  const mName = document.getElementById('mother-name') as HTMLInputElement;
+  const pName = document.getElementById('partner-name') as HTMLInputElement;
+  const oName = document.getElementById('obgyn-name') as HTMLInputElement;
+  const hName = document.getElementById('hospital-name') as HTMLInputElement;
+  const specialReq = document.getElementById('special-requests') as HTMLTextAreaElement;
+
+  const printBtn = document.getElementById('print-plan');
+  const editBtn = document.getElementById('edit-plan');
+  const clearBtn = document.getElementById('clear-plan');
+
+  // Load saved plan
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('pregweeks_birth_plan');
+    if (saved) {
+      const data = JSON.parse(saved);
+      mName.value = data.mother || '';
+      pName.value = data.partner || '';
+      oName.value = data.obgyn || '';
+      hName.value = data.hospital || '';
+      specialReq.value = data.special || '';
+
+      // Set checkboxes and radios
+      if (data.env) {
+        data.env.forEach((val: string) => {
+          const el = birthForm.querySelector(`input[name="env"][value="${val}"]`) as HTMLInputElement;
+          if (el) el.checked = true;
+        });
+      }
+      if (data.pain) {
+        const el = birthForm.querySelector(`input[name="pain"][value="${data.pain}"]`) as HTMLInputElement;
+        if (el) el.checked = true;
+      }
+      if (data.labor) {
+        data.labor.forEach((val: string) => {
+          const el = birthForm.querySelector(`input[name="labor"][value="${val}"]`) as HTMLInputElement;
+          if (el) el.checked = true;
+        });
+      }
+      if (data.delivery) {
+        data.delivery.forEach((val: string) => {
+          const el = birthForm.querySelector(`input[name="delivery"][value="${val}"]`) as HTMLInputElement;
+          if (el) el.checked = true;
+        });
+      }
+      if (data.newborn) {
+        data.newborn.forEach((val: string) => {
+          const el = birthForm.querySelector(`input[name="newborn"][value="${val}"]`) as HTMLInputElement;
+          if (el) el.checked = true;
+        });
+      }
+
+      // Display directly if saved
+      generatePlan(data);
+    }
+  });
+
+  birthForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Collect checked inputs
+    const envChecked = Array.from(birthForm.querySelectorAll('input[name="env"]:checked')).map(el => (el as HTMLInputElement).value);
+    const painValue = (birthForm.querySelector('input[name="pain"]:checked') as HTMLInputElement).value;
+    const laborChecked = Array.from(birthForm.querySelectorAll('input[name="labor"]:checked')).map(el => (el as HTMLInputElement).value);
+    const deliveryChecked = Array.from(birthForm.querySelectorAll('input[name="delivery"]:checked')).map(el => (el as HTMLInputElement).value);
+    const newbornChecked = Array.from(birthForm.querySelectorAll('input[name="newborn"]:checked')).map(el => (el as HTMLInputElement).value);
+
+    const data = {
+      mother: mName.value,
+      partner: pName.value,
+      obgyn: oName.value,
+      hospital: hName.value,
+      special: specialReq.value,
+      env: envChecked,
+      pain: painValue,
+      labor: laborChecked,
+      delivery: deliveryChecked,
+      newborn: newbornChecked
+    };
+
+    localStorage.setItem('pregweeks_birth_plan', JSON.stringify(data));
+    generatePlan(data);
+  });
+
+  editBtn?.addEventListener('click', () => {
+    formContainer!.style.display = 'block';
+    outputPlan!.style.display = 'none';
+    window.scrollTo({ top: formContainer!.offsetTop - 50, behavior: 'smooth' });
+  });
+
+  printBtn?.addEventListener('click', () => {
+    window.print();
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    localStorage.removeItem('pregweeks_birth_plan');
+    birthForm.reset();
+    outputPlan!.style.display = 'none';
+    formContainer!.style.display = 'block';
+  });
+
+  function generatePlan(data: any) {
+    // Fill text labels
+    document.getElementById('out-mother-name')!.textContent = data.mother || '--';
+    document.getElementById('out-partner-name')!.textContent = data.partner || 'None';
+    document.getElementById('out-obgyn-name')!.textContent = data.obgyn || '--';
+    document.getElementById('out-hospital-name')!.textContent = data.hospital || 'Not Specified';
+
+    // 1. Environment list
+    const envList = document.getElementById('out-env-list');
+    envList!.innerHTML = '';
+    const envLabels: Record<string, string> = {
+      'low-lighting': 'Low, dimmed lighting in the labor room.',
+      'music': 'Play custom music playlist during labor.',
+      'minimal-staff': 'Keep unnecessary hospital staff out of the room.',
+      'own-clothes': 'Wear personal clothing rather than hospital gowns.',
+      'aromatherapy': 'Aromatherapy or essential oil diffusers permitted.',
+      'photography': 'Allow birth photography and recording.'
+    };
+    if (data.env && data.env.length > 0) {
+      data.env.forEach((val: string) => {
+        envList!.innerHTML += `<li>${envLabels[val] || val}</li>`;
+      });
+      document.getElementById('out-section-env')!.style.display = 'flex';
+    } else {
+      document.getElementById('out-section-env')!.style.display = 'none';
+    }
+
+    // 2. Labor & Pain list
+    const laborList = document.getElementById('out-labor-list');
+    laborList!.innerHTML = '';
+    
+    // Add Pain management choice
+    const painLabels: Record<string, string> = {
+      'natural': 'Prefer a natural birth without epidural blocks.',
+      'epidural-early': 'Administer an epidural catheter as early as safely possible.',
+      'epidural-later': 'Open to epidural, but only administer if requested during labor.'
+    };
+    laborList!.innerHTML += `<li><strong>Pain Plan:</strong> ${painLabels[data.pain] || data.pain}</li>`;
+
+    const laborLabels: Record<string, string> = {
+      'mobility': 'Maintain movement, walking, and standing positions.',
+      'tub-shower': 'Access to warm bath water or shower streams for pain management.',
+      'eating': 'Allowed to consume light nourishment and ice chips.',
+      'heplock': 'Hep-lock access (no continuous intravenous lines unless medically required).'
+    };
+    if (data.labor && data.labor.length > 0) {
+      data.labor.forEach((val: string) => {
+        laborList!.innerHTML += `<li>${laborLabels[val] || val}</li>`;
+      });
+    }
+    document.getElementById('out-section-labor')!.style.display = 'flex';
+
+    // 3. Delivery list
+    const delList = document.getElementById('out-delivery-list');
+    delList!.innerHTML = '';
+    const delLabels: Record<string, string> = {
+      'positions': 'Free to try alternative pushing positions (squatting, hands-and-knees).',
+      'mirror': 'Place a birth mirror to view crowning.',
+      'partner-cut': 'My partner would like to cut the umbilical cord.',
+      'episiotomy': 'Avoid episiotomies unless baby is in acute distress.'
+    };
+    if (data.delivery && data.delivery.length > 0) {
+      data.delivery.forEach((val: string) => {
+        delList!.innerHTML += `<li>${delLabels[val] || val}</li>`;
+      });
+      document.getElementById('out-section-delivery')!.style.display = 'flex';
+    } else {
+      document.getElementById('out-section-delivery')!.style.display = 'none';
+    }
+
+    // 4. Newborn list
+    const newList = document.getElementById('out-newborn-list');
+    newList!.innerHTML = '';
+    const newLabels: Record<string, string> = {
+      'skin-to-skin': 'Immediate skin-to-skin contact for the first hour of birth.',
+      'delayed-cord': 'Delayed cord clamping to allow blood transfer.',
+      'breastfeeding': 'Exclusively breastfeed; do not offer formula or pacifier supplements.',
+      'rooming-in': 'Practice rooming-in; keep baby in my room 24/7.',
+      'delay-bath': 'Delay baby\'s first bath for at least 24 hours to preserve vernix.',
+      'vitamin-k': 'Approve standard Vitamin K injection and prophylactic eye ointment.'
+    };
+    if (data.newborn && data.newborn.length > 0) {
+      data.newborn.forEach((val: string) => {
+        newList!.innerHTML += `<li>${newLabels[val] || val}</li>`;
+      });
+      document.getElementById('out-section-newborn')!.style.display = 'flex';
+    } else {
+      document.getElementById('out-section-newborn')!.style.display = 'none';
+    }
+
+    // 5. Special Requests
+    const specVal = document.getElementById('out-special-val');
+    if (data.special && data.special.trim().length > 0) {
+      specVal!.textContent = data.special;
+      document.getElementById('out-section-special')!.style.display = 'flex';
+    } else {
+      document.getElementById('out-section-special')!.style.display = 'none';
+    }
+
+    // Toggle container display
+    formContainer!.style.display = 'none';
+    outputPlan!.style.display = 'block';
+    window.scrollTo({ top: outputPlan!.offsetTop - 50, behavior: 'smooth' });
+  }
+</script>

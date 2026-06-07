@@ -1,0 +1,81 @@
+---
+// src/pages/partner/index.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Pregnancy Partner & Dad Guide: Week-by-Week | PregWeeks";
+const description = "Discover how to support your pregnant partner week-by-week. Read about what she is feeling, how to help, and what to prepare from weeks 1 to 40.";
+const canonicalUrl = "https://pregweeks.com/partner";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Partner Guide", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+  <div class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Partner Guide</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="text-center max-w-2xl mx-auto mb-12 flex flex-col gap-3">
+      <span class="text-3xl mb-1 block">🤝</span>
+      <h1 class="font-display font-semibold text-3xl md:text-5xl text-ink tracking-apple-tight">Pregnancy Partner & Dad Guide</h1>
+      <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+        Pregnancy is a team effort. This week-by-week guide is built specifically for partners and dads to understand maternal changes, provide active support, and manage logistics together from Week 1 to Week 40.
+      </p>
+    </div>
+
+    <!-- Weeks Directory Grid -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 transition-colors flex flex-col gap-6">
+      <h2 class="font-display font-semibold text-xl md:text-2xl text-ink tracking-apple-tight text-center sm:text-left">Select Current Pregnancy Week</h2>
+      
+      <div class="grid grid-cols-4 sm:grid-cols-8 gap-3">
+        {Array.from({ length: 40 }, (_, i) => {
+          const week = i + 1;
+          return (
+            <a 
+              href={`/partner/${week}`}
+              class="aspect-square flex flex-col items-center justify-center border border-hairline rounded-apple-sm hover:border-primary hover:text-primary transition-all duration-200 active:scale-95 text-center p-2 bg-canvas-parchment/30 hover:bg-canvas font-semibold text-sm md:text-base text-ink"
+            >
+              <span class="text-[10px] text-ink-muted-48 uppercase font-bold tracking-wider leading-none mb-1">Week</span>
+              <span class="leading-none">{week}</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Quick Info Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div class="bg-canvas border border-hairline rounded-apple-lg p-5 flex flex-col gap-2">
+        <span class="text-xl">❤️</span>
+        <h3 class="font-semibold text-sm md:text-base text-ink">Understand Her Body</h3>
+        <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+          Learn what physical discomforts and emotional swings your partner is facing at each week.
+        </p>
+      </div>
+      <div class="bg-canvas border border-hairline rounded-apple-lg p-5 flex flex-col gap-2">
+        <span class="text-xl">🧹</span>
+        <h3 class="font-semibold text-sm md:text-base text-ink font-display">Actionable Support</h3>
+        <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+          Discover concrete actions you can take to relieve her stress, from chores to food prep.
+        </p>
+      </div>
+      <div class="bg-canvas border border-hairline rounded-apple-lg p-5 flex flex-col gap-2">
+        <span class="text-xl">📋</span>
+        <h3 class="font-semibold text-sm md:text-base text-ink font-display">Manage Logistics</h3>
+        <p class="text-ink-muted-80 text-xs md:text-[13px] leading-relaxed">
+          Get reminders for appointments, nursery setup, car seat installations, and birth plan printing.
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>
