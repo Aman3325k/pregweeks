@@ -36,7 +36,7 @@ export function getFAQSchema(questions: FAQItem[]) {
   };
 }
 
-export function getMedicalPageSchema(title: string, desc: string, url: string, image = "https://pregweeks.com/pregnancy-hero.png") {
+export function getMedicalPageSchema(title: string, desc: string, url: string, image = "https://pregweeks.com/pregnancy-hero.webp") {
   const currentDate = new Date().toISOString().split('T')[0];
   return {
     "@context": "https://schema.org",

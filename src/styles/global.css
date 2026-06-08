@@ -6,7 +6,7 @@
   /* Dynamic Mapped Theme Colors */
   --color-primary: var(--color-primary);
   --color-primary-focus: var(--color-primary-dark);
-  --color-primary-on-dark: var(--color-primary);
+  --color-primary-on-dark: var(--color-primary-on-dark);
   --color-ink: var(--color-text);
   --color-body-muted: var(--color-text-muted);
   --color-ink-muted-80: var(--color-text-muted);
@@ -45,13 +45,14 @@
 :root {
   --color-primary: #e91e8c;
   --color-primary-dark: #c2185b;
+  --color-primary-on-dark: #f472b6;
   --color-bg: #ffffff;
   --color-bg-dark: #0f0f0f;
   --color-surface: #fdf2f8;
   --color-surface-dark: #1a1a2e;
   --color-text: #1a1a1a;
   --color-text-dark: #f0f0f0;
-  --color-text-muted: #6b7280;
+  --color-text-muted: #4b5563;
   --color-border: #e5e7eb;
 }
 
@@ -59,7 +60,9 @@
   --color-bg: #0f0f0f;
   --color-surface: #1a1a2e;
   --color-text: #f0f0f0;
+  --color-text-muted: #9ca3af;
   --color-border: #27273f;
+  --color-primary-on-dark: #f472b6;
 }
 
 /* Custom Utilities */
