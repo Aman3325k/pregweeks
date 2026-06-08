@@ -1,10 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getBreadcrumbSchema } from '../utils/seo';
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Contact", url: "https://pregweeks.com/contact" }
+]);
 ---
 
 <Layout 
   title="Contact Us | PregWeeks"
   description="Have questions or suggestions? Contact the PregWeeks team directly."
+  canonicalUrl="https://pregweeks.com/contact"
+  schemas={[breadcrumbs]}
 >
   <main class="max-w-2xl mx-auto px-4 py-12">
     <!-- Breadcrumb -->

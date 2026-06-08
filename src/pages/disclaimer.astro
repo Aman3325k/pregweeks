@@ -1,10 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getBreadcrumbSchema } from '../utils/seo';
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Medical Disclaimer", url: "https://pregweeks.com/disclaimer" }
+]);
 ---
 
 <Layout 
   title="Medical Disclaimer | PregWeeks"
   description="Read the PregWeeks Medical Disclaimer. All content, calculators, and tracking tools are for educational purposes only."
+  canonicalUrl="https://pregweeks.com/disclaimer"
+  schemas={[breadcrumbs]}
 >
   <main class="max-w-3xl mx-auto px-4 py-12">
     <!-- Breadcrumb -->

@@ -78,6 +78,9 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     <slot name="head" />
   </head>
   <body class="bg-canvas text-ink antialiased flex flex-col min-h-screen">
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 bg-[#e91e8c] text-white px-4 py-2 rounded-full z-50 font-semibold text-xs tracking-wide">Skip to content</a>
+
     <!-- Thin Scroll Progress Bar (Top) -->
     <div class="fixed top-0 left-0 w-full h-[3px] bg-neutral-100 dark:bg-neutral-800 z-50 print:hidden" id="global-scroll-indicator" style="display: none;">
       <div id="global-scroll-indicator-bar" class="h-full bg-primary w-0 transition-all duration-75"></div>
@@ -204,7 +207,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     </div>
 
     <!-- Main Content Slot -->
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
 
@@ -301,7 +304,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
             class="w-full pl-8 pr-12 py-2.5 text-sm text-ink bg-canvas-parchment rounded-lg border border-hairline focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary shadow-none"
           />
           <span class="absolute left-7 top-6 text-neutral-400 text-xs">🔍</span>
-          <button id="close-global-search" class="absolute right-4 top-5 text-neutral-400 hover:text-neutral-700 text-xs font-semibold px-2 py-1 bg-canvas-parchment rounded min-h-[32px] flex items-center justify-center">
+          <button id="close-global-search" class="absolute right-4 top-5 text-neutral-400 hover:text-neutral-700 text-xs font-semibold px-2 py-1 bg-canvas-parchment rounded min-h-[32px] flex items-center justify-center" aria-label="Close search">
             Esc
           </button>
         </div>

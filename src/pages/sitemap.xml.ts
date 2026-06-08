@@ -19,6 +19,7 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/symptoms',
     'https://pregweeks.com/nutrition',
     'https://pregweeks.com/faq',
+    'https://pregweeks.com/food/sushi',
     // Phase 1 Expansion
     'https://pregweeks.com/food-safety',
     'https://pregweeks.com/tools/ivf-calculator',

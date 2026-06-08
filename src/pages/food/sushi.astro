@@ -1,0 +1,132 @@
+---
+// src/pages/food/sushi.astro
+import Layout from '../../layouts/Layout.astro';
+import { getBreadcrumbSchema, getFAQSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const title = "Is Sushi Safe During Pregnancy? Raw vs. Cooked Sushi | PregWeeks";
+const description = "Find out if it is safe to eat sushi during pregnancy. Learn about raw fish listeria and parasite risks, safe cooked alternatives, and clinical doctor tips.";
+const canonicalUrl = "https://pregweeks.com/food/sushi";
+
+const faqs = [
+  {
+    q: "Can I eat raw fish sushi while pregnant?",
+    a: "No. Raw fish sushi (sashimi, rolls containing raw tuna or salmon) should be avoided due to the risks of parasites (anisakis) and bacteria (Listeria) that can cause severe gastrointestinal illness and endanger the fetus."
+  },
+  {
+    q: "Is cooked sushi safe during pregnancy?",
+    a: "Yes. Fully cooked rolls like California rolls (crab stick), tempura rolls, and avocado rolls are generally safe, provided they are prepared in a clean environment."
+  },
+  {
+    q: "What is the doctor's tip for ordering sushi during pregnancy?",
+    a: "Ask the sushi chef to use clean cutting boards and knives to prevent cross-contamination with raw fish juices."
+  }
+];
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Food Safety", url: "https://pregweeks.com/food-safety" },
+  { name: "Sushi", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+const faqSchema = getFAQSchema(faqs);
+---
+
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema, faqSchema]}>
+  <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
+    <!-- Breadcrumbs -->
+    <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <span>&rsaquo;</span>
+      <a href="/food-safety" class="hover:text-primary transition-colors">Food Safety</a>
+      <span>&rsaquo;</span>
+      <span class="text-ink font-medium">Sushi</span>
+    </nav>
+
+    <!-- Sushi Detail Card -->
+    <article class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors flex flex-col gap-6">
+      <div class="border-b border-hairline pb-5">
+        <span class="text-[10px] md:text-xs font-semibold text-ink-muted-48 uppercase tracking-wider">Seafood</span>
+        <h1 class="text-2xl md:text-4xl font-display font-semibold tracking-apple-tight mt-1">Sushi during Pregnancy</h1>
+        <span class="text-[10px] text-ink-muted-48 block mt-1">Last reviewed by medical team: June 2026</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Raw Sushi Box -->
+        <div class="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 p-5 rounded-apple-lg flex flex-col gap-3 justify-between">
+          <div>
+            <span class="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-widest block">🔴 Avoid Entirely</span>
+            <h2 class="text-lg font-bold text-ink mt-1">Raw Fish Sushi</h2>
+            <p class="text-xs text-ink-muted-80 leading-relaxed mt-2">
+              Raw seafood poses risks from bacteria (Listeria) and parasites (Anisakis) which can cause foodborne illness dangerous to pregnancy.
+            </p>
+          </div>
+          <a href="/food/sushi-raw" class="text-primary hover:underline text-xs font-semibold mt-3 block min-h-[44px] flex items-center">
+            Read Raw Sushi Guide &rarr;
+          </a>
+        </div>
+
+        <!-- Cooked Sushi Box -->
+        <div class="bg-green-50/50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/50 p-5 rounded-apple-lg flex flex-col gap-3 justify-between">
+          <div>
+            <span class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-widest block">🟢 Generally Safe</span>
+            <h2 class="text-lg font-bold text-ink mt-1">Cooked & Veggie Sushi</h2>
+            <p class="text-xs text-ink-muted-80 leading-relaxed mt-2">
+              Fully cooked seafood (e.g. crab stick, shrimp, eel) and vegetarian rolls are safe when prepared hygienically.
+            </p>
+          </div>
+          <a href="/food/sushi-cooked" class="text-primary hover:underline text-xs font-semibold mt-3 block min-h-[44px] flex items-center">
+            Read Cooked Sushi Guide &rarr;
+          </a>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3 mt-4 border-t border-hairline pt-5">
+        <h3 class="text-lg font-display font-semibold text-ink tracking-apple-tight">OB-GYN Clinical Tip</h3>
+        <p class="text-sm text-ink-muted-80 leading-relaxed">
+          When ordering cooked sushi, ask the staff to ensure the chef uses clean cutting boards, knives, and prep areas to avoid cross-contamination with juices from raw fish.
+        </p>
+      </div>
+
+      <!-- Quick Nutrition Reference -->
+      <div class="border-t border-hairline pt-5 flex flex-col gap-4">
+        <h3 class="font-display font-semibold text-base text-ink tracking-apple-tight">Related Nutrition Guides</h3>
+        <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline">
+          <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Core Reference</span>
+          <p class="text-xs text-ink-muted-80 mt-1 mb-2">Read our complete recommendations for vitamins and safe eating:</p>
+          <a href="/nutrition" class="text-primary hover:underline text-[11px] font-semibold flex items-center gap-1 min-h-[44px]">
+            🍎 Go to Nutrition Guide &rarr;
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- FAQs section -->
+    <section class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors">
+      <h2 class="text-xl md:text-2xl font-display font-semibold mb-6 text-ink tracking-apple-tight">Pregnancy FAQs: Sushi</h2>
+      <div class="flex flex-col gap-5">
+        {faqs.map((faq, index) => (
+          <div class="flex flex-col gap-1.5 border-b border-hairline/60 pb-4 last:border-0 last:pb-0">
+            <h3 class="font-semibold text-sm md:text-base text-ink flex items-start gap-2">
+              <span class="text-primary font-bold">Q{index + 1}:</span>
+              <span>{faq.q}</span>
+            </h3>
+            <p class="text-ink-muted-80 text-xs md:text-sm pl-7 leading-relaxed">
+              {faq.a}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Footer Action -->
+    <div class="flex justify-between items-center text-sm md:text-base">
+      <a href="/food-safety" class="text-primary font-semibold hover:underline flex items-center gap-1.5 min-h-[44px]">
+        <span>&larr;</span> Back to Food Safety Database
+      </a>
+      <a href="/tools/due-date-calculator" class="text-ink hover:text-primary transition-colors font-medium min-h-[44px] flex items-center">
+        Track Your Due Date
+      </a>
+    </div>
+  </div>
+</Layout>

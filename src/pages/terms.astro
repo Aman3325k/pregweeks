@@ -1,10 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getBreadcrumbSchema } from '../utils/seo';
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Terms of Service", url: "https://pregweeks.com/terms" }
+]);
 ---
 
 <Layout 
   title="Terms of Service | PregWeeks"
   description="Read the PregWeeks Terms of Service. Understand the terms, guidelines, and limitations of using our site and interactive trackers."
+  canonicalUrl="https://pregweeks.com/terms"
+  schemas={[breadcrumbs]}
 >
   <main class="max-w-3xl mx-auto px-4 py-12">
     <!-- Breadcrumb -->
