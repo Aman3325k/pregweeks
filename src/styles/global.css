@@ -1,43 +1,65 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Apple Design Colors */
-  --color-primary: #0066cc;
-  --color-primary-focus: #0071e3;
-  --color-primary-on-dark: #2997ff;
-  --color-ink: #1d1d1f;
-  --color-body-muted: #cccccc;
-  --color-ink-muted-80: #333333;
-  --color-ink-muted-48: #7a7a7a;
-  --color-divider-soft: #f0f0f0;
-  --color-hairline: #e0e0e0;
-  --color-canvas: #ffffff;
-  --color-canvas-parchment: #f5f5f7;
-  --color-surface-pearl: #fafafc;
-  --color-surface-tile-1: #272729;
-  --color-surface-tile-2: #2a2a2c;
-  --color-surface-tile-3: #252527;
+  /* Dynamic Mapped Theme Colors */
+  --color-primary: var(--color-primary);
+  --color-primary-focus: var(--color-primary-dark);
+  --color-primary-on-dark: var(--color-primary);
+  --color-ink: var(--color-text);
+  --color-body-muted: var(--color-text-muted);
+  --color-ink-muted-80: var(--color-text-muted);
+  --color-ink-muted-48: var(--color-text-muted);
+  --color-divider-soft: var(--color-border);
+  --color-hairline: var(--color-border);
+  --color-canvas: var(--color-bg);
+  --color-canvas-parchment: var(--color-surface);
+  --color-surface-pearl: var(--color-surface);
+  --color-surface-tile-1: var(--color-surface-dark);
+  --color-surface-tile-2: var(--color-surface-dark);
+  --color-surface-tile-3: var(--color-surface-dark);
   --color-surface-black: #000000;
   --color-surface-chip-translucent: rgba(210, 210, 215, 0.64);
   --color-on-primary: #ffffff;
-  --color-on-dark: #ffffff;
+  --color-on-dark: var(--color-text-dark);
 
-  /* Typography Stack - System Only (Lighthouse Speed) */
+  /* Typography Stack */
   --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-  /* Border Radii */
+  /* Border Radii - 16px as requested for cards */
   --radius-apple-none: 0px;
   --radius-apple-xs: 5px;
   --radius-apple-sm: 8px;
   --radius-apple-md: 11px;
-  --radius-apple-lg: 18px;
+  --radius-apple-lg: 16px;
   --radius-apple-pill: 9999px;
   --radius-apple-full: 9999px;
-  
+
   /* Speeds */
   --animate-fade-in: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   --animate-scale-in: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+:root {
+  --color-primary: #e91e8c;
+  --color-primary-dark: #c2185b;
+  --color-bg: #ffffff;
+  --color-bg-dark: #0f0f0f;
+  --color-surface: #fdf2f8;
+  --color-surface-dark: #1a1a2e;
+  --color-text: #1a1a1a;
+  --color-text-dark: #f0f0f0;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+}
+
+.dark {
+  --color-bg: #0f0f0f;
+  --color-surface: #1a1a2e;
+  --color-text: #f0f0f0;
+  --color-border: #27273f;
 }
 
 /* Custom Utilities */
@@ -73,10 +95,10 @@
   
   body {
     font-family: var(--font-text);
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
-    font-size: 17px;
-    line-height: 1.47;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 16px;
+    line-height: 1.6;
     letter-spacing: -0.374px;
     min-height: 100vh;
     display: flex;
@@ -84,14 +106,10 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Support data-theme="dark" attribute for color inversion */
-  [data-theme="dark"] {
-    --color-canvas: #110e1a;
-    --color-canvas-parchment: #1a162b;
-    --color-ink: #eae6f3;
-    --color-divider-soft: rgba(255, 255, 255, 0.08);
-    --color-hairline: rgba(255, 255, 255, 0.12);
-    --color-surface-pearl: #231d3a;
+  @media (min-width: 768px) {
+    body {
+      font-size: 17px;
+    }
   }
 
   /* Scrollbars */
@@ -105,7 +123,7 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    background: var(--color-hairline);
+    background: var(--color-border);
     border-radius: 4px;
   }
   
@@ -113,10 +131,34 @@
     background: var(--color-primary);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1 {
+    font-size: clamp(24px, 5vw, 48px);
     font-family: var(--font-display);
     font-weight: 600;
     line-height: 1.15;
-    color: var(--color-ink);
+    color: var(--color-text);
+  }
+
+  h2 {
+    font-size: clamp(20px, 4vw, 36px);
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  h3 {
+    font-size: clamp(16px, 3vw, 24px);
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-text);
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-text);
   }
 }

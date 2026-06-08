@@ -6,40 +6,40 @@
   <h3 class="font-display font-semibold text-2xl md:text-3xl text-center mb-6 tracking-apple-tight">Due Date Calculator</h3>
   
   <div class="flex bg-canvas-parchment p-1 rounded-apple-sm mb-6 gap-1 border border-hairline/10">
-    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-primary bg-canvas shadow-sm" data-mode="lmp" id="mode-lmp">Last Period (LMP)</button>
-    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink" data-mode="conception" id="mode-conception">Conception Date</button>
+    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-primary bg-canvas shadow-sm min-h-[44px] flex items-center justify-center" data-mode="lmp" id="mode-lmp">Last Period (LMP)</button>
+    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink min-h-[44px] flex items-center justify-center" data-mode="conception" id="mode-conception">Conception Date</button>
   </div>
 
   <form class="flex flex-col gap-5" id="calculator-form">
     <div class="flex flex-col gap-1.5">
       <label for="calc-date" id="date-label" class="font-medium text-xs md:text-sm text-ink">First day of your last period:</label>
-      <input type="date" id="calc-date" required class="p-3 border border-hairline rounded-apple-sm bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 font-sans text-sm md:text-base" />
+      <input type="date" id="calc-date" required class="w-full p-3 border border-hairline rounded-apple-lg bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 font-sans text-sm md:text-base min-h-[44px]" />
     </div>
     
-    <div class="flex gap-3 mt-2">
-      <button type="submit" class="flex-2 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base">Calculate Due Date</button>
-      <button type="button" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base" id="reset-btn" style="display: none;">Reset</button>
+    <div class="flex flex-col sm:flex-row gap-3 mt-2">
+      <button type="submit" class="flex-2 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center">Calculate Due Date</button>
+      <button type="button" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center" id="reset-btn" style="display: none;">Reset</button>
     </div>
   </form>
 
   <div class="mt-8 border-t border-hairline pt-6" id="calculator-results" style="display: none;">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-      <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
         <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Estimated Due Date</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-edd">--</span>
       </div>
       
-      <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+      <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
         <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">You Are Currently</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-age">--</span>
       </div>
 
-      <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+      <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
         <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Current Trimester</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-trimester">--</span>
       </div>
 
-      <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+      <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
         <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Days Remaining</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-countdown">--</span>
       </div>

@@ -108,7 +108,7 @@ const searchIndex = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#0066cc" />
+    <meta name="theme-color" content="#e91e8c" />
     
     <!-- Performance Hints -->
     <link rel="dns-prefetch" href="//www.google-analytics.com">
@@ -140,15 +140,13 @@ const searchIndex = [
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={ogImage} />
     
-    <!-- Anti-theme-flash script -->
+    <!-- Anti-theme-flash script (inline, not deferred) -->
     <script is:inline>
-      const getTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-      document.documentElement.setAttribute('data-theme', getTheme());
+      const saved = localStorage.getItem('theme')
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark')
+      }
     </script>
 
     <!-- Schema Markup -->
@@ -159,18 +157,19 @@ const searchIndex = [
   </head>
   <body class="bg-canvas text-ink antialiased flex flex-col min-h-screen">
     <!-- Thin Scroll Progress Bar (Top) -->
-    <div class="fixed top-0 left-0 w-full h-[3px] bg-neutral-100 z-50 print:hidden" id="global-scroll-indicator" style="display: none;">
+    <div class="fixed top-0 left-0 w-full h-[3px] bg-neutral-100 dark:bg-neutral-800 z-50 print:hidden" id="global-scroll-indicator" style="display: none;">
       <div id="global-scroll-indicator-bar" class="h-full bg-primary w-0 transition-all duration-75"></div>
     </div>
 
     <!-- Global Black Nav Bar (44px) -->
     <nav class="bg-surface-black text-[#eae6f3] h-11 text-[12px] flex items-center z-50 relative print:hidden">
       <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center">
-        <a href="/" class="flex items-center gap-1.5 font-display font-semibold hover:text-white transition-colors duration-200">
+        <a href="/" class="flex items-center gap-1.5 font-display font-semibold hover:text-white transition-colors duration-200 min-h-[44px]">
           <span>🌸</span>
           <span class="tracking-apple-dense">PregWeeks</span>
         </a>
         
+        <!-- Desktop Nav Links -->
         <div class="hidden md:flex items-center gap-6 text-[12px] text-body-muted">
           <a href="/symptoms" class="hover:text-white transition-colors">Symptoms</a>
           <a href="/nutrition" class="hover:text-white transition-colors">Nutrition</a>
@@ -181,7 +180,7 @@ const searchIndex = [
 
         <button 
           id="global-theme-toggle" 
-          class="text-body-muted hover:text-white cursor-pointer transition-colors w-11 h-11 flex items-center justify-center" 
+          class="text-body-muted hover:text-white cursor-pointer transition-colors w-11 h-11 flex items-center justify-center focus:outline-none" 
           aria-label="Toggle Theme"
         >
           <!-- Sun Icon (shown in dark theme) -->
@@ -206,37 +205,75 @@ const searchIndex = [
 
     <!-- Frosted Sticky Sub-Nav (52px) -->
     <div class="sticky top-0 z-40 bg-canvas-parchment/80 backdrop-blur-md border-b border-hairline h-[52px] flex items-center transition-colors print:hidden">
-      <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center">
+      <div class="max-w-[1200px] w-full mx-auto px-4 flex justify-between items-center relative">
         <div class="flex items-center gap-4">
-          <a href="/" class="font-display font-semibold text-[18px] md:text-[21px] text-ink hover:text-primary transition-colors">
+          <a href="/" class="font-display font-semibold text-[18px] md:text-[21px] text-ink hover:text-primary transition-colors min-h-[44px] flex items-center">
             PregWeeks<span class="text-primary font-normal text-sm">.com</span>
           </a>
         </div>
         
-        <div class="flex items-center gap-1.5 md:gap-4 text-[12px] md:text-[14px]">
-          <a href="/calculators" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Tools</a>
-          <a href="/checklist/hospital-bag" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklists</a>
+        <div class="flex items-center gap-1 md:gap-4 text-[12px] md:text-[14px]">
+          <!-- Desktop Only Sub-Nav Links -->
+          <div class="hidden md:flex items-center gap-4">
+            <a href="/calculators" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Tools</a>
+            <a href="/checklist/hospital-bag" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklists</a>
+          </div>
           
           <!-- Fuse.js search trigger -->
           <button 
             id="global-search-btn" 
-            class="text-ink hover:text-primary transition-colors min-h-[44px] px-3 font-semibold flex items-center space-x-1 cursor-pointer"
+            class="text-ink hover:text-primary transition-colors min-h-[44px] px-3 font-semibold flex items-center space-x-1 cursor-pointer focus:outline-none"
             aria-label="Search site"
           >
             <span>🔍</span>
             <span class="hidden sm:inline">Search</span>
           </button>
 
-          <a href="/tools/due-date-calculator" class="hidden sm:inline-block bg-primary text-white text-[12px] font-semibold tracking-wide uppercase px-3 py-1.5 rounded-full hover:bg-primary-focus transition-colors cursor-pointer">
+          <!-- Track Week (Desktop Only) -->
+          <a href="/tools/due-date-calculator" class="hidden md:inline-block bg-primary text-white text-[12px] font-semibold tracking-wide uppercase px-3 py-1.5 rounded-full hover:bg-primary-focus transition-colors cursor-pointer">
             Track Week
           </a>
+
+          <!-- Mobile Hamburger Toggle Icon (≤768px / md breakpoint) -->
+          <button 
+            id="mobile-menu-toggle" 
+            class="block md:hidden text-ink hover:text-primary cursor-pointer transition-colors w-11 h-11 flex items-center justify-center focus:outline-none" 
+            aria-label="Toggle Mobile Menu"
+          >
+            <!-- Hamburger Icon -->
+            <svg class="hamburger-icon block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <!-- Close Icon -->
+            <svg class="close-icon hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Full-width mobile dropdown menu tray -->
+        <div 
+          id="mobile-dropdown-menu" 
+          class="hidden absolute top-[52px] left-0 w-full bg-canvas border-b border-hairline shadow-lg z-50 py-4 px-6 flex flex-col gap-1 transition-all duration-300"
+        >
+          <a href="/symptoms" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Symptoms</a>
+          <a href="/nutrition" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Nutrition</a>
+          <a href="/faq" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">FAQ</a>
+          <a href="/glossary" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Glossary</a>
+          <a href="/compare" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base font-semibold text-primary">Compare Weeks</a>
+          <a href="/calculators" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Tools & Calculators</a>
+          <a href="/checklist/hospital-bag" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Hospital Bag Checklist</a>
+          <a href="/tools/due-date-calculator" class="mobile-nav-link text-white bg-primary hover:bg-primary-focus py-3 px-4 font-semibold rounded-apple-pill flex items-center justify-center min-h-[44px] mt-2 text-base">Track Week</a>
         </div>
       </div>
     </div>
 
     <!-- Active Medical Review Banner (EEAT Signal) -->
-    <div id="medical-review-banner" class="bg-blue-50 border-b border-blue-150 py-2.5 px-4 text-center text-xs text-neutral-600 print:hidden hidden">
-      <span class="font-medium text-neutral-800">Medical Notice:</span> The articles on PregWeeks are for educational planning. Always consult your doctor. Read our <a href="/disclaimer" class="text-primary hover:underline font-semibold">Medical Disclaimer</a>.
+    <div id="medical-review-banner" class="bg-blue-50 dark:bg-blue-950/30 border-b border-blue-150 dark:border-blue-900/50 py-2.5 px-4 text-center text-xs text-neutral-600 dark:text-neutral-300 print:hidden hidden">
+      <span class="font-medium text-neutral-800 dark:text-neutral-200">Medical Notice:</span> The articles on PregWeeks are for educational planning. Always consult your doctor. Read our <a href="/disclaimer" class="text-primary hover:underline font-semibold">Medical Disclaimer</a>.
     </div>
 
     <!-- Monetization Placeholder: Header Ad Slot -->
@@ -257,61 +294,61 @@ const searchIndex = [
     <!-- Apple-style Parchment Footer (64px padding) -->
     <footer class="bg-canvas-parchment border-t border-hairline pt-12 pb-16 px-4 md:px-12 transition-colors print:hidden">
       <div class="max-w-[960px] mx-auto text-[12px] text-ink-muted-80 flex flex-col gap-6">
-        <!-- Trimester Columns Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-8 border-b border-hairline">
+        <!-- Trimester Columns Grid - stacked on mobile, centered -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-hairline text-center md:text-left">
           <div>
             <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Weeks & Guides</h4>
-            <ul class="space-y-2 text-ink-muted-48">
-              <li><a href="/symptoms" class="hover:text-primary hover:underline">Symptom Guide</a></li>
-              <li><a href="/nutrition" class="hover:text-primary hover:underline">Nutrition Guide</a></li>
-              <li><a href="/faq" class="hover:text-primary hover:underline">FAQs Index</a></li>
-              <li><a href="/glossary" class="hover:text-primary hover:underline">A-Z Glossary</a></li>
-              <li><a href="/early-pregnancy-signs" class="hover:text-primary hover:underline">Early Signs</a></li>
-              <li><a href="/when-to-take-pregnancy-test" class="hover:text-primary hover:underline">When to Test</a></li>
+            <ul class="space-y-1 text-ink-muted-48">
+              <li><a href="/symptoms" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Symptom Guide</a></li>
+              <li><a href="/nutrition" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Nutrition Guide</a></li>
+              <li><a href="/faq" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">FAQs Index</a></li>
+              <li><a href="/glossary" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">A-Z Glossary</a></li>
+              <li><a href="/early-pregnancy-signs" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Early Signs</a></li>
+              <li><a href="/when-to-take-pregnancy-test" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">When to Test</a></li>
             </ul>
           </div>
           <div>
             <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Labor & Conditions</h4>
-            <ul class="space-y-2 text-ink-muted-48">
-              <li><a href="/labor" class="hover:text-primary hover:underline">Labor & Birth Hub</a></li>
-              <li><a href="/conditions" class="hover:text-primary hover:underline">Pregnancy Conditions</a></li>
-              <li><a href="/overdue" class="hover:text-primary hover:underline">Overdue Pregnancies</a></li>
-              <li><a href="/sources" class="hover:text-primary hover:underline">Medical Sources</a></li>
+            <ul class="space-y-1 text-ink-muted-48">
+              <li><a href="/labor" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Labor & Birth Hub</a></li>
+              <li><a href="/conditions" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Pregnancy Conditions</a></li>
+              <li><a href="/overdue" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Overdue Pregnancies</a></li>
+              <li><a href="/sources" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Medical Sources</a></li>
             </ul>
           </div>
           <div>
             <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Interactive Tools</h4>
-            <ul class="space-y-2 text-ink-muted-48">
-              <li><a href="/calculators" class="hover:text-primary hover:underline">Calculators Hub</a></li>
-              <li><a href="/tools/due-date-calculator" class="hover:text-primary hover:underline">Due Date Tracker</a></li>
-              <li><a href="/tools/weight-tracker" class="hover:text-primary hover:underline">Weight Grapher</a></li>
-              <li><a href="/tools/ovulation-calculator" class="hover:text-primary hover:underline">Ovulation Forecast</a></li>
-              <li><a href="/tools/journal" class="hover:text-primary hover:underline">Pregnancy Journal</a></li>
+            <ul class="space-y-1 text-ink-muted-48">
+              <li><a href="/calculators" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Calculators Hub</a></li>
+              <li><a href="/tools/due-date-calculator" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Due Date Tracker</a></li>
+              <li><a href="/tools/weight-tracker" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Weight Grapher</a></li>
+              <li><a href="/tools/ovulation-calculator" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Ovulation Forecast</a></li>
+              <li><a href="/tools/journal" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Pregnancy Journal</a></li>
             </ul>
           </div>
           <div>
             <h4 class="font-semibold text-ink uppercase tracking-wider mb-3">Checklists Directory</h4>
-            <ul class="space-y-2 text-ink-muted-48">
-              <li><a href="/checklist/hospital-bag" class="hover:text-primary hover:underline">Hospital Bag</a></li>
-              <li><a href="/checklist/baby-shower" class="hover:text-primary hover:underline">Baby Shower</a></li>
-              <li><a href="/checklist/nursery" class="hover:text-primary hover:underline">Nursery Setup</a></li>
-              <li><a href="/checklist/baby-gear" class="hover:text-primary hover:underline">Baby Newborn Gear</a></li>
+            <ul class="space-y-1 text-ink-muted-48">
+              <li><a href="/checklist/hospital-bag" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Hospital Bag</a></li>
+              <li><a href="/checklist/baby-shower" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Baby Shower</a></li>
+              <li><a href="/checklist/nursery" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Nursery Setup</a></li>
+              <li><a href="/checklist/baby-gear" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Baby Newborn Gear</a></li>
             </ul>
           </div>
         </div>
 
-        <p class="leading-relaxed bg-canvas p-4 rounded-apple-sm border border-hairline text-ink-muted-48 text-[11px]">
+        <p class="leading-relaxed bg-canvas p-4 rounded-apple-lg border border-hairline text-ink-muted-48 text-[11px] text-center md:text-left">
           <strong>Medical Disclaimer:</strong> The content provided on PregWeeks.com is for informational and educational purposes only. It is not intended as a substitute for professional medical advice, diagnosis, or treatment. Always consult with your obstetrician, doctor, or other qualified healthcare provider regarding any questions about a medical condition, symptoms, or pregnancy concerns.
         </p>
         
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-ink-muted-48 pt-2">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-ink-muted-48 pt-2 text-center md:text-left">
           <span>&copy; {new Date().getFullYear()} PregWeeks.com. All rights reserved.</span>
           <div class="flex flex-wrap justify-center gap-x-4 gap-y-2">
-            <a href="/about" class="hover:text-primary hover:underline">About</a>
-            <a href="/contact" class="hover:text-primary hover:underline">Contact</a>
-            <a href="/privacy-policy" class="hover:text-primary hover:underline">Privacy Policy</a>
-            <a href="/terms" class="hover:text-primary hover:underline">Terms</a>
-            <a href="/disclaimer" class="hover:text-primary hover:underline">Disclaimer</a>
+            <a href="/about" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">About</a>
+            <a href="/contact" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Contact</a>
+            <a href="/privacy-policy" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Privacy Policy</a>
+            <a href="/terms" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Terms</a>
+            <a href="/disclaimer" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Disclaimer</a>
           </div>
           <div class="flex gap-4">
             <span>Client-side Privacy Enabled (LocalStorage)</span>
@@ -323,7 +360,7 @@ const searchIndex = [
     <!-- Back to top global button -->
     <button 
       id="global-back-to-top" 
-      class="fixed bottom-8 right-8 bg-[#0066cc] text-white w-11 h-11 flex items-center justify-center rounded-full shadow-lg border border-blue-600 transition-all active:scale-90 scale-0 opacity-0 z-50 print:hidden cursor-pointer"
+      class="fixed bottom-8 right-8 bg-[#e91e8c] text-white w-11 h-11 flex items-center justify-center rounded-full shadow-lg border border-pink-600 transition-all active:scale-90 scale-0 opacity-0 z-50 print:hidden cursor-pointer"
       aria-label="Back to top"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
@@ -333,20 +370,20 @@ const searchIndex = [
 
     <!-- Search Modal Overlay (Engagement Feature) -->
     <div id="global-search-modal" class="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-start justify-center pt-20 px-4 hidden print:hidden">
-      <div class="bg-white w-full max-w-xl rounded-2xl border border-neutral-200 overflow-hidden shadow-2xl flex flex-col max-h-[70vh]">
-        <div class="relative border-b border-neutral-200 p-4">
+      <div class="bg-canvas w-full max-w-xl rounded-2xl border border-hairline overflow-hidden shadow-2xl flex flex-col max-h-[70vh]">
+        <div class="relative border-b border-hairline p-4">
           <input 
             type="text" 
             id="global-search-input" 
             placeholder="Type to search terms, tools, foods, weeks..."
-            class="w-full pl-8 pr-12 py-2 text-sm text-neutral-900 bg-neutral-50 rounded-lg border border-neutral-200 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary shadow-none"
+            class="w-full pl-8 pr-12 py-2.5 text-sm text-ink bg-canvas-parchment rounded-lg border border-hairline focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary shadow-none"
           />
           <span class="absolute left-7 top-6 text-neutral-400 text-xs">🔍</span>
-          <button id="close-global-search" class="absolute right-4 top-5 text-neutral-400 hover:text-neutral-700 text-xs font-semibold px-2 py-1 bg-neutral-100 rounded">
+          <button id="close-global-search" class="absolute right-4 top-5 text-neutral-400 hover:text-neutral-700 text-xs font-semibold px-2 py-1 bg-canvas-parchment rounded min-h-[32px] flex items-center justify-center">
             Esc
           </button>
         </div>
-        <div id="global-search-results" class="overflow-y-auto p-2 divide-y divide-neutral-100 max-h-[50vh]">
+        <div id="global-search-results" class="overflow-y-auto p-2 divide-y divide-hairline max-h-[50vh]">
           <!-- Results list -->
         </div>
       </div>
@@ -469,11 +506,73 @@ const searchIndex = [
           }
 
           searchResults.innerHTML = results.map((res: any) => `
-            <a href="${res.item.url}" class="block p-3 rounded-lg hover:bg-neutral-50 transition-colors">
-              <h4 class="text-xs font-bold text-neutral-800">${res.item.title}</h4>
-              <p class="text-[10px] text-neutral-500 mt-0.5 line-clamp-1">${res.item.desc}</p>
+            <a href="${res.item.url}" class="block p-3 rounded-lg hover:bg-canvas-parchment transition-colors">
+              <h4 class="text-xs font-bold text-ink">${res.item.title}</h4>
+              <p class="text-[10px] text-ink-muted-80 mt-0.5 line-clamp-1">${res.item.desc}</p>
             </a>
           `).join('');
+        }
+      });
+
+      // Theme Toggle Logic (Click listener with instant add/remove of dark class)
+      const themeToggleBtn = document.getElementById('global-theme-toggle');
+      themeToggleBtn?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      // Mobile Hamburger Menu Logic
+      const mobileToggleBtn = document.getElementById('mobile-menu-toggle');
+      const mobileDropdown = document.getElementById('mobile-dropdown-menu');
+      const hamburgerIcon = mobileToggleBtn?.querySelector('.hamburger-icon');
+      const closeIcon = mobileToggleBtn?.querySelector('.close-icon');
+
+      function toggleMobileMenu() {
+        if (!mobileDropdown) return;
+        const isOpen = !mobileDropdown.classList.contains('hidden');
+        if (isOpen) {
+          mobileDropdown.classList.add('hidden');
+          hamburgerIcon?.classList.remove('hidden');
+          hamburgerIcon?.classList.add('block');
+          closeIcon?.classList.remove('block');
+          closeIcon?.classList.add('hidden');
+        } else {
+          mobileDropdown.classList.remove('hidden');
+          hamburgerIcon?.classList.remove('block');
+          hamburgerIcon?.classList.add('hidden');
+          closeIcon?.classList.remove('hidden');
+          closeIcon?.classList.add('block');
+        }
+      }
+
+      function closeMobileMenu() {
+        if (!mobileDropdown) return;
+        mobileDropdown.classList.add('hidden');
+        hamburgerIcon?.classList.remove('hidden');
+        hamburgerIcon?.classList.add('block');
+        closeIcon?.classList.remove('block');
+        closeIcon?.classList.add('hidden');
+      }
+
+      mobileToggleBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMobileMenu();
+      });
+
+      // Close when user clicks a link inside the menu
+      mobileDropdown?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          closeMobileMenu();
+        });
+      });
+
+      // Close when user clicks outside the menu and toggle button
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (mobileDropdown && !mobileDropdown.classList.contains('hidden')) {
+          if (!mobileDropdown.contains(target) && !mobileToggleBtn?.contains(target)) {
+            closeMobileMenu();
+          }
         }
       });
     </script>

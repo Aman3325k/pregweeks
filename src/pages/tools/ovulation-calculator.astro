@@ -126,65 +126,65 @@ const schemas = [breadcrumbs, medicalSchema, ovulationHowTo];
       <section class="md:col-span-2 space-y-6">
         <!-- Result Box (Hidden by default) -->
         <div id="results-box" class="hidden space-y-6">
-          <div class="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
-            <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 border-b border-neutral-200 pb-2">Fertility Forecast</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-canvas-parchment rounded-apple-lg p-5 border border-hairline">
+            <h2 class="text-sm font-semibold text-ink uppercase tracking-wider mb-4 border-b border-hairline pb-2">Fertility Forecast</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <!-- Fertile Window -->
-              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
-                <span class="text-[10px] uppercase tracking-wider text-green-700 font-semibold bg-green-50 px-2 py-0.5 rounded">Fertile Window</span>
-                <p id="fertile-range" class="text-base font-semibold text-neutral-900 mt-2">—</p>
-                <p class="text-xs text-neutral-500 mt-1">Best time to attempt conception.</p>
+              <div class="bg-canvas p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+                <span class="text-[10px] uppercase tracking-wider text-green-700 font-semibold bg-green-50/50 px-2 py-0.5 rounded w-max">Fertile Window</span>
+                <p id="fertile-range" class="text-base font-semibold text-ink mt-2">—</p>
+                <p class="text-xs text-ink-muted-80 mt-1">Best time to attempt conception.</p>
               </div>
 
               <!-- Ovulation Date -->
-              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
-                <span class="text-[10px] uppercase tracking-wider text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded">Estimated Ovulation</span>
-                <p id="ovulation-date" class="text-base font-semibold text-neutral-900 mt-2">—</p>
-                <p class="text-xs text-neutral-500 mt-1">Approximate day egg is released.</p>
+              <div class="bg-canvas p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+                <span class="text-[10px] uppercase tracking-wider text-blue-700 font-semibold bg-blue-50/50 px-2 py-0.5 rounded w-max">Estimated Ovulation</span>
+                <p id="ovulation-date" class="text-base font-semibold text-ink mt-2">—</p>
+                <p class="text-xs text-ink-muted-80 mt-1">Approximate day egg is released.</p>
               </div>
 
               <!-- Next Period Date -->
-              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
-                <span class="text-[10px] uppercase tracking-wider text-red-700 font-semibold bg-red-50 px-2 py-0.5 rounded">Next Expected Period</span>
-                <p id="next-period" class="text-base font-semibold text-neutral-900 mt-2">—</p>
-                <p class="text-xs text-neutral-500 mt-1">First day of your next cycle.</p>
+              <div class="bg-canvas p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+                <span class="text-[10px] uppercase tracking-wider text-red-700 font-semibold bg-red-50/50 px-2 py-0.5 rounded w-max">Next Expected Period</span>
+                <p id="next-period" class="text-base font-semibold text-ink mt-2">—</p>
+                <p class="text-xs text-ink-muted-80 mt-1">First day of your next cycle.</p>
               </div>
 
               <!-- Estimated Due Date -->
-              <div class="bg-white p-4 rounded-lg border border-neutral-200/60">
-                <span class="text-[10px] uppercase tracking-wider text-purple-700 font-semibold bg-purple-50 px-2 py-0.5 rounded">Due Date If Conceived</span>
-                <p id="due-date" class="text-base font-semibold text-neutral-900 mt-2">—</p>
-                <p class="text-xs text-neutral-500 mt-1">Estimated birth date of your baby.</p>
+              <div class="bg-canvas p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
+                <span class="text-[10px] uppercase tracking-wider text-purple-700 font-semibold bg-purple-50/50 px-2 py-0.5 rounded w-max">Due Date If Conceived</span>
+                <p id="due-date" class="text-base font-semibold text-ink mt-2">—</p>
+                <p class="text-xs text-ink-muted-80 mt-1">Estimated birth date of your baby.</p>
               </div>
             </div>
           </div>
 
           <!-- Interactive Calendars -->
-          <div class="bg-white border border-neutral-200 rounded-xl p-5">
-            <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-2">Fertility Calendar</h2>
-            <p class="text-xs text-neutral-500 mb-6">Visual representation of your estimated fertility window across two menstrual cycles.</p>
+          <div class="bg-canvas border border-hairline rounded-apple-lg p-5">
+            <h2 class="text-sm font-semibold text-ink uppercase tracking-wider mb-2">Fertility Calendar</h2>
+            <p class="text-xs text-ink-muted-80 mb-6">Visual representation of your estimated fertility window across two menstrual cycles.</p>
 
             <!-- Color legend -->
-            <div class="flex flex-wrap gap-4 text-xs mb-6 bg-neutral-50 p-3 rounded-lg border border-neutral-200/60">
+            <div class="flex flex-wrap gap-4 text-xs mb-6 bg-canvas-parchment p-3 rounded-apple-lg border border-hairline">
               <div class="flex items-center space-x-1.5">
-                <span class="w-3.5 h-3.5 bg-green-100 border border-green-300 rounded"></span>
-                <span class="text-neutral-600">Fertile Window</span>
+                <span class="w-3.5 h-3.5 bg-green-100 dark:bg-green-950/40 border border-green-300 dark:border-green-800 rounded"></span>
+                <span class="text-ink-muted-80">Fertile Window</span>
               </div>
               <div class="flex items-center space-x-1.5">
                 <span class="w-3.5 h-3.5 bg-green-500 border border-green-600 rounded"></span>
-                <span class="text-neutral-600">Peak Fertility</span>
+                <span class="text-ink-muted-80">Peak Fertility</span>
               </div>
               <div class="flex items-center space-x-1.5">
                 <span class="w-3.5 h-3.5 bg-blue-500 border border-blue-600 rounded"></span>
-                <span class="text-neutral-600">Ovulation Day</span>
+                <span class="text-ink-muted-80">Ovulation Day</span>
               </div>
               <div class="flex items-center space-x-1.5">
-                <span class="w-3.5 h-3.5 bg-red-100 border border-red-300 rounded"></span>
-                <span class="text-neutral-600">Expected Period</span>
+                <span class="w-3.5 h-3.5 bg-red-100 dark:bg-red-950/40 border border-red-300 dark:border-red-800 rounded"></span>
+                <span class="text-ink-muted-80">Expected Period</span>
               </div>
               <div class="flex items-center space-x-1.5">
-                <span class="w-3.5 h-3.5 bg-yellow-100 border border-yellow-300 rounded"></span>
-                <span class="text-neutral-600">Pregnancy Test Day</span>
+                <span class="w-3.5 h-3.5 bg-yellow-100 dark:bg-yellow-950/40 border border-yellow-300 dark:border-yellow-800 rounded"></span>
+                <span class="text-ink-muted-80">Pregnancy Test Day</span>
               </div>
             </div>
 
@@ -196,22 +196,22 @@ const schemas = [breadcrumbs, medicalSchema, ovulationHowTo];
         </div>
 
         <!-- Initial Placeholder State -->
-        <div id="calculator-placeholder" class="bg-neutral-50 border border-neutral-200 rounded-xl p-12 text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto text-neutral-300 mb-3">
+        <div id="calculator-placeholder" class="bg-canvas-parchment border border-hairline rounded-apple-lg p-12 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto text-ink-muted-48 mb-3">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
           </svg>
-          <h3 class="text-sm font-semibold text-neutral-800 mb-1">Forecast Ready</h3>
-          <p class="text-xs text-neutral-500">Fill in your last period date and cycle parameters to render your personalized fertility schedule.</p>
+          <h3 class="text-sm font-semibold text-ink mb-1">Forecast Ready</h3>
+          <p class="text-xs text-ink-muted-80">Fill in your last period date and cycle parameters to render your personalized fertility schedule.</p>
         </div>
       </section>
     </div>
     <!-- Related Tools Section (Internal Linking Matrix) -->
-    <section class="mt-12 pt-8 border-t border-neutral-200 text-center col-span-1 md:col-span-3">
-      <h2 class="font-semibold text-lg text-neutral-900 mb-6 tracking-tight">Related Pregnancy Tools</h2>
+    <section class="mt-12 pt-8 border-t border-hairline text-center col-span-1 md:col-span-3">
+      <h2 class="font-semibold text-lg text-ink mb-6 tracking-apple-tight">Related Pregnancy Tools</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-        <a href="/tools/due-date-calculator" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Due Date Calculator</a>
-        <a href="/tools/ivf-calculator" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">IVF Calculator</a>
-        <a href="/tools/kick-counter" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Baby Kick Counter</a>
+        <a href="/tools/due-date-calculator" class="bg-canvas border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
+        <a href="/tools/ivf-calculator" class="bg-canvas border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">IVF Calculator</a>
+        <a href="/tools/kick-counter" class="bg-canvas border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Baby Kick Counter</a>
       </div>
     </section>
   </main>
