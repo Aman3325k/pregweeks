@@ -1,17 +1,45 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema } from '../../utils/seo';
+
+const title = "Pregnancy Journal & Daily Diary Tracker | PregWeeks";
+const description = "Keep a private, secure diary of your pregnancy. Log daily notes, track symptoms, tag entries by week, log moods, and export your journal as text.";
+const url = "https://pregweeks.com/tools/journal";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Pregnancy Journal", url: url }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, url);
+
+const journalHowTo = getHowToSchema(
+  "How to Use the Pregnancy Journal",
+  "Use our private, local pregnancy diary to record your milestones, moods, and notes week-by-week.",
+  [
+    { name: "Select Week", text: "Select your current pregnancy week from the dropdown menu (Weeks 1 to 40)." },
+    { name: "Choose Mood Icon", text: "Tap on the emoji button that best represents your mood or physical feelings today." },
+    { name: "Write Daily Notes", text: "Type your thoughts, medical updates, or questions in the Daily Notes text area." },
+    { name: "Save and Store", text: "Click 'Save Entry' to save the log privately on your device. Use the Export button to download all notes as text." }
+  ]
+);
+
+const schemas = [breadcrumbs, medicalSchema, journalHowTo];
 ---
 
 <Layout 
-  title="Pregnancy Journal & Daily Diary Tracker | PregWeeks"
-  description="Keep a private, secure diary of your pregnancy. Log daily notes, track symptoms, tag entries by week, log moods, and export your journal as text."
+  title={title}
+  description={description}
+  canonicalUrl={url}
+  schemas={schemas}
 >
   <main class="max-w-4xl mx-auto px-4 py-8">
     <!-- Breadcrumb -->
     <nav class="flex items-center space-x-2 text-xs text-neutral-500 mb-6" aria-label="Breadcrumb">
       <a href="/" class="hover:text-[#0066cc] transition-colors">Home</a>
       <span class="text-neutral-300">/</span>
-      <a href="/calculators" class="hover:text-[#0066cc] transition-colors">Tools</a>
+      <a href="/tools/due-date-calculator" class="hover:text-[#0066cc] transition-colors">Tools</a>
       <span class="text-neutral-300">/</span>
       <span class="text-neutral-700 font-medium">Pregnancy Journal</span>
     </nav>
@@ -116,6 +144,16 @@ import Layout from '../../layouts/Layout.astro';
       </section>
 
     </div>
+
+    <!-- Related Tools Section (Internal Linking Matrix) -->
+    <section class="mt-12 pt-8 border-t border-neutral-200 text-center col-span-1 md:col-span-3">
+      <h2 class="font-semibold text-lg text-neutral-900 mb-6 tracking-tight">Related Pregnancy Tools</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+        <a href="/tools/due-date-calculator" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Due Date Calculator</a>
+        <a href="/tools/kick-counter" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Baby Kick Counter</a>
+        <a href="/tools/contraction-timer" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Contraction Timer</a>
+      </div>
+    </section>
   </main>
 </Layout>
 

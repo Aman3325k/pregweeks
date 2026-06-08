@@ -1,7 +1,7 @@
 ---
 // src/pages/tools/weight-tracker.astro
 import Layout from '../../layouts/Layout.astro';
-import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema } from '../../utils/seo';
 
 const title = "Pregnancy Weight Gain Tracker & Chart | BMI Calculator | PregWeeks";
 const description = "Track your pregnancy weight gain week-by-week based on pre-pregnancy BMI. Interactive calculator, weight log tracker, and recommended weight curves chart.";
@@ -14,9 +14,22 @@ const breadcrumbs = getBreadcrumbSchema([
 ]);
 
 const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+
+const weightHowTo = getHowToSchema(
+  "How to Track Pregnancy Weight Gain",
+  "A step-by-step guide to monitoring weight gain progress week-by-week using Institute of Medicine guidelines and BMI indicators.",
+  [
+    { name: "Choose Weight Unit", text: "Select your preferred measurement units between Imperial (lbs/in) or Metric (kg/cm)." },
+    { name: "Initialize Profile", text: "Enter your height and pre-pregnancy weight to calculate your baseline BMI and recommended target curve." },
+    { name: "Log Weekly Weight", text: "Record your actual weight week-by-week by entering the pregnancy week number and current weight." },
+    { name: "View Gain Status", text: "Inspect the dashboard and interactive curve chart to see if your progress falls within the target healthy zone." }
+  ]
+);
+
+const schemas = [breadcrumbs, medicalSchema, weightHowTo];
 ---
 
-<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={schemas}>
   <div class="max-w-[960px] mx-auto px-4 py-8 md:py-12">
     <!-- Breadcrumbs -->
     <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
@@ -190,6 +203,16 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
         </div>
       </div>
 
+    </div>
+
+    <!-- Related Tools Section (Internal Linking Matrix) -->
+    <div class="mt-12 pt-8 border-t border-hairline text-center">
+      <h3 class="font-display font-semibold text-lg text-ink mb-6 tracking-apple-tight">Related Pregnancy Tools</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+        <a href="/tools/due-date-calculator" class="bg-canvas border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
+        <a href="/tools/kick-counter" class="bg-canvas border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Baby Kick Counter</a>
+        <a href="/tools/contraction-timer" class="bg-canvas border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Contraction Timer</a>
+      </div>
     </div>
   </div>
 </Layout>

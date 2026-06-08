@@ -1,10 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema } from '../../utils/seo';
+
+const title = "Ovulation Calculator & Fertility Tracker | PregWeeks";
+const description = "Calculate your fertile window, ovulation day, and next period. View an interactive calendar showing peak fertility days and estimate your due date.";
+const canonicalUrl = "https://pregweeks.com/tools/ovulation-calculator";
+
+const breadcrumbs = getBreadcrumbSchema([
+  { name: "Home", url: "https://pregweeks.com" },
+  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Ovulation Calculator", url: canonicalUrl }
+]);
+
+const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+
+const ovulationHowTo = getHowToSchema(
+  "How to Calculate Your Fertile Window",
+  "Use our ovulation calculator to identify your most fertile days of the month and optimize conception timing.",
+  [
+    { name: "Input Last Period Date", text: "Enter the first day of your last menstrual period (LMP) in the date picker." },
+    { name: "Set Average Cycle Length", text: "Select or type the average number of days in your cycle (typically 28 days)." },
+    { name: "Specify Luteal Phase Length", text: "Provide your luteal phase duration (usually 14 days, the time from ovulation to your next period)." },
+    { name: "Calculate Window", text: "Click the 'Calculate Fertile Window' button to view your custom calendar and fertility forecast." }
+  ]
+);
+
+const schemas = [breadcrumbs, medicalSchema, ovulationHowTo];
 ---
 
 <Layout 
-  title="Ovulation Calculator & Fertility Tracker | PregWeeks"
-  description="Calculate your fertile window, ovulation day, and next period. View an interactive calendar showing peak fertility days and estimate your due date."
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  schemas={schemas}
 >
   <main class="max-w-4xl mx-auto px-4 py-8">
     <!-- Breadcrumb -->
@@ -177,6 +205,15 @@ import Layout from '../../layouts/Layout.astro';
         </div>
       </section>
     </div>
+    <!-- Related Tools Section (Internal Linking Matrix) -->
+    <section class="mt-12 pt-8 border-t border-neutral-200 text-center col-span-1 md:col-span-3">
+      <h2 class="font-semibold text-lg text-neutral-900 mb-6 tracking-tight">Related Pregnancy Tools</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+        <a href="/tools/due-date-calculator" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Due Date Calculator</a>
+        <a href="/tools/ivf-calculator" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">IVF Calculator</a>
+        <a href="/tools/kick-counter" class="bg-white border border-neutral-200 hover:border-[#0066cc] p-4 rounded-xl transition-all text-xs font-semibold text-neutral-800 leading-tight block shadow-sm">Baby Kick Counter</a>
+      </div>
+    </section>
   </main>
 
   <script>

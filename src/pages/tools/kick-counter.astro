@@ -1,19 +1,31 @@
 ---
 // src/pages/tools/kick-counter.astro
 import Layout from '../../layouts/Layout.astro';
-import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema } from '../../utils/seo';
 
 const title = "Fetal Kick Counter: Track Baby Movements Online | PregWeeks";
 const description = "Monitor your baby's health with our easy-to-use, secure fetal kick counter. Track and log baby kicks offline with no ads or backend tracking.";
 const url = "https://pregweeks.com/tools/kick-counter";
 
+const kickHowTo = getHowToSchema(
+  "How to Use the Fetal Kick Counter",
+  "Step-by-step instructions to track your baby's movements and ensure they are meeting standard medical benchmarks.",
+  [
+    { name: "Lie Comfortably", text: "Find a quiet space, preferably lying on your left side to maximize blood flow and circulation." },
+    { name: "Start the Session", text: "Click the 'Start Session' button to begin the active timer." },
+    { name: "Log Each Movement", text: "Tap the 'Log a Kick' button each time you feel your baby kick, flutter, roll, or swish." },
+    { name: "Record and Save", text: "Once you reach 10 kicks, stop and save the session to preserve it in your movement history log." }
+  ]
+);
+
 const schemas = [
   getMedicalPageSchema(title, description, url),
   getBreadcrumbSchema([
     { name: "Home", url: "https://pregweeks.com" },
-    { name: "Tools", url: "https://pregweeks.com/tools/kick-counter" },
+    { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
     { name: "Fetal Kick Counter", url: url }
-  ])
+  ]),
+  kickHowTo
 ];
 ---
 
@@ -145,6 +157,18 @@ const schemas = [
         <div class="bg-canvas border border-hairline p-4 rounded-apple-sm text-xs text-ink-muted-48 mt-2 leading-relaxed">
           <strong>When to Contact Professional Care:</strong> If you do not count 10 movements in 2 hours, or notice a sudden, major decrease in daily baby movement, call your OB-GYN or midwife immediately. Quick evaluation provides safety and peace of mind.
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools Section (Internal Linking Matrix) -->
+  <section class="bg-canvas py-12 px-4 border-b border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto text-center">
+      <h2 class="font-display font-semibold text-lg text-ink mb-6 tracking-apple-tight">Related Pregnancy Tools</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/tools/due-date-calculator" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
+        <a href="/tools/contraction-timer" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Contraction Timer</a>
+        <a href="/tools/weight-tracker" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Weight Gain Tracker</a>
       </div>
     </div>
   </section>

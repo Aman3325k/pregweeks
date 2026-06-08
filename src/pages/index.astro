@@ -9,11 +9,40 @@ const description = "Track your baby's growth and maternal milestones with our b
 const url = "https://pregweeks.com";
 
 // Setup page schemas
+const siteSearchSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://pregweeks.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://pregweeks.com/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
+const topWeeks = [4, 5, 8, 12, 20, 24, 28, 36, 39, 40];
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Top Pregnancy Week Guides",
+  "numberOfItems": topWeeks.length,
+  "itemListElement": topWeeks.map((weekNum, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "url": `https://pregweeks.com/week/${weekNum}`
+  }))
+};
+
 const schemas = [
   getMedicalPageSchema(title, description, url),
   getBreadcrumbSchema([
     { name: "Home", url: url }
-  ])
+  ]),
+  siteSearchSchema,
+  itemListSchema
 ];
 
 // Array 1-40 for the weeks grid
@@ -48,6 +77,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
           width="420"
           height="420"
           loading="eager"
+          fetchpriority="high"
         />
       </div>
     </div>
@@ -84,6 +114,19 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
           <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Next Milestone</span>
           <span class="text-sm font-bold text-ink mt-0.5 block line-clamp-1" id="widget-milestone">--</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Popular This Week Section (CLS Free Dynamic Content Reservation) -->
+    <div id="popular-links-section" class="max-w-2xl mx-auto mb-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300 min-h-[140px]">
+      <h3 class="font-display font-semibold text-xs text-ink-muted-48 uppercase tracking-wider mb-3">Popular This Week</h3>
+      <div id="popular-links-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <a href="/week/4" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block">Week 4 Guide: Early Development</a>
+        <a href="/week/8" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block">Week 8 Guide: First Ultrasound</a>
+        <a href="/week/12" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block">Week 12 Guide: End of T1</a>
+        <a href="/week/20" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block">Week 20 Guide: Anatomy Scan</a>
+        <a href="/week/28" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block">Week 28 Guide: Third Trimester</a>
+        <a href="/week/36" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block">Week 36 Guide: Final Stretch</a>
       </div>
     </div>
 
@@ -300,6 +343,43 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       if (widgetMilestone) widgetMilestone.textContent = milestone.text;
 
       if (widget) widget.style.display = 'block';
+
+      // Update Popular This Week Grid dynamically
+      const popularGrid = document.getElementById('popular-links-grid');
+      if (popularGrid && currentWeek >= 1 && currentWeek <= 40) {
+        let trimesterSlug = 'first';
+        let symptomName = 'Morning Sickness';
+        let symptomSlug = 'nausea';
+        if (currentWeek >= 28) {
+          trimesterSlug = 'third';
+          symptomName = 'Braxton Hicks';
+          symptomSlug = 'braxton-hicks';
+        } else if (currentWeek >= 14) {
+          trimesterSlug = 'second';
+          symptomName = 'Round Ligament Pain';
+          symptomSlug = 'round-ligament-pain';
+        }
+        
+        const nextWeekLink = currentWeek < 40 ? `/week/${currentWeek + 1}` : `/postpartum/1`;
+        const nextWeekText = currentWeek < 40 ? `Week ${currentWeek + 1} Dev Guide` : `Postpartum Week 1 Guide`;
+        
+        const newLinks = [
+          { href: `/week/${currentWeek}`, text: `Week ${currentWeek} Developmental Guide` },
+          { href: `/partner/${currentWeek}`, text: `Week ${currentWeek} Partner Guide` },
+          { href: `/trimester/${trimesterSlug}`, text: `${trimesterSlug.charAt(0).toUpperCase() + trimesterSlug.slice(1)} Trimester Guide` },
+          { href: `/symptoms/${symptomSlug}`, text: `${symptomName} Relief` },
+          { href: `/tools/weight-tracker`, text: `Weight Gain Grapher` },
+          { href: nextWeekLink, text: nextWeekText }
+        ];
+        
+        const linkEls = popularGrid.querySelectorAll('.popular-link');
+        newLinks.forEach((linkData, idx) => {
+          if (linkEls[idx]) {
+            linkEls[idx].setAttribute('href', linkData.href);
+            linkEls[idx].textContent = linkData.text;
+          }
+        });
+      }
     } catch (e) {
       console.error(e);
       if (widget) widget.style.display = 'none';
@@ -313,6 +393,25 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
 
   document.addEventListener('pregnancy-reset', () => {
     if (widget) widget.style.display = 'none';
+    // Restore default links
+    const popularGrid = document.getElementById('popular-links-grid');
+    if (popularGrid) {
+      const defaults = [
+        { href: "/week/4", text: "Week 4 Guide: Early Development" },
+        { href: "/week/8", text: "Week 8 Guide: First Ultrasound" },
+        { href: "/week/12", text: "Week 12 Guide: End of T1" },
+        { href: "/week/20", text: "Week 20 Guide: Anatomy Scan" },
+        { href: "/week/28", text: "Week 28 Guide: Third Trimester" },
+        { href: "/week/36", text: "Week 36 Guide: Final Stretch" }
+      ];
+      const linkEls = popularGrid.querySelectorAll('.popular-link');
+      defaults.forEach((linkData, idx) => {
+        if (linkEls[idx]) {
+          linkEls[idx].setAttribute('href', linkData.href);
+          linkEls[idx].textContent = linkData.text;
+        }
+      });
+    }
   });
 
   // Run immediately on load

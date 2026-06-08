@@ -113,18 +113,33 @@ export const GET: APIRoute = async () => {
     let priority = '0.6';
     let freq = 'monthly';
 
-    if (url === 'https://pregweeks.com') {
+    if (url === 'https://pregweeks.com' || url === 'https://pregweeks.com/') {
       priority = '1.0';
       freq = 'weekly';
     } else if (url.includes('/week/')) {
+      priority = '0.9';
+      freq = 'monthly';
+    } else if (url.includes('/tools/') || url.includes('/calculators')) {
       priority = '0.8';
       freq = 'monthly';
-    } else if (url.includes('/tools/') || url.includes('/milestone') || url.includes('/quiz/')) {
+    } else if (url.includes('/food/') || url.includes('/symptoms/')) {
+      priority = '0.8';
+      freq = 'monthly';
+    } else if (
+      url.includes('/trimester/') ||
+      url.includes('/labor/') ||
+      url.includes('/conditions/') ||
+      url.includes('/baby-names')
+    ) {
       priority = '0.7';
       freq = 'monthly';
-    } else if (url.includes('/food-safety') || url.includes('/medication-safety') || url.includes('/prenatal-vitamins') || url.includes('/baby-names')) {
-      priority = '0.75';
-      freq = 'monthly';
+    } else if (
+      url.includes('/privacy-policy') ||
+      url.includes('/terms') ||
+      url.includes('/disclaimer')
+    ) {
+      priority = '0.3';
+      freq = 'yearly';
     }
 
     return `  <url>

@@ -73,14 +73,14 @@ const jsonLd = {
     }
   ]
 };
+const pageSchemas = [jsonLd];
 ---
 
 <Layout 
   title={`${title}: Complete Childbirth & Delivery Guide | PregWeeks`}
   description={`Understand the details of ${title.toLowerCase()}. Get clinical insights, stages, procedures, and answers to common FAQs.`}
+  schemas={pageSchemas}
 >
-  <!-- Inject Schema -->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <!-- Reading Progress Bar -->
   <div class="fixed top-[52px] left-0 w-full h-[3px] bg-neutral-100 z-50 print:hidden">
@@ -132,7 +132,7 @@ const jsonLd = {
         <!-- Header -->
         <header class="space-y-3 pb-6 border-b border-neutral-100">
           <div class="flex justify-between items-center text-xs text-neutral-400">
-            <span>Last updated: June 2026</span>
+            <span>Last reviewed by medical team: June 2026</span>
             <span class="font-medium">Clinical Reference: ACOG / WHO</span>
           </div>
           <h1 class="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">{title}</h1>

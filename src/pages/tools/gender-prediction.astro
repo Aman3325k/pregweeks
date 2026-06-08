@@ -1,7 +1,7 @@
 ---
 // src/pages/tools/gender-prediction.astro
 import Layout from '../../layouts/Layout.astro';
-import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema } from '../../utils/seo';
 
 const title = "Pregnancy Gender Prediction Tools | Chinese Calendar & Heart Rate | PregWeeks";
 const description = "Use the Chinese Gender Prediction Calendar and the Fetal Heart Rate Gender Theory calculator. A fun, viral tool for expecting parents. (Not medical advice).";
@@ -14,9 +14,21 @@ const breadcrumbs = getBreadcrumbSchema([
 ]);
 
 const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
+
+const genderHowTo = getHowToSchema(
+  "How to Use the Baby Gender Predictor",
+  "Step-by-step guide on using the Chinese Lunar Calendar and Fetal Heart Rate methods for baby gender prediction.",
+  [
+    { name: "Choose Prediction Method", text: "Select between the 'Chinese Gender Calendar' or the 'Heart Rate Theory' tabs." },
+    { name: "Input Details", text: "Enter the mother's age at conception and the Chinese lunar month of conception, or enter the fetal heart rate in BPM." },
+    { name: "Predict", text: "Click the 'Predict Baby Gender' button to reveal the traditional folklore prediction (boy or girl)." }
+  ]
+);
+
+const schemas = [breadcrumbs, medicalSchema, genderHowTo];
 ---
 
-<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema]}>
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={schemas}>
   <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
     <!-- Breadcrumbs -->
     <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
@@ -113,6 +125,16 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
         <p class="text-xs text-ink-muted-48 max-w-sm">
           Remember, this is just a fun guess! Have you scheduled your anatomy scan yet? It is usually done between weeks 18 and 22.
         </p>
+      </div>
+    </div>
+
+    <!-- Related Tools Section (Internal Linking Matrix) -->
+    <div class="mt-8 pt-6 border-t border-hairline text-center">
+      <h3 class="font-display font-semibold text-base text-ink mb-4">Related Tools</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <a href="/tools/due-date-calculator" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
+        <a href="/tools/ovulation-calculator" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Ovulation Calculator</a>
+        <a href="/tools/kick-counter" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Baby Kick Counter</a>
       </div>
     </div>
   </div>

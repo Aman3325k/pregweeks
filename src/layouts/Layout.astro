@@ -115,6 +115,11 @@ const searchIndex = [
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="generator" content={Astro.generator} />
+    <meta http-equiv="Cache-Control" content="max-age=2592000, public" />
+    
+    <!-- Google Search Console and Bing Verification -->
+    <meta name="google-site-verification" content="PLACEHOLDER" />
+    <meta name="msvalidate.01" content="PLACEHOLDER" />
     
     <!-- SEO tags -->
     <title>{title}</title>
@@ -150,6 +155,7 @@ const searchIndex = [
     {schemas.map((schema) => (
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
+    <slot name="head" />
   </head>
   <body class="bg-canvas text-ink antialiased flex flex-col min-h-screen">
     <!-- Thin Scroll Progress Bar (Top) -->
@@ -175,7 +181,7 @@ const searchIndex = [
 
         <button 
           id="global-theme-toggle" 
-          class="text-body-muted hover:text-white cursor-pointer transition-colors p-1" 
+          class="text-body-muted hover:text-white cursor-pointer transition-colors w-11 h-11 flex items-center justify-center" 
           aria-label="Toggle Theme"
         >
           <!-- Sun Icon (shown in dark theme) -->
@@ -214,7 +220,7 @@ const searchIndex = [
           <!-- Fuse.js search trigger -->
           <button 
             id="global-search-btn" 
-            class="text-ink hover:text-primary transition-colors px-1 py-1 font-semibold flex items-center space-x-1 cursor-pointer"
+            class="text-ink hover:text-primary transition-colors min-h-[44px] px-3 font-semibold flex items-center space-x-1 cursor-pointer"
             aria-label="Search site"
           >
             <span>🔍</span>
@@ -317,7 +323,7 @@ const searchIndex = [
     <!-- Back to top global button -->
     <button 
       id="global-back-to-top" 
-      class="fixed bottom-8 right-8 bg-[#0066cc] text-white p-3 rounded-full shadow-lg border border-blue-600 transition-all active:scale-90 scale-0 opacity-0 z-50 print:hidden cursor-pointer"
+      class="fixed bottom-8 right-8 bg-[#0066cc] text-white w-11 h-11 flex items-center justify-center rounded-full shadow-lg border border-blue-600 transition-all active:scale-90 scale-0 opacity-0 z-50 print:hidden cursor-pointer"
       aria-label="Back to top"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
@@ -347,16 +353,15 @@ const searchIndex = [
     </div>
 
     <!-- Script variables definition -->
-    <script is:inline define:vars={{ searchIndex }}>
-      window.searchIndex = searchIndex;
-    </script>
+    <div id="global-search-index" data-index={JSON.stringify(searchIndex)} style="display: none;"></div>
 
     <!-- Service worker and UI behaviors -->
     <script>
       import Fuse from 'fuse.js';
 
-      // Load serialized searchIndex from window
-      const searchIndex = (window as any).searchIndex || [];
+      // Load serialized searchIndex from DOM data attribute
+      const indexEl = document.getElementById('global-search-index');
+      const searchIndex = indexEl ? JSON.parse(indexEl.getAttribute('data-index') || '[]') : [];
 
       // Service worker registration
       if ('serviceWorker' in navigator) {

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { pregnancyConditions, type Condition } from '../../data/conditionsData';
+import { getMedicalConditionSchema } from '../../utils/seo';
 
 export async function getStaticPaths() {
   return pregnancyConditions.map((cond) => ({
@@ -76,14 +77,15 @@ const jsonLd = {
     }
   ]
 };
+const medicalConditionSchema = getMedicalConditionSchema(name, definition, symptoms, treatment);
+const pageSchemas = [jsonLd, medicalConditionSchema];
 ---
 
 <Layout 
   title={`${name} in Pregnancy: Symptoms, Risks & Management | PregWeeks`}
   description={`What is ${name}? Learn the symptoms, risks to mother and baby, clinical treatment options, and when to seek immediate medical support.`}
+  schemas={pageSchemas}
 >
-  <!-- Inject Schema -->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <!-- Reading Progress Bar -->
   <div class="fixed top-[52px] left-0 w-full h-[3px] bg-neutral-100 z-50 print:hidden">
@@ -135,7 +137,7 @@ const jsonLd = {
         <!-- Header -->
         <header class="space-y-3 pb-6 border-b border-neutral-100">
           <div class="flex justify-between items-center text-xs text-neutral-400">
-            <span>Last updated: June 2026</span>
+            <span>Last reviewed by medical team: June 2026</span>
             <span class="font-medium">Clinical Reference: ACOG / WHO</span>
           </div>
           <h1 class="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">{name}</h1>

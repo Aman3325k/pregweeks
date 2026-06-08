@@ -2,6 +2,8 @@
 // src/pages/symptoms/[symptom].astro
 import Layout from '../../layouts/Layout.astro';
 import { symptomItems } from '../../data/symptomData';
+import { pregnancyConditions } from '../../data/conditionsData';
+import { pregnancyData } from '../../data/pregnancyData';
 import { getBreadcrumbSchema, getFAQSchema, getMedicalPageSchema } from '../../utils/seo';
 
 export async function getStaticPaths() {
@@ -25,6 +27,45 @@ const breadcrumbs = getBreadcrumbSchema([
 
 const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
 const faqSchema = getFAQSchema(symptom.faqs);
+
+// Helper to check if symptom is active in a week
+function isSymptomActiveInWeek(symptomWeeks: string, week: number): boolean {
+  const parts = symptomWeeks.split(',');
+  for (const part of parts) {
+    const clean = part.replace(/weeks?/i, '').trim();
+    if (clean.includes('-')) {
+      const [start, end] = clean.split('-').map(Number);
+      if (week >= start && week <= end) return true;
+    } else {
+      const single = Number(clean);
+      if (!isNaN(single) && single === week) return true;
+    }
+  }
+  return false;
+}
+
+// Find all weeks where the symptom is active
+const activeWeeks = Array.from({ length: 40 }, (_, i) => i + 1)
+  .filter(w => isSymptomActiveInWeek(symptom.weeks, w));
+
+// Take a subset of up to 6 sample weeks
+const sampleWeeks = activeWeeks.filter((_, idx) => idx % Math.ceil(activeWeeks.length / 6) === 0).slice(0, 6);
+
+// Find related conditions mapping
+const symptomToConditionsMap: Record<string, string[]> = {
+  'cramping': ['placenta-previa'],
+  'spotting': ['placenta-previa', 'pregnancy-after-35'],
+  'nausea': ['morning-sickness-severe'],
+  'headache': ['preeclampsia'],
+  'swelling': ['preeclampsia'],
+  'frequent-urination': ['gestational-diabetes'],
+  'fatigue': ['gestational-diabetes'],
+  'dizziness': ['preeclampsia', 'gestational-diabetes'],
+  'itchiness': ['gestational-diabetes']
+};
+
+const conditionSlugs = symptomToConditionsMap[symptom.slug] || ['preeclampsia', 'gestational-diabetes'];
+const relatedConditions = pregnancyConditions.filter(c => conditionSlugs.includes(c.slug));
 ---
 
 <Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema, faqSchema]}>
@@ -44,6 +85,7 @@ const faqSchema = getFAQSchema(symptom.faqs);
         <div>
           <span class="text-[10px] md:text-xs font-semibold text-ink-muted-48 uppercase tracking-wider">{symptom.weeks}</span>
           <h1 class="text-2xl md:text-4xl font-display font-semibold tracking-apple-tight mt-1">{symptom.name}</h1>
+          <span class="text-[10px] text-ink-muted-48 block mt-1">Last reviewed by medical team: June 2026</span>
         </div>
 
         <div class={`self-start sm:self-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${
@@ -84,6 +126,34 @@ const faqSchema = getFAQSchema(symptom.faqs);
         <p class="text-ink-muted-80 text-xs md:text-sm">
           {symptom.whenToCallDoctor}
         </p>
+      <!-- Related Weeks & Conditions Section (Internal Linking Matrix) -->
+      <div class="border-t border-hairline pt-5 flex flex-col gap-4">
+        <h3 class="font-display font-semibold text-base text-ink tracking-apple-tight">Related Guides &amp; Resources</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline">
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Typical Week Ranges</span>
+            <p class="text-xs text-ink-muted-80 mt-1 mb-2">This symptom commonly occurs during these weeks of pregnancy:</p>
+            <div class="flex flex-wrap gap-1.5">
+              {sampleWeeks.map(w => (
+                <a href={`/week/${w}`} class="bg-canvas border border-hairline hover:border-primary text-primary px-2 py-0.5 rounded text-[11px] font-semibold">
+                  Week {w}
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          <div class="bg-canvas-parchment p-4 rounded-apple-sm border border-hairline">
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Related Conditions</span>
+            <p class="text-xs text-ink-muted-80 mt-1 mb-2">Symptom matches for these prenatal conditions:</p>
+            <div class="flex flex-col gap-1.5">
+              {relatedConditions.map(c => (
+                <a href={`/conditions/${c.slug}`} class="text-primary hover:underline text-[11px] font-semibold">
+                  ✦ {c.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </article>
 

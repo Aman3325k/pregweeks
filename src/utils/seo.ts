@@ -37,6 +37,7 @@ export function getFAQSchema(questions: FAQItem[]) {
 }
 
 export function getMedicalPageSchema(title: string, desc: string, url: string, image = "https://pregweeks.com/pregnancy-hero.png") {
+  const currentDate = new Date().toISOString().split('T')[0];
   return {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
@@ -46,7 +47,7 @@ export function getMedicalPageSchema(title: string, desc: string, url: string, i
     "image": image,
     "inLanguage": "en-US",
     "datePublished": "2026-06-01",
-    "dateModified": "2026-06-07",
+    "dateModified": currentDate,
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": url
@@ -65,3 +66,43 @@ export function getMedicalPageSchema(title: string, desc: string, url: string, i
     }
   };
 }
+
+export interface HowToStepItem {
+  name: string;
+  text: string;
+  url?: string;
+}
+
+export function getHowToSchema(name: string, description: string, steps: HowToStepItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": name,
+    "description": description,
+    "step": steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "name": step.name,
+      "text": step.text,
+      "position": index + 1,
+      ...(step.url ? { "url": step.url } : {})
+    }))
+  };
+}
+
+export function getMedicalConditionSchema(name: string, definition: string, symptoms: string[], treatments: string[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "MedicalCondition",
+    "name": name,
+    "description": definition,
+    "possibleTreatment": treatments.map(t => ({
+      "@type": "MedicalTherapy",
+      "name": t
+    })),
+    "signOrSymptom": symptoms.map(s => ({
+      "@type": "MedicalSignOrSymptom",
+      "name": s
+    }))
+  };
+}
+

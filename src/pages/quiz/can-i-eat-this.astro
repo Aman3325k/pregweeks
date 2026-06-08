@@ -157,10 +157,14 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
         <button id="restart-trivia" class="bg-primary hover:bg-primary-focus text-white font-semibold py-2 px-5 rounded-apple-pill text-xs transition-all active:scale-95 cursor-pointer mt-2">Restart Quiz</button>
       </div>
     </div>
-  </div>
+  <div id="quiz-food-data" data-foods={JSON.stringify(foodItems)} style="display: none;"></div>
 </Layout>
 
-<script is:inline define:vars={{ foodItems }}>
+<script>
+  // Load foods from DOM data attribute
+  const foodDataEl = document.getElementById('quiz-food-data');
+  const foodItems = foodDataEl ? JSON.parse(foodDataEl.getAttribute('data-foods') || '[]') : [];
+
   // Mode Selection Tabs
   const tabSearch = document.getElementById('tab-search');
   const tabTrivia = document.getElementById('tab-trivia');

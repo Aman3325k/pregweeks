@@ -2,11 +2,21 @@
 // src/pages/tools/due-date-calculator.astro
 import Layout from '../../layouts/Layout.astro';
 import Calculator from '../../components/Calculator.astro';
-import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
+import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema } from '../../utils/seo';
 
 const title = "Pregnancy Due Date Calculator & Gestational Age Tracker | PregWeeks";
 const description = "Calculate your estimated due date (EDD), trimester progress, and precise gestational age in weeks and days with our private, offline calculator.";
 const url = "https://pregweeks.com/tools/due-date-calculator";
+
+const dueHowTo = getHowToSchema(
+  "How to Calculate Your Pregnancy Due Date",
+  "Use our free, private online calculator to determine your estimated due date (EDD) based on Last Menstrual Period (LMP) or conception date.",
+  [
+    { name: "Select Calculation Method", text: "Choose 'Last Menstrual Period' or 'Conception Date' in the calculation dropdown menu." },
+    { name: "Input Your Dates", text: "Enter the date of the first day of your last period or conception date on the calendar picker." },
+    { name: "Calculate", text: "Click the 'Calculate' button to view your target due date, gestational age, and trimester timeline." }
+  ]
+);
 
 const schemas = [
   getMedicalPageSchema(title, description, url),
@@ -14,7 +24,8 @@ const schemas = [
     { name: "Home", url: "https://pregweeks.com" },
     { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
     { name: "Due Date Calculator", url: url }
-  ])
+  ]),
+  dueHowTo
 ];
 ---
 
@@ -87,6 +98,18 @@ const schemas = [
 
       <div class="border-t border-hairline pt-6 text-xs text-ink-muted-48 leading-relaxed">
         <strong>Important Note:</strong> Only about 4% to 5% of babies are born exactly on their estimated due date. Most deliveries occur within a window spanning two weeks before and two weeks after the calculated EDD. This calculator serves as an educational tool; always consult your obstetrician for clinical tracking.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools Section (Internal Linking Matrix) -->
+  <section class="bg-canvas py-12 px-4 border-b border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto text-center">
+      <h2 class="font-display font-semibold text-lg text-ink mb-6 tracking-apple-tight">Related Pregnancy Tools</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/tools/ivf-calculator" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">IVF Due Date Calculator</a>
+        <a href="/tools/ovulation-calculator" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Ovulation &amp; Fertility Calculator</a>
+        <a href="/tools/weight-tracker" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-sm transition-all text-xs font-semibold text-ink leading-tight block">Weight Gain Tracker</a>
       </div>
     </div>
   </section>

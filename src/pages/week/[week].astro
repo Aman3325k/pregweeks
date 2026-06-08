@@ -2,6 +2,8 @@
 // src/pages/week/[week].astro
 import Layout from '../../layouts/Layout.astro';
 import { pregnancyData } from '../../data/pregnancyData';
+import { symptomItems } from '../../data/symptomData';
+import { foodItems } from '../../data/foodData';
 import { getMedicalPageSchema, getBreadcrumbSchema, getFAQSchema } from '../../utils/seo';
 
 // 1. Generate paths for all 40 weeks at compile time
@@ -56,6 +58,17 @@ const faqItems = [
   }
 ];
 
+const videoSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": `Week ${weekNum} of Pregnancy Guide`,
+  "description": `An educational video guide detailing fetal development and maternal changes for pregnancy week ${weekNum}.`,
+  "thumbnailUrl": `https://pregweeks.com/og-image/week-${weekNum}.svg`,
+  "uploadDate": "2026-06-08T00:00:00Z",
+  "contentUrl": `https://pregweeks.com/videos/week-${weekNum}.mp4`,
+  "embedUrl": `https://pregweeks.com/videos/week-${weekNum}/embed`
+};
+
 // Combine SEO schemas
 const pageSchemas = [
   getMedicalPageSchema(title, description, pageUrl),
@@ -63,15 +76,52 @@ const pageSchemas = [
     { name: "Home", url: "https://pregweeks.com" },
     { name: `Week ${weekNum}`, url: pageUrl }
   ]),
-  getFAQSchema(faqItems)
+  getFAQSchema(faqItems),
+  videoSchema
 ];
 
-// Helper to determine Trimester Label
+// Helper to determine Trimester Label and Slug
 const getTrimesterLabel = (tri: number) => {
   if (tri === 1) return "First Trimester (Weeks 1 - 13)";
   if (tri === 2) return "Second Trimester (Weeks 14 - 27)";
   return "Third Trimester (Weeks 28 - 40)";
 };
+
+const trimesterSlug = data.trimester === 1 ? 'first' : data.trimester === 2 ? 'second' : 'third';
+const trimesterGuideUrl = `/trimester/${trimesterSlug}`;
+const trimesterGuideName = data.trimester === 1 ? 'First Trimester Guide' : data.trimester === 2 ? 'Second Trimester Guide' : 'Third Trimester Guide';
+
+// Helper to verify if symptom matches the week
+function isSymptomRelevant(symptomWeeks: string, week: number): boolean {
+  const parts = symptomWeeks.split(',');
+  for (const part of parts) {
+    const clean = part.replace(/weeks?/i, '').trim();
+    if (clean.includes('-')) {
+      const [start, end] = clean.split('-').map(Number);
+      if (week >= start && week <= end) return true;
+    } else {
+      const single = Number(clean);
+      if (!isNaN(single) && single === week) return true;
+    }
+  }
+  return false;
+}
+
+// 3 Related Symptoms
+let relatedSymptoms = symptomItems.filter(s => isSymptomRelevant(s.weeks, weekNum)).slice(0, 3);
+if (relatedSymptoms.length < 3) {
+  const fallbackSlugs = ['cramping', 'fatigue', 'nausea'];
+  const fallbacks = symptomItems.filter(s => fallbackSlugs.includes(s.slug) && !relatedSymptoms.some(rs => rs.slug === s.slug));
+  relatedSymptoms = [...relatedSymptoms, ...fallbacks].slice(0, 3);
+}
+
+// 2 Related Food Safety Pages (rotating selection)
+const safeFoods = foodItems.filter(f => f.status === 'safe');
+const avoidFoods = foodItems.filter(f => f.status === 'avoid');
+const relatedFoods = [
+  safeFoods[weekNum % safeFoods.length],
+  avoidFoods[weekNum % avoidFoods.length]
+];
 
 // Calculate visual SVG parameters (Max length: 51.2cm)
 const svgSize = 140; // SVG ViewBox width/height
@@ -86,6 +136,7 @@ const prevWeek = weekNum > 1 ? weekNum - 1 : null;
 const nextWeek = weekNum < 40 ? weekNum + 1 : null;
 ---
 
+
 <Layout 
   title={title} 
   description={description} 
@@ -93,6 +144,10 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
   ogImage={`https://pregweeks.com/og-image/week-${weekNum}.svg`}
   schemas={pageSchemas}
 >
+  {nextWeek && (
+    <link rel="prefetch" href={`/week/${nextWeek}`} slot="head" />
+  )}
+
   <!-- Sticky Table of Contents (Floating Desktop Only) -->
   <aside class="hidden xl:block fixed top-44 left-6 w-48 space-y-3 z-30 print:hidden">
     <div class="border border-hairline rounded-apple-md p-4 bg-canvas-parchment/80 backdrop-blur-md">
@@ -101,6 +156,7 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
         <a href="#size" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Fetal Size</a>
         <a href="#development" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Development</a>
         <a href="#symptoms" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Body &amp; Symptoms</a>
+        <a href="#resources" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">Health Guides</a>
         <a href="#faqs" class="toc-link block text-[11px] text-ink-muted-80 hover:text-primary font-medium transition-all border-l-2 border-transparent pl-2.5">FAQs</a>
       </nav>
     </div>
@@ -111,11 +167,11 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
     <div class="max-w-[960px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs md:text-sm text-ink-muted-80 font-medium">
       <!-- Visual Breadcrumbs -->
       <nav class="flex items-center space-x-1.5 text-xs text-ink-muted-80 print:hidden" aria-label="Breadcrumb">
-        <a href="/" class="hover:text-primary transition-colors">Home</a>
-        <span class="text-ink-muted-48">&gt;</span>
-        <a href="/#weeks-directory" class="hover:text-primary transition-colors">Week Guides</a>
-        <span class="text-ink-muted-48">&gt;</span>
-        <span class="text-ink font-semibold">Week {weekNum}</span>
+         <a href="/" class="hover:text-primary transition-colors">Home</a>
+         <span class="text-ink-muted-48">&gt;</span>
+         <a href="/#weeks-directory" class="hover:text-primary transition-colors">Week Guides</a>
+         <span class="text-ink-muted-48">&gt;</span>
+         <span class="text-ink font-semibold">Week {weekNum}</span>
       </nav>
       
       <div class="flex items-center gap-4">
@@ -123,7 +179,11 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
         <span class="text-primary font-bold">Week {weekNum} of 40</span>
       </div>
     </div>
-    <div class="max-w-[960px] mx-auto h-1 bg-canvas-parchment rounded-full mt-3 overflow-hidden">
+    <div class="max-w-[960px] mx-auto flex justify-between items-center text-[10px] text-ink-muted-48 mt-2.5">
+      <span>Last reviewed by medical team: June 2026</span>
+      <span>Evidence-Based Care Check</span>
+    </div>
+    <div class="max-w-[960px] mx-auto h-1 bg-canvas-parchment rounded-full mt-2.5 overflow-hidden">
       <div class="h-full bg-primary" style={`width: ${(weekNum / 40) * 100}%;`}></div>
     </div>
   </div>
@@ -262,6 +322,53 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
         <!-- Monetization Placeholder: Sidebar Ad Slot -->
         <div class="ad-slot bg-neutral-50 border border-dashed border-neutral-200/50 rounded-lg text-center py-4 text-[10px] text-neutral-400 uppercase tracking-widest w-full mt-4 hidden print:hidden" style="display: none;">
           ADVERTISEMENT
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tile 3.5: Health Guides & Resources (Internal Linking) -->
+  <section id="resources" class="bg-canvas py-16 px-4 border-t border-b border-hairline transition-colors scroll-mt-20">
+    <div class="max-w-[960px] mx-auto">
+      <h2 class="font-display font-semibold text-2xl md:text-3xl text-ink mb-6 tracking-apple-tight">Weekly Health Guides &amp; Resources</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Trimester Link -->
+        <div class="bg-canvas-parchment border border-hairline p-5 rounded-apple-sm hover:border-primary/20 transition-all flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Trimester Guide</span>
+            <h3 class="font-semibold text-sm text-ink mt-1.5 mb-2">{trimesterGuideName}</h3>
+            <p class="text-xs text-ink-muted-80 leading-relaxed">Read comprehensive clinical milestones, screening checklists, and developmental guidelines for this phase.</p>
+          </div>
+          <a href={trimesterGuideUrl} class="text-primary font-semibold text-xs mt-4 hover:underline block">Explore Trimester &rarr;</a>
+        </div>
+
+        <!-- Symptoms Links -->
+        <div class="bg-canvas-parchment border border-hairline p-5 rounded-apple-sm hover:border-primary/20 transition-all flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Common Symptoms</span>
+            <h3 class="font-semibold text-sm text-ink mt-1.5 mb-2">Track &amp; Relieve Symptoms</h3>
+            <p class="text-xs text-ink-muted-80 leading-relaxed mb-3">Learn why symptoms occur, home remedies, and clinical indicators for this week:</p>
+            <ul class="list-disc list-inside text-xs text-primary font-medium space-y-1.5">
+              {relatedSymptoms.map(s => (
+                <li><a href={`/symptoms/${s.slug}`} class="hover:underline">{s.name} during Pregnancy</a></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Food Safety Links -->
+        <div class="bg-canvas-parchment border border-hairline p-5 rounded-apple-sm hover:border-primary/20 transition-all flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-ink-muted-48 block">Pregnancy Nutrition</span>
+            <h3 class="font-semibold text-sm text-ink mt-1.5 mb-2">Food Safety Checklists</h3>
+            <p class="text-xs text-ink-muted-80 leading-relaxed mb-3">Verify safety statuses, listeria and mercury risks, and safe alternatives for:</p>
+            <ul class="list-disc list-inside text-xs text-primary font-medium space-y-1.5">
+              {relatedFoods.map(f => (
+                <li><a href={`/food/${f.slug}`} class="hover:underline">{f.name} (Safety status: {f.status})</a></li>
+              ))}
+            </ul>
+          </div>
+          <a href="/nutrition" class="text-primary font-semibold text-xs mt-4 hover:underline block">Full Nutrition Guide &rarr;</a>
         </div>
       </div>
     </div>
