@@ -47,6 +47,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={formattedCanonical} />
+    <meta name="robots" content="index,follow" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
