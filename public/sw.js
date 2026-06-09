@@ -16,26 +16,14 @@ const ASSETS_TO_CACHE = [
   '/checklist/hospital-bag',
   '/checklist/baby-shower',
   '/checklist/nursery',
-  '/checklist/baby-gear',
-  '/week/1',
-  '/week/2',
-  '/week/3',
-  '/week/4',
-  '/week/5',
-  '/week/6',
-  '/week/7',
-  '/week/8',
-  '/week/9',
-  '/week/10',
-  '/week/11',
-  '/week/12'
+  '/checklist/baby-gear'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
-    })
+    }).then(() => self.skipWaiting())
   );
 });
 
@@ -49,17 +37,53 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only handle local GET requests
+  if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+
+  // Skip caching external domains (e.g. analytics scripts)
+  if (url.origin !== self.location.origin) return;
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
+      // Check if the requested asset is part of our static app shell
+      const isStaticShell = ASSETS_TO_CACHE.some(asset => 
+        url.pathname === asset || url.pathname === `${asset}/`
+      );
+
+      // Cache-first for the critical app shell assets
+      if (cachedResponse && isStaticShell) {
         return cachedResponse;
       }
-      return fetch(event.request);
+
+      // Stale-While-Revalidate for other pages (like /week/15) and compiled bundles
+      const fetchPromise = fetch(event.request).then((networkResponse) => {
+        // Only cache valid successful GET requests
+        if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(() => {
+        // Offline fallback
+        return cachedResponse || caches.match('/index.html');
+      });
+
+      if (cachedResponse) {
+        // Run fetchPromise in the background to revalidate cache
+        event.waitUntil(fetchPromise);
+        return cachedResponse;
+      }
+
+      return fetchPromise;
     })
   );
 });

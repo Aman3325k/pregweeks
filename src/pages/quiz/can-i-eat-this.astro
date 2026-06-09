@@ -163,7 +163,7 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
 <script>
   // Load foods from DOM data attribute
   const foodDataEl = document.getElementById('quiz-food-data');
-  const foodItems = foodDataEl ? JSON.parse(foodDataEl.getAttribute('data-foods') || '[]') : [];
+  const foodItems: any[] = foodDataEl ? JSON.parse(foodDataEl.getAttribute('data-foods') || '[]') : [];
 
   // Mode Selection Tabs
   const tabSearch = document.getElementById('tab-search');
@@ -177,8 +177,8 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
     tabTrivia?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
     tabTrivia?.classList.add('text-ink-muted-80');
 
-    panelSearch.style.display = 'flex';
-    panelTrivia.style.display = 'none';
+    if (panelSearch) panelSearch.style.display = 'flex';
+    if (panelTrivia) panelTrivia.style.display = 'none';
   });
 
   tabTrivia?.addEventListener('click', () => {
@@ -187,12 +187,12 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
     tabSearch?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
     tabSearch?.classList.add('text-ink-muted-80');
 
-    panelTrivia.style.display = 'flex';
-    panelSearch.style.display = 'none';
+    if (panelTrivia) panelTrivia.style.display = 'flex';
+    if (panelSearch) panelSearch.style.display = 'none';
   });
 
   // Food Checker Search Logic
-  const checkerInput = document.getElementById('quiz-food-search');
+  const checkerInput = document.getElementById('quiz-food-search') as HTMLInputElement | null;
   const searchResults = document.getElementById('quiz-search-results');
   const noMatch = document.getElementById('quiz-no-match');
 
@@ -203,34 +203,37 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
   const rTip = document.getElementById('result-tip');
 
   checkerInput?.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
+    const target = e.target as HTMLInputElement | null;
+    if (!target) return;
+    const query = target.value.toLowerCase().trim();
     if (!query) {
-      searchResults.style.display = 'none';
-      noMatch.style.display = 'none';
+      if (searchResults) searchResults.style.display = 'none';
+      if (noMatch) noMatch.style.display = 'none';
       return;
     }
 
     // Find best match in foodItems
-    const match = foodItems.find(item => item.name.toLowerCase().includes(query) || item.slug.includes(query));
+    const match = foodItems.find((item: any) => item.name.toLowerCase().includes(query) || item.slug.includes(query));
 
     if (match) {
-      rName.textContent = match.name;
-      rBadge.textContent = match.status === 'safe' ? 'Safe' : match.status === 'moderate' ? 'Moderation' : 'Avoid';
-      
-      let badgeClass = 'bg-green-100 text-green-800';
-      if (match.status === 'moderate') badgeClass = 'bg-yellow-100 text-yellow-800';
-      if (match.status === 'avoid') badgeClass = 'bg-red-100 text-red-800';
-      rBadge.className = `text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider ${badgeClass}`;
+      if (rName) rName.textContent = match.name;
+      if (rBadge) {
+        rBadge.textContent = match.status === 'safe' ? 'Safe' : match.status === 'moderate' ? 'Moderation' : 'Avoid';
+        let badgeClass = 'bg-green-100 text-green-800';
+        if (match.status === 'moderate') badgeClass = 'bg-yellow-100 text-yellow-800';
+        if (match.status === 'avoid') badgeClass = 'bg-red-100 text-red-800';
+        rBadge.className = `text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider ${badgeClass}`;
+      }
 
-      rExpl.textContent = match.explanation;
-      rAlts.textContent = match.alternatives;
-      rTip.textContent = match.tip;
+      if (rExpl) rExpl.textContent = match.explanation;
+      if (rAlts) rAlts.textContent = match.alternatives;
+      if (rTip) rTip.textContent = match.tip;
 
-      searchResults.style.display = 'block';
-      noMatch.style.display = 'none';
+      if (searchResults) searchResults.style.display = 'block';
+      if (noMatch) noMatch.style.display = 'none';
     } else {
-      searchResults.style.display = 'none';
-      noMatch.style.display = 'block';
+      if (searchResults) searchResults.style.display = 'none';
+      if (noMatch) noMatch.style.display = 'block';
     }
   });
 
@@ -245,8 +248,8 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
   const restartBtn = document.getElementById('restart-trivia');
 
   questions.forEach((qDiv) => {
-    const btns = qDiv.querySelectorAll('.opt-btn');
-    const feedback = qDiv.querySelector('.q-feedback');
+    const btns = qDiv.querySelectorAll('.opt-btn') as NodeListOf<HTMLButtonElement>;
+    const feedback = qDiv.querySelector('.q-feedback') as HTMLElement | null;
 
     btns.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -257,23 +260,27 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
         if (isCorrect) {
           btn.style.borderColor = '#2a9d8f';
           btn.style.backgroundColor = 'rgba(42, 157, 143, 0.08)';
-          feedback.textContent = '🟢 Correct! Great job.';
-          feedback.className = 'q-feedback text-xs font-semibold mt-1 text-green-600';
+          if (feedback) {
+            feedback.textContent = '🟢 Correct! Great job.';
+            feedback.className = 'q-feedback text-xs font-semibold mt-1 text-green-600';
+          }
           score++;
         } else {
           btn.style.borderColor = '#e76f51';
           btn.style.backgroundColor = 'rgba(231, 111, 81, 0.08)';
-          feedback.textContent = '🔴 Incorrect. Read the safe food guidelines!';
-          feedback.className = 'q-feedback text-xs font-semibold mt-1 text-red-600';
+          if (feedback) {
+            feedback.textContent = '🔴 Incorrect. Read the safe food guidelines!';
+            feedback.className = 'q-feedback text-xs font-semibold mt-1 text-red-600';
+          }
           
           // Highlight correct one
           btns.forEach(b => {
             if (b.getAttribute('data-correct') === 'true') {
-              (b).style.borderColor = '#2a9d8f';
+              b.style.borderColor = '#2a9d8f';
             }
           });
         }
-        feedback.classList.remove('hidden');
+        if (feedback) feedback.classList.remove('hidden');
 
         // Wait 2 seconds and move to next
         setTimeout(() => {
@@ -284,12 +291,12 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
             // Show next Q
             currentQ++;
             const nextQDiv = document.querySelector(`.trivia-question[data-q="${currentQ}"]`);
-            nextQDiv.classList.remove('hidden');
+            if (nextQDiv) nextQDiv.classList.remove('hidden');
           } else {
             // Show Score
             qDiv.classList.add('hidden');
-            scoreText.textContent = `You scored ${score} out of ${totalQuestions}!`;
-            scoreDiv.style.display = 'flex';
+            if (scoreText) scoreText.textContent = `You scored ${score} out of ${totalQuestions}!`;
+            if (scoreDiv) scoreDiv.style.display = 'flex';
           }
         }, 1500);
       });
@@ -299,19 +306,19 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
   restartBtn?.addEventListener('click', () => {
     currentQ = 1;
     score = 0;
-    scoreDiv.style.display = 'none';
+    if (scoreDiv) scoreDiv.style.display = 'none';
 
     // Reset all buttons & styling
     questions.forEach((qDiv) => {
-      const btns = qDiv.querySelectorAll('.opt-btn');
-      const feedback = qDiv.querySelector('.q-feedback');
+      const btns = qDiv.querySelectorAll('.opt-btn') as NodeListOf<HTMLButtonElement>;
+      const feedback = qDiv.querySelector('.q-feedback') as HTMLElement | null;
       
       btns.forEach(b => {
         b.removeAttribute('disabled');
-        (b).style.borderColor = '';
-        (b).style.backgroundColor = '';
+        b.style.borderColor = '';
+        b.style.backgroundColor = '';
       });
-      feedback.classList.add('hidden');
+      if (feedback) feedback.classList.add('hidden');
 
       if (qDiv.getAttribute('data-q') === '1') {
         qDiv.classList.remove('hidden');

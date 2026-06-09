@@ -1,0 +1,73 @@
+---
+// src/components/DigitalProductCheckout.astro
+---
+
+<div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0px_8px_30px_rgba(0,0,0,0.08)] flex flex-col md:flex-row gap-6 items-stretch w-full max-w-3xl mx-auto my-8 select-none">
+  
+  <!-- Left Side: CSS Book Mockup Cover -->
+  <div class="w-full md:w-48 bg-gradient-to-br from-[#ffe5e5] to-[#fce4ec] dark:from-[#3a202c] dark:to-[#1e0e16] rounded-apple-md border border-hairline/60 flex items-center justify-center p-6 shrink-0 relative overflow-hidden min-h-[200px]">
+    <!-- Decorative curves inside cover -->
+    <div class="absolute -right-12 -bottom-12 w-36 h-36 rounded-full bg-white/20 blur-md"></div>
+    <div class="absolute -left-6 -top-6 w-24 h-24 rounded-full bg-white/10 blur-sm"></div>
+    
+    <div class="z-10 text-center flex flex-col items-center gap-2 max-w-[120px]">
+      <span class="text-3xl">🌸</span>
+      <h4 class="font-display font-bold text-[11px] leading-tight text-ink uppercase tracking-wider border-b border-ink/10 pb-1.5 w-full">PregWeeks</h4>
+      <span class="text-[9px] font-semibold text-primary uppercase tracking-widest block">CHECKLIST</span>
+      <h3 class="font-display font-extrabold text-[12px] leading-snug text-ink uppercase tracking-tight mt-1">Ultimate Hospital Bag & Birth Plan</h3>
+      <span class="text-[8px] text-ink-muted-48 italic mt-1 block">Print-Ready PDF</span>
+    </div>
+    
+    <!-- Spine binding simulator line -->
+    <div class="absolute left-2.5 top-0 w-[3px] h-full bg-black/10"></div>
+  </div>
+
+  <!-- Right Side: Sales Pitch & CTA Checkout -->
+  <div class="flex-1 text-left flex flex-col justify-between gap-4">
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between items-center flex-wrap gap-2">
+        <span class="text-[9px] uppercase tracking-widest font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+          Instant Download
+        </span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-xs text-ink-muted-48 line-through">$19.99</span>
+          <span class="text-base font-bold text-primary">$9.99</span>
+        </div>
+      </div>
+      
+      <h3 class="font-display font-semibold text-xl md:text-2xl text-ink tracking-apple-tight">
+        The Ultimate Hospital Bag Checklist & Birth Plan PDF
+      </h3>
+      
+      <p class="text-xs text-ink-muted-80 leading-relaxed tracking-apple-caption">
+        Prepare for labor with confidence. Our doctor-reviewed checklists ensure you don't forget any newborn or partner essentials in the hospital delivery room.
+      </p>
+
+      <!-- Bulleted lists of 3 main features -->
+      <ul class="space-y-2.5 mt-2">
+        <li class="flex items-start gap-2.5 text-xs text-ink-muted-80 leading-snug">
+          <span class="text-primary font-bold">✓</span>
+          <span><strong>Clinical OB-GYN Approved List:</strong> Separate checklists detailing exactly what mom, partner, and newborn baby require for a standard 3-day recovery stay.</span>
+        </li>
+        <li class="flex items-start gap-2.5 text-xs text-ink-muted-80 leading-snug">
+          <span class="text-primary font-bold">✓</span>
+          <span><strong>10-Second Birth Preference Builder:</strong> Minimalist visual plan templates designed to help delivery nurses digest your labor choices instantly on check-in.</span>
+        </li>
+        <li class="flex items-start gap-2.5 text-xs text-ink-muted-80 leading-snug">
+          <span class="text-primary font-bold">✓</span>
+          <span><strong>1-Click Offline Access:</strong> High-resolution, print-ready document formatted to download directly to your mobile device for offline reference in the clinic.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- CTA stripe payment checkout button -->
+    <div class="flex items-center justify-between gap-4 mt-2">
+      <a 
+        href="https://buy.stripe.com/mock-pregweeks-hospital-bag-checklist" 
+        class="bg-primary hover:bg-primary-focus text-white font-semibold text-sm px-6 py-3 rounded-apple-pill transition-all active:scale-95 text-center min-h-[44px] flex items-center justify-center flex-1 shadow-none"
+      >
+        Get the PDF Guide
+      </a>
+    </div>
+  </div>
+</div>

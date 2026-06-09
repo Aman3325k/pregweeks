@@ -2,7 +2,8 @@
 // src/pages/tools/due-date-calculator.astro
 import Layout from '../../layouts/Layout.astro';
 import Calculator from '../../components/Calculator.astro';
-import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema } from '../../utils/seo';
+import InstagramMilestone from '../../components/InstagramMilestone.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema, getSoftwareApplicationSchema } from '../../utils/seo';
 
 const title = "Pregnancy Due Date Calculator & Gestational Age Tracker | PregWeeks";
 const description = "Calculate your estimated due date (EDD), trimester progress, and precise gestational age in weeks and days with our private, offline calculator.";
@@ -20,9 +21,10 @@ const dueHowTo = getHowToSchema(
 
 const schemas = [
   getMedicalPageSchema(title, description, url),
+  getSoftwareApplicationSchema("Pregnancy Due Date Calculator", description, url),
   getBreadcrumbSchema([
     { name: "Home", url: "https://pregweeks.com" },
-    { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+    { name: "Tools", url: "https://pregweeks.com/tools" },
     { name: "Due Date Calculator", url: url }
   ]),
   dueHowTo
@@ -55,8 +57,82 @@ const schemas = [
     
     <div class="max-w-2xl mx-auto">
       <Calculator />
+      
+      <!-- Sharing Progress Panel (Pillar 3 Sharing Loop) -->
+      <div id="calculator-share-container" class="mt-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300 hidden">
+        <h3 class="font-display font-semibold text-xs text-ink-muted-48 uppercase tracking-wider mb-4 border-b border-hairline pb-2">Share Your Milestones</h3>
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button 
+            type="button" 
+            id="btn-calc-share-url" 
+            class="text-xs text-primary hover:text-primary-focus hover:underline font-semibold flex items-center gap-1.5 min-h-[44px] cursor-pointer"
+          >
+            🔗 Copy Shareable Progress Link
+          </button>
+          <div class="w-full sm:w-auto flex-1 max-w-xs">
+            <InstagramMilestone />
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
+  <script>
+    import { getPregnancyState, calculatePregnancyData } from '../../utils/pregnancyState';
+    import { encodeState } from '../../utils/shareState';
+
+    const shareContainer = document.getElementById('calculator-share-container');
+    const copyShareBtn = document.getElementById('btn-calc-share-url');
+
+    function updateShareContainer() {
+      const state = getPregnancyState();
+      if (state && shareContainer) {
+        shareContainer.classList.remove('hidden');
+      } else if (shareContainer) {
+        shareContainer.classList.add('hidden');
+      }
+    }
+
+    // Run on mount
+    updateShareContainer();
+
+    document.addEventListener('pregnancy-updated', () => {
+      updateShareContainer();
+    });
+
+    document.addEventListener('pregnancy-reset', () => {
+      if (shareContainer) shareContainer.classList.add('hidden');
+    });
+
+    copyShareBtn?.addEventListener('click', async () => {
+      const state = getPregnancyState();
+      if (!state) return;
+
+      try {
+        const { edd } = calculatePregnancyData(state.date, state.mode);
+        const yyyy = edd.getFullYear();
+        const mm = String(edd.getMonth() + 1).padStart(2, '0');
+        const dd = String(edd.getDate()).padStart(2, '0');
+        const eddStr = `${yyyy}-${mm}-${dd}`;
+
+        const shareHash = encodeState(eddStr);
+        const shareUrl = `${window.location.origin}/?share=${shareHash}`;
+
+        await navigator.clipboard.writeText(shareUrl);
+
+        const originalText = copyShareBtn.innerHTML;
+        copyShareBtn.innerHTML = '✓ Copied Progress Link!';
+        copyShareBtn.classList.add('text-green-600');
+
+        setTimeout(() => {
+          copyShareBtn.innerHTML = originalText;
+          copyShareBtn.classList.remove('text-green-600');
+        }, 2000);
+      } catch (e) {
+        console.error('Failed to copy share link:', e);
+      }
+    });
+  </script>
 
   <!-- Explanation Tile (Parchment Surface) -->
   <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">

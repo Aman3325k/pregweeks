@@ -1,6 +1,7 @@
 ---
 // src/layouts/Layout.astro
 import '../styles/global.css';
+import YMYLDisclaimer from '../components/YMYLDisclaimer.astro';
 
 interface Props {
   title?: string;
@@ -33,11 +34,12 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     <meta name="theme-color" content="#e91e8c" />
     
     <!-- Performance Hints -->
-    <link rel="dns-prefetch" href="//www.google-analytics.com">
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="generator" content={Astro.generator} />
-    <meta http-equiv="Cache-Control" content="max-age=2592000, public" />
+    
+    <!-- Privacy-Preserving Analytics (Proxied Plausible - Cookie & Banner Free) -->
+    <script defer data-domain="pregweeks.com" data-api="/stats/api/event" src="/stats/js/script.js"></script>
     
     <!-- Google Search Console and Bing Verification -->
     <meta name="google-site-verification" content="PLACEHOLDER" />
@@ -283,6 +285,8 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
       </div>
     </footer>
 
+    <YMYLDisclaimer />
+
     <!-- Back to top global button -->
     <button 
       id="global-back-to-top" 
@@ -316,11 +320,11 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     </div>
 
     <!-- Service worker and UI behaviors -->
-    <script defer>
+    <script>
       // Service worker registration
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').then(reg => {
+          navigator.serviceWorker.register('/sw.js').then(() => {
             console.log('SW registered');
           }).catch(err => {
             console.error('SW registration failed:', err);
@@ -392,8 +396,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
           const { default: Fuse } = await import('fuse.js');
           fuse = new Fuse(searchIndex, {
             keys: ['title', 'desc'],
-            threshold: 0.4,
-            maxResults: 8
+            threshold: 0.4
           });
         }
       }

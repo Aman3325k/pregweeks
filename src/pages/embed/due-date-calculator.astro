@@ -1,0 +1,142 @@
+---
+// src/pages/embed/due-date-calculator.astro
+import '../../styles/global.css';
+import Calculator from '../../components/Calculator.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pregnancy Due Date Calculator Widget</title>
+    <!-- Prevent duplicate content indexing of utility pages -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#d81b60" />
+  </head>
+  <body class="bg-canvas text-ink antialiased p-4 sm:p-6 flex flex-col justify-center min-h-screen">
+    
+    <main class="max-w-xl w-full mx-auto">
+      <!-- Embedded Calculator component -->
+      <Calculator />
+      
+      <!-- Embed widget button link -->
+      <button 
+        type="button" 
+        id="btn-open-embed" 
+        class="text-xs text-primary hover:underline hover:text-primary-focus font-semibold tracking-wide flex items-center justify-center gap-1 mx-auto mt-5 min-h-[44px] cursor-pointer"
+      >
+        🔌 Get this widget for your site
+      </button>
+    </main>
+
+    <!-- Get Widget Modal Overlay -->
+    <div 
+      id="embed-modal" 
+      class="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-all"
+    >
+      <div class="bg-canvas max-w-lg w-full rounded-apple-lg border border-hairline p-6 shadow-2xl flex flex-col gap-4">
+        <div class="flex justify-between items-center border-b border-hairline pb-3">
+          <h3 class="font-display font-semibold text-lg text-ink">Add to Your Website</h3>
+          <button 
+            type="button" 
+            id="btn-close-embed" 
+            class="text-neutral-400 hover:text-ink font-semibold p-1 cursor-pointer min-h-[36px]"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+        
+        <p class="text-xs text-ink-muted-80 leading-relaxed">
+          Copy and paste this HTML snippet into your blogging system (WordPress, Squarespace, etc.) to offer our interactive pregnancy due date calculator directly to your visitors.
+        </p>
+
+        <!-- Copyable HTML area -->
+        <div class="relative">
+          <textarea 
+            id="embed-code-snippet" 
+            readonly 
+            rows="5" 
+            class="w-full p-3 font-mono text-[10px] md:text-xs text-ink bg-canvas-parchment border border-hairline rounded-apple-sm outline-none resize-none focus:border-primary"
+          >{`<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+  <iframe src="https://pregweeks.com/embed/due-date-calculator" width="100%" height="680" style="border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden;" scrolling="no"></iframe>
+  <p style="font-size: 11px; font-family: -apple-system, sans-serif; margin-top: 6px; color: #7a7a7a;">
+    <a href="https://pregweeks.com" target="_blank" style="color: #d81b60; text-decoration: none; font-weight: 600;">Pregnancy Due Date Calculator by PregWeeks</a>
+  </p>
+</div>`}</textarea>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2 mt-2">
+          <button 
+            type="button" 
+            id="btn-copy-code" 
+            class="flex-1 bg-primary hover:bg-primary-focus text-white font-semibold py-2.5 rounded-apple-pill text-xs transition-all active:scale-95 cursor-pointer min-h-[44px] flex items-center justify-center"
+          >
+            Copy Snippet
+          </button>
+          <button 
+            type="button" 
+            id="btn-close-modal-footer" 
+            class="sm:w-24 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-2.5 rounded-apple-pill text-xs transition-all active:scale-95 cursor-pointer min-h-[44px] flex items-center justify-center"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const modal = document.getElementById('embed-modal');
+      const openBtn = document.getElementById('btn-open-embed');
+      const closeBtn = document.getElementById('btn-close-embed');
+      const closeFooterBtn = document.getElementById('btn-close-modal-footer');
+      const copyBtn = document.getElementById('btn-copy-code');
+      const snippetEl = document.getElementById('embed-code-snippet') as HTMLTextAreaElement;
+
+      function toggleModal() {
+        if (!modal) return;
+        const isHidden = modal.classList.contains('hidden');
+        if (isHidden) {
+          modal.classList.remove('hidden');
+        } else {
+          modal.classList.add('hidden');
+        }
+      }
+
+      openBtn?.addEventListener('click', toggleModal);
+      closeBtn?.addEventListener('click', toggleModal);
+      closeFooterBtn?.addEventListener('click', toggleModal);
+      
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) toggleModal();
+      });
+
+      copyBtn?.addEventListener('click', async () => {
+        if (!snippetEl) return;
+        
+        try {
+          // Select and copy
+          snippetEl.select();
+          await navigator.clipboard.writeText(snippetEl.value);
+
+          // Trigger success button text micro-animation
+          if (copyBtn) {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✓ Copied!';
+            copyBtn.classList.remove('bg-primary', 'hover:bg-primary-focus');
+            copyBtn.classList.add('bg-green-600');
+
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.add('bg-primary', 'hover:bg-primary-focus');
+              copyBtn.classList.remove('bg-green-600');
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy widget HTML snippet:', err);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,24 +1,24 @@
 ---
-// src/pages/index.astro
-import Layout from '../layouts/Layout.astro';
-import Calculator from '../components/Calculator.astro';
-import InstagramMilestone from '../components/InstagramMilestone.astro';
-import { getMedicalPageSchema, getBreadcrumbSchema } from '../utils/seo';
+// src/pages/es/index.astro
+import Layout from '../../layouts/Layout.astro';
+import Calculator from '../../components/Calculator.astro';
+import InstagramMilestone from '../../components/InstagramMilestone.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
 
-const title = "PregWeeks.com | Interactive Pregnancy Week-by-Week Guide & Due Date Tracker";
-const description = "Track your baby's growth and maternal milestones with our beautifully designed week-by-week pregnancy calculator, tools, and local symptom journal.";
-const url = "https://pregweeks.com";
+const title = "PregWeeks.com | Guía de Embarazo Semana a Semana y Calculadora";
+const description = "Sigue el crecimiento de tu bebé y tus hitos maternos con nuestra hermosa calculadora de embarazo semana a semana, herramientas y diario de síntomas.";
+const url = "https://pregweeks.com/es";
 
 // Setup page schemas
 const siteSearchSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "url": "https://pregweeks.com",
+  "url": "https://pregweeks.com/es",
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://pregweeks.com/?s={search_term_string}"
+      "urlTemplate": "https://pregweeks.com/es/?s={search_term_string}"
     },
     "query-input": "required name=search_term_string"
   }
@@ -28,25 +28,24 @@ const topWeeks = [4, 5, 8, 12, 20, 24, 28, 36, 39, 40];
 const itemListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": "Top Pregnancy Week Guides",
+  "name": "Guías Principales de Semanas de Embarazo",
   "numberOfItems": topWeeks.length,
   "itemListElement": topWeeks.map((weekNum, index) => ({
     "@type": "ListItem",
     "position": index + 1,
-    "url": `https://pregweeks.com/week/${weekNum}`
+    "url": `https://pregweeks.com/week/${weekNum}` // Keep guides in English for now or point to es/week/ if built
   }))
 };
 
 const schemas = [
   getMedicalPageSchema(title, description, url),
   getBreadcrumbSchema([
-    { name: "Home", url: url }
+    { name: "Inicio", url: url }
   ]),
   siteSearchSchema,
   itemListSchema
 ];
 
-// Array 1-40 for the weeks grid
 const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
 ---
 
@@ -132,24 +131,23 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       <div class="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-12">
         <div class="flex flex-col items-start max-w-xl">
           <span class="inline-block bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-6">
-            Pregnancy Guide & Tools
+            Guía y Herramientas de Embarazo
           </span>
           <h1 class="font-display font-semibold text-[28px] md:text-5xl lg:text-6xl text-ink leading-tight tracking-apple-tight mb-6">
-            Celebrate every step of your pregnancy.
+            Celebra cada paso de tu embarazo.
           </h1>
           <p class="text-[17px] md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense mb-8">
-            Detailed week-by-week guides about your baby's development, maternal body changes, and symptoms. Keep track of your pregnancy offline with our private due date calculator, kick counter, and contraction timer.
+            Guías detalladas semana a semana sobre el desarrollo de tu bebé, cambios en tu cuerpo y síntomas maternos. Sigue tu embarazo sin conexión con nuestra calculadora de fecha de parto, contador de patadas y temporizador de contracciones.
           </p>
           <a href="#calculator-widget" class="bg-primary hover:bg-primary-focus text-white font-semibold px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base shadow-none min-h-[44px] flex items-center justify-center w-full sm:w-auto">
-            Calculate Due Date
+            Calcular Fecha de Parto
           </a>
         </div>
         
         <div class="flex justify-center items-center">
-          <!-- Hero Illustration with the ONLY drop-shadow in the system -->
           <img 
             src="/pregnancy-hero.webp" 
-            alt="Artistic abstract pregnancy line-art illustration" 
+            alt="Ilustración artística abstracta de embarazo" 
             class="w-full max-w-[420px] h-auto rounded-apple-lg border border-hairline shadow-[3px_5px_30px_0px_rgba(0,0,0,0.22)] object-cover bg-canvas transition-colors duration-300" 
             width="420"
             height="420"
@@ -164,32 +162,32 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
   <!-- Section 2: Calculator Widget (Parchment Surface) -->
   <section class="bg-canvas-parchment py-16 md:py-24 px-4 border-t border-b border-hairline transition-colors" id="calculator-widget">
     <div class="max-w-[1200px] mx-auto text-center mb-10">
-      <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink mb-3 tracking-apple-tight">Due Date Tracker</h2>
-      <p class="text-ink-muted-80 max-w-lg mx-auto text-sm md:text-base">Input your dates below to instantly determine your gestational age and target due date.</p>
+      <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink mb-3 tracking-apple-tight">Seguimiento de Fecha de Parto</h2>
+      <p class="text-ink-muted-80 max-w-lg mx-auto text-sm md:text-base">Ingresa tus fechas a continuación para calcular tu edad gestacional y fecha de parto.</p>
     </div>
     
     <!-- Homepage Pregnancy Tracker Widget (Engagement Feature) -->
     <div id="personalized-dashboard" class="max-w-2xl mx-auto mb-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300" style="display: none;">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-hairline pb-4 mb-4">
         <div>
-          <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold block" id="widget-greeting">Your Pregnancy Status</span>
-          <h3 class="text-xl md:text-2xl font-bold text-primary mt-1" id="widget-weeks-title">You are -- weeks pregnant</h3>
+          <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold block" id="widget-greeting">Estado de tu Embarazo</span>
+          <h3 class="text-xl md:text-2xl font-bold text-primary mt-1" id="widget-weeks-title">Tienes -- semanas de embarazo</h3>
         </div>
         <a id="widget-guide-link" href="#" class="bg-primary hover:bg-primary-focus text-white text-xs font-semibold px-4 rounded-apple-pill transition-all active:scale-95 text-center min-h-[44px] flex items-center justify-center w-full sm:w-auto">
-          View Week -- Guide &rarr;
+          Ver Guía de la Semana -- &rarr;
         </a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
         <div class="bg-canvas-parchment p-3 rounded-apple-sm border border-hairline">
-          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Trimester</span>
+          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Trimestre</span>
           <span class="text-sm font-bold text-ink mt-0.5 block" id="widget-trimester">--</span>
         </div>
         <div class="bg-canvas-parchment p-3 rounded-apple-sm border border-hairline">
-          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Days Until Due Date</span>
-          <span class="text-sm font-bold text-ink mt-0.5 block" id="widget-countdown">-- days</span>
+          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Días para la Fecha de Parto</span>
+          <span class="text-sm font-bold text-ink mt-0.5 block" id="widget-countdown">-- días</span>
         </div>
         <div class="bg-canvas-parchment p-3 rounded-apple-sm border border-hairline">
-          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Next Milestone</span>
+          <span class="text-[10px] text-ink-muted-48 uppercase tracking-wider font-semibold block">Próximo Hito</span>
           <span class="text-sm font-bold text-ink mt-0.5 block line-clamp-1" id="widget-milestone">--</span>
         </div>
       </div>
@@ -201,7 +199,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
           id="btn-copy-share-url" 
           class="text-xs text-primary hover:text-primary-focus hover:underline font-semibold flex items-center gap-1.5 min-h-[44px] cursor-pointer"
         >
-          🔗 Copy Shareable Progress Link
+          🔗 Copiar Enlace de Progreso
         </button>
         <div class="w-full sm:w-auto">
           <InstagramMilestone />
@@ -209,37 +207,23 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       </div>
     </div>
 
-    <!-- Anti-flicker body script to populate content before paint -->
+    <!-- Anti-flicker body script to populate content in Spanish before paint -->
     <script is:inline>
       (function() {
         if (window.__pregnancyWeek) {
           const cw = window.__pregnancyWeek;
           const greeting = document.getElementById('widget-greeting');
           if (greeting) {
-            greeting.textContent = 'Welcome to Week ' + cw + '! 🎉';
+            greeting.textContent = '¡Bienvenida a la Semana ' + cw + '! 🎉';
           }
           const guideLink = document.getElementById('widget-guide-link');
           if (guideLink) {
             guideLink.setAttribute('href', '/week/' + Math.min(40, cw));
-            guideLink.textContent = 'View Week ' + Math.min(40, cw) + ' Guide →';
+            guideLink.textContent = 'Ver Guía de la Semana ' + Math.min(40, cw) + ' →';
           }
         }
       })();
     </script>
-
-
-    <!-- Popular This Week Section (CLS Free Dynamic Content Reservation) -->
-    <div id="popular-links-section" class="max-w-2xl mx-auto mb-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300 min-h-[140px]">
-      <h3 class="font-display font-semibold text-xs text-ink-muted-48 uppercase tracking-wider mb-3">Popular This Week</h3>
-      <div id="popular-links-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <a href="/week/4" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 4 Guide: Early Development</a>
-        <a href="/week/8" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 8 Guide: First Ultrasound</a>
-        <a href="/week/12" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 12 Guide: End of T1</a>
-        <a href="/week/20" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 20 Guide: Anatomy Scan</a>
-        <a href="/week/28" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 28 Guide: Third Trimester</a>
-        <a href="/week/36" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 36 Guide: Final Stretch</a>
-      </div>
-    </div>
 
     <div class="max-w-2xl mx-auto">
       <Calculator />
@@ -250,8 +234,8 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
   <section class="bg-canvas py-16 md:py-24 px-4 transition-colors" id="weeks-directory">
     <div class="max-w-[1200px] mx-auto">
       <div class="text-center mb-12">
-        <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink mb-3 tracking-apple-tight">Week-by-Week Directory</h2>
-        <p class="text-ink-muted-80 max-w-lg mx-auto text-sm md:text-base">Click a week to view size comparisons, length and weight progress, baby milestones, and doctor tips.</p>
+        <h2 class="font-display font-semibold text-3xl md:text-4xl text-ink mb-3 tracking-apple-tight">Directorio Semana a Semana</h2>
+        <p class="text-ink-muted-80 max-w-lg mx-auto text-sm md:text-base">Haz clic en una semana para ver comparaciones de tamaño de tu bebé, desarrollo y consejos del médico.</p>
       </div>
 
       <!-- Trimester Sections -->
@@ -260,16 +244,15 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
         <div class="border border-hairline p-6 md:p-8 rounded-apple-lg bg-canvas transition-colors">
           <div class="flex items-center gap-3 mb-6">
             <span class="w-3 h-3 rounded-full bg-primary"></span>
-            <h3 class="font-display font-semibold text-xl text-ink">First Trimester (Weeks 1 - 13)</h3>
+            <h3 class="font-display font-semibold text-xl text-ink">Primer Trimestre (Semanas 1 - 13)</h3>
           </div>
-          <!-- 4 columns on mobile (no sm selector, md is desktop) -->
           <div class="grid grid-cols-4 md:grid-cols-10 gap-3">
             {weeks.slice(0, 13).map((w) => (
               <a 
                 href={`/week/${w}`} 
                 class="aspect-square flex flex-col items-center justify-center border border-hairline rounded-apple-sm text-sm font-bold text-ink bg-canvas-parchment hover:border-primary hover:bg-canvas transition-all active:scale-95 min-h-[44px]"
               >
-                <span class="text-xs text-ink-muted-48 font-medium">Wk</span>
+                <span class="text-xs text-ink-muted-48 font-medium">Sem</span>
                 <span class="text-base font-semibold">{w}</span>
               </a>
             ))}
@@ -280,7 +263,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
         <div class="border border-hairline p-6 md:p-8 rounded-apple-lg bg-canvas transition-colors">
           <div class="flex items-center gap-3 mb-6">
             <span class="w-3 h-3 rounded-full bg-[#f2cc8f]"></span>
-            <h3 class="font-display font-semibold text-xl text-ink">Second Trimester (Weeks 14 - 27)</h3>
+            <h3 class="font-display font-semibold text-xl text-ink">Segundo Trimestre (Semanas 14 - 27)</h3>
           </div>
           <div class="grid grid-cols-4 md:grid-cols-10 gap-3">
             {weeks.slice(13, 27).map((w) => (
@@ -288,7 +271,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
                 href={`/week/${w}`} 
                 class="aspect-square flex flex-col items-center justify-center border border-hairline rounded-apple-sm text-sm font-bold text-ink bg-canvas-parchment hover:border-[#f2cc8f] hover:bg-canvas transition-all active:scale-95 min-h-[44px]"
               >
-                <span class="text-xs text-ink-muted-48 font-medium">Wk</span>
+                <span class="text-xs text-ink-muted-48 font-medium">Sem</span>
                 <span class="text-base font-semibold">{w}</span>
               </a>
             ))}
@@ -299,7 +282,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
         <div class="border border-hairline p-6 md:p-8 rounded-apple-lg bg-canvas transition-colors">
           <div class="flex items-center gap-3 mb-6">
             <span class="w-3 h-3 rounded-full bg-[#81b29a]"></span>
-            <h3 class="font-display font-semibold text-xl text-ink">Third Trimester (Weeks 28 - 40)</h3>
+            <h3 class="font-display font-semibold text-xl text-ink">Tercer Trimestre (Semanas 28 - 40)</h3>
           </div>
           <div class="grid grid-cols-4 md:grid-cols-10 gap-3">
             {weeks.slice(27, 40).map((w) => (
@@ -307,7 +290,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
                 href={`/week/${w}`} 
                 class="aspect-square flex flex-col items-center justify-center border border-hairline rounded-apple-sm text-sm font-bold text-ink bg-canvas-parchment hover:border-[#81b29a] hover:bg-canvas transition-all active:scale-95 min-h-[44px]"
               >
-                <span class="text-xs text-ink-muted-48 font-medium">Wk</span>
+                <span class="text-xs text-ink-muted-48 font-medium">Sem</span>
                 <span class="text-base font-semibold">{w}</span>
               </a>
             ))}
@@ -317,75 +300,35 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     </div>
   </section>
 
-  <!-- Section 4: Trimester Guide Tiles (Alternating Dark surface) -->
-  <section class="bg-surface-tile-1 text-white py-16 md:py-24 px-4 transition-colors">
-    <div class="max-w-[1200px] mx-auto">
-      <div class="text-center mb-12">
-        <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-3 tracking-apple-tight">Trimester Overviews</h2>
-        <p class="text-neutral-300 max-w-lg mx-auto text-sm md:text-base">A pregnancy is divided into three distinct phases. Explore our custom guides to prepare yourself.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- T1 -->
-        <div class="bg-[#1e1a2d] border border-white/10 rounded-apple-lg p-6 md:p-8 flex flex-col justify-between items-start min-h-[280px]">
-          <div>
-            <span class="text-xs text-primary-on-dark uppercase tracking-wider font-semibold mb-2 block">Months 1 - 3</span>
-            <h3 class="font-display font-semibold text-2xl text-white mb-4 tracking-apple-tight">First Trimester</h3>
-            <p class="text-neutral-300 text-sm leading-relaxed mb-6">Embryonic cell development, early organ creation, positive tests, and adjusting to hormonal surges (nausea & fatigue).</p>
-          </div>
-          <a href="/trimester/first" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
-            Explore Trimester 1 &rarr;
-          </a>
-        </div>
-
-        <!-- T2 -->
-        <div class="bg-[#1e1a2d] border border-white/10 rounded-apple-lg p-6 md:p-8 flex flex-col justify-between items-start min-h-[280px]">
-          <div>
-            <span class="text-xs text-[#f6d8a7] uppercase tracking-wider font-semibold mb-2 block">Months 4 - 6</span>
-            <h3 class="font-display font-semibold text-2xl text-white mb-4 tracking-apple-tight">Second Trimester</h3>
-            <p class="text-neutral-300 text-sm leading-relaxed mb-6">The 'honeymoon' phase. Baby kicks start (quickening), energy returns, and the crucial mid-pregnancy anatomy scan takes place.</p>
-          </div>
-          <a href="/trimester/second" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
-            Explore Trimester 2 &rarr;
-          </a>
-        </div>
-
-        <!-- T3 -->
-        <div class="bg-[#1e1a2d] border border-white/10 rounded-apple-lg p-6 md:p-8 flex flex-col justify-between items-start min-h-[280px]">
-          <div>
-            <span class="text-xs text-[#9ac2af] uppercase tracking-wider font-semibold mb-2 block">Months 7 - 9</span>
-            <h3 class="font-display font-semibold text-2xl text-white mb-4 tracking-apple-tight">Third Trimester</h3>
-            <p class="text-neutral-300 text-sm leading-relaxed mb-6">Rapid fetal growth, lung maturation, structural body strain, nesting instinct spikes, and active labor preparation.</p>
-          </div>
-          <a href="/trimester/third" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
-            Explore Trimester 3 &rarr;
-          </a>
-        </div>
-      </div>
+  <!-- Popular links section -->
+  <div id="popular-links-section" class="max-w-2xl mx-auto mb-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300 min-h-[140px] hidden">
+    <h3 class="font-display font-semibold text-xs text-ink-muted-48 uppercase tracking-wider mb-3">Popular esta Semana</h3>
+    <div id="popular-links-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <a href="/week/4" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Guía de la Semana 4</a>
+      <a href="/week/8" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Guía de la Semana 8</a>
+      <a href="/week/12" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Guía de la Semana 12</a>
+      <a href="/week/20" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Guía de la Semana 20</a>
+      <a href="/week/28" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Guía de la Semana 28</a>
+      <a href="/week/36" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Guía de la Semana 36</a>
     </div>
-  </section>
+  </div>
 
-  <!-- Section 5: Trust and Review Panel (Parchment Surface) -->
+  <!-- Trust Banner -->
   <section class="bg-canvas-parchment py-16 px-4 border-t border-hairline transition-colors">
     <div class="max-w-[800px] mx-auto text-center flex flex-col items-center gap-6">
       <span class="text-3xl">🛡️</span>
-      <h2 class="font-display font-semibold text-2xl md:text-3xl text-ink tracking-apple-tight">Trusted, Medically Reviewed Information</h2>
+      <h2 class="font-display font-semibold text-2xl md:text-3xl text-ink tracking-apple-tight">Información de Confianza, Revisada Médicamente</h2>
       <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
-        PregWeeks provides science-backed content reviewed by pregnancy experts and certified OB-GYNs. We are committed to providing you with clear, accurate, and non-judgmental facts during this key milestone in your family life.
+        PregWeeks proporciona contenido científico revisado por expertos en embarazo y ginecólogos certificados. Estamos comprometidos con brindarte hechos claros, precisos y sin prejuicios durante esta etapa fundamental de tu familia.
       </p>
-      <div class="flex flex-wrap justify-center gap-4 text-xs font-semibold text-ink-muted-80 pt-2">
-        <span class="bg-canvas px-3 py-1.5 rounded-full border border-hairline">✓ Clinically Reviewed</span>
-        <span class="bg-canvas px-3 py-1.5 rounded-full border border-hairline">✓ 100% Secure Browser Storage</span>
-        <span class="bg-canvas px-3 py-1.5 rounded-full border border-hairline">✓ Mobile & Offline First</span>
-      </div>
     </div>
   </section>
 </Layout>
 
 <script>
-  import { getPregnancyState, calculatePregnancyData } from '../utils/pregnancyState';
-  import { checkAndTriggerWeeklyNotification } from '../utils/notifications';
-  import { encodeState } from '../utils/shareState';
+  import { getPregnancyState, calculatePregnancyData } from '../../utils/pregnancyState';
+  import { checkAndTriggerWeeklyNotification } from '../../utils/notifications';
+  import { encodeState } from '../../utils/shareState';
 
   const widget = document.getElementById('personalized-dashboard');
   const widgetGreeting = document.getElementById('widget-greeting');
@@ -409,12 +352,12 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
         const eddStr = `${yyyy}-${mm}-${dd}`;
 
         const shareHash = encodeState(eddStr);
-        const shareUrl = `${window.location.origin}${window.location.pathname}?share=${shareHash}`;
+        const shareUrl = `${window.location.origin}/es/?share=${shareHash}`;
 
         await navigator.clipboard.writeText(shareUrl);
 
         const originalText = copyShareBtn.innerHTML;
-        copyShareBtn.innerHTML = '✓ Copied Progress Link!';
+        copyShareBtn.innerHTML = '✓ ¡Enlace Copiado!';
         copyShareBtn.classList.add('text-green-600', 'dark:text-green-400');
 
         setTimeout(() => {
@@ -427,13 +370,13 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     });
   }
 
-  function getNextMilestone(weeksNum: number) {
-    if (weeksNum < 12) return { text: "1st Trimester Scan (Wk 12)", week: 12 };
-    if (weeksNum < 20) return { text: "Anatomy Scan (Wk 20)", week: 20 };
-    if (weeksNum < 24) return { text: "Glucose Screen (Wk 24)", week: 24 };
-    if (weeksNum < 28) return { text: "3rd Trimester (Wk 28)", week: 28 };
-    if (weeksNum < 36) return { text: "GBS Test (Wk 36)", week: 36 };
-    return { text: "Due Date / Delivery!", week: 40 };
+  function getNextMilestoneES(weeksNum: number) {
+    if (weeksNum < 12) return { text: "Ecografía T1 (Sem 12)", week: 12 };
+    if (weeksNum < 20) return { text: "Ecografía de Anatomía (Sem 20)", week: 20 };
+    if (weeksNum < 24) return { text: "Prueba de Glucosa (Sem 24)", week: 24 };
+    if (weeksNum < 28) return { text: "Tercer Trimestre (Sem 28)", week: 28 };
+    if (weeksNum < 36) return { text: "Prueba de EGB (Sem 36)", week: 36 };
+    return { text: "¡Fecha de Parto / Nacimiento!", week: 40 };
   }
 
   function updateWidget() {
@@ -451,60 +394,73 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       const currentWeek = Math.max(1, Math.min(40, weeks + 1));
 
       if (widgetGreeting) {
-        widgetGreeting.textContent = `Welcome to Week ${currentWeek}! 🎉`;
+        widgetGreeting.textContent = `¡Bienvenida a la Semana ${currentWeek}! 🎉`;
       }
 
       if (widgetWeeksTitle) {
         if (weeks === 0 && days === 0) {
-          widgetWeeksTitle.textContent = "Pregnancy not yet started";
+          widgetWeeksTitle.textContent = "El embarazo aún no ha comenzado";
         } else {
-          widgetWeeksTitle.textContent = `You are ${weeks} weeks, ${days} day${days !== 1 ? 's' : ''} pregnant`;
+          widgetWeeksTitle.textContent = `Tienes ${weeks} semanas y ${days} día${days !== 1 ? 's' : ''} de embarazo`;
         }
       }
 
       if (widgetGuideLink) {
         widgetGuideLink.href = `/week/${currentWeek}`;
-        widgetGuideLink.textContent = `View Week ${currentWeek} Guide →`;
+        widgetGuideLink.textContent = `Ver Guía de la Semana ${currentWeek} →`;
       }
 
-      if (widgetTrimester) widgetTrimester.textContent = trimester;
+      let trimesterLabelES = 'Primer Trimestre';
+      if (weeks >= 28) trimesterLabelES = 'Tercer Trimestre';
+      else if (weeks >= 13) trimesterLabelES = 'Segundo Trimestre';
+
+      if (widgetTrimester) widgetTrimester.textContent = trimesterLabelES;
+      
       if (widgetCountdown) {
-        const unitText = daysRemaining === 1 ? 'day' : 'days';
+        const unitText = daysRemaining === 1 ? 'día' : 'días';
         widgetCountdown.textContent = `${daysRemaining} ${unitText}`;
       }
 
-      const milestone = getNextMilestone(weeks);
+      const milestone = getNextMilestoneES(weeks);
       if (widgetMilestone) widgetMilestone.textContent = milestone.text;
 
       // Update state class to display widget layout stably
       document.documentElement.classList.add('has-pregnancy-data');
       if (widget) widget.style.display = 'block';
 
-      // Update Popular This Week Grid dynamically
+      // Update Popular Links Section in Spanish dynamically
+      const popularSection = document.getElementById('popular-links-section');
       const popularGrid = document.getElementById('popular-links-grid');
+      
+      if (popularSection) popularSection.classList.remove('hidden');
+
       if (popularGrid && currentWeek >= 1 && currentWeek <= 40) {
         let trimesterSlug = 'first';
-        let symptomName = 'Morning Sickness';
+        let trimesterNameES = 'Primer Trimestre';
+        let symptomNameES = 'Náuseas Matutinas';
         let symptomSlug = 'nausea';
+        
         if (currentWeek >= 28) {
           trimesterSlug = 'third';
-          symptomName = 'Braxton Hicks';
+          trimesterNameES = 'Tercer Trimestre';
+          symptomNameES = 'Braxton Hicks';
           symptomSlug = 'braxton-hicks';
         } else if (currentWeek >= 14) {
           trimesterSlug = 'second';
-          symptomName = 'Round Ligament Pain';
+          trimesterNameES = 'Segundo Trimestre';
+          symptomNameES = 'Dolor de Ligamento Redondo';
           symptomSlug = 'round-ligament-pain';
         }
 
         const nextWeekLink = currentWeek < 40 ? `/week/${currentWeek + 1}` : `/postpartum/1`;
-        const nextWeekText = currentWeek < 40 ? `Week ${currentWeek + 1} Dev Guide` : `Postpartum Week 1 Guide`;
+        const nextWeekText = currentWeek < 40 ? `Guía de la Semana ${currentWeek + 1}` : `Guía del Posparto Semana 1`;
 
         const newLinks = [
-          { href: `/week/${currentWeek}`, text: `Week ${currentWeek} Developmental Guide` },
-          { href: `/partner/${currentWeek}`, text: `Week ${currentWeek} Partner Guide` },
-          { href: `/trimester/${trimesterSlug}`, text: `${trimesterSlug.charAt(0).toUpperCase() + trimesterSlug.slice(1)} Trimester Guide` },
-          { href: `/symptoms/${symptomSlug}`, text: `${symptomName} Relief` },
-          { href: `/tools/weight-tracker`, text: `Weight Gain Grapher` },
+          { href: `/week/${currentWeek}`, text: `Guía del Desarrollo Semana ${currentWeek}` },
+          { href: `/partner/${currentWeek}`, text: `Guía de la Pareja Semana ${currentWeek}` },
+          { href: `/trimester/${trimesterSlug}`, text: `Guía del ${trimesterNameES}` },
+          { href: `/symptoms/${symptomSlug}`, text: `Alivio de ${symptomNameES}` },
+          { href: `/tools/weight-tracker`, text: `Gráfico de Control de Peso` },
           { href: nextWeekLink, text: nextWeekText }
         ];
 
@@ -517,11 +473,11 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
         });
       }
 
-      // Check and trigger the local browser milestone notification
+      // Check and trigger local weekly notification
       checkAndTriggerWeeklyNotification();
 
     } catch (e) {
-      console.error('Error updating homepage pregnancy dashboard:', e);
+      console.error('Error updating Spanish dashboard:', e);
       if (widget) {
         widget.style.display = 'none';
         document.documentElement.classList.remove('has-pregnancy-data');
@@ -529,7 +485,6 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     }
   }
 
-  // Listen for updates from the calculator component
   document.addEventListener('pregnancy-updated', () => {
     updateWidget();
   });
@@ -539,25 +494,8 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       widget.style.display = 'none';
       document.documentElement.classList.remove('has-pregnancy-data');
     }
-    // Restore default links
-    const popularGrid = document.getElementById('popular-links-grid');
-    if (popularGrid) {
-      const defaults = [
-        { href: "/week/4", text: "Week 4 Guide: Early Development" },
-        { href: "/week/8", text: "Week 8 Guide: First Ultrasound" },
-        { href: "/week/12", text: "Week 12 Guide: End of T1" },
-        { href: "/week/20", text: "Week 20 Guide: Anatomy Scan" },
-        { href: "/week/28", text: "Week 28 Guide: Third Trimester" },
-        { href: "/week/36", text: "Week 36 Guide: Final Stretch" }
-      ];
-      const linkEls = popularGrid.querySelectorAll('.popular-link');
-      defaults.forEach((linkData, idx) => {
-        if (linkEls[idx]) {
-          linkEls[idx].setAttribute('href', linkData.href);
-          linkEls[idx].textContent = linkData.text;
-        }
-      });
-    }
+    const popularSection = document.getElementById('popular-links-section');
+    if (popularSection) popularSection.classList.add('hidden');
   });
 
   // Run immediately on load
@@ -566,16 +504,3 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     updateWidget();
   });
 </script>
-
-<style>
-  /* Local styles to enforce Zero-CLS stability */
-  #personalized-dashboard {
-    display: none;
-  }
-  :global(html.has-pregnancy-data) #personalized-dashboard {
-    display: block !important;
-  }
-  :global(html.has-pregnancy-data) #generic-welcome {
-    display: none !important;
-  }
-</style>

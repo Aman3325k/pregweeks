@@ -1,0 +1,214 @@
+---
+// src/components/InstagramMilestone.astro
+interface Props {
+  week?: number;
+}
+
+const { week } = Astro.props;
+---
+
+<div class="instagram-milestone-wrapper w-full mt-4" data-static-week={week}>
+  <canvas id="milestone-share-canvas" width="1080" height="1080" style="display: none;" class="w-[1080px] h-[1080px]"></canvas>
+  
+  <button 
+    type="button" 
+    id="btn-share-milestone" 
+    class="w-full bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-xs md:text-sm min-h-[44px] flex items-center justify-center gap-2 shadow-none"
+  >
+    <span>✨</span> Share Week <span class="share-week-label">--</span> Card to Instagram / WhatsApp
+  </button>
+  <p class="text-[10px] text-ink-muted-48 text-center mt-2 leading-relaxed">
+    Generates a minimalist Apple-style square milestone card. Uses native sharing on mobile devices, downloads directly as a PNG image on desktop.
+  </p>
+</div>
+
+<script>
+  import { getPregnancyState, calculatePregnancyData } from '../utils/pregnancyState';
+
+  const fruitMap: Record<number, string> = {
+    1: 'a poppy seed', 2: 'a poppy seed', 3: 'a poppy seed', 4: 'a poppy seed',
+    5: 'an orange seed', 6: 'a sweet pea', 7: 'a blueberry', 8: 'a raspberry',
+    9: 'a green olive', 10: 'a prune', 11: 'a lime', 12: 'a lemon',
+    13: 'a pea pod', 14: 'a lemon', 15: 'an apple', 16: 'an avocado',
+    17: 'a pomegranate', 18: 'an artichoke', 19: 'a mango', 20: 'a banana',
+    21: 'a carrot', 22: 'a coconut', 23: 'a grapefruit', 24: 'a cantaloupe',
+    25: 'a cauliflower', 26: 'a head of lettuce', 27: 'a rutabaga', 28: 'an eggplant',
+    29: 'an acorn squash', 30: 'a head of cabbage', 31: 'a coconut', 32: 'a jicama',
+    33: 'a pineapple', 34: 'a cantaloupe', 35: 'a honeydew melon', 36: 'a head of romaine lettuce',
+    37: 'a bunch of swiss chard', 38: 'a leek', 39: 'a watermelon', 40: 'a pumpkin'
+  };
+
+  const emojiMap: Record<number, string> = {
+    1: '🌱', 2: '🌱', 3: '🌱', 4: '🌱', 5: '🍊', 6: '🌿', 7: '🫐', 8: '🍓',
+    9: '🫒', 10: '🍇', 11: '🍋', 12: '🍋', 13: '🫛', 14: '🍋', 15: '🍎', 16: '🥑',
+    17: '🍎', 18: '🥗', 19: '🥭', 20: '🍌', 21: '🥕', 22: '🥥', 23: '🍊', 24: '🍈',
+    25: '🥦', 26: '🥬', 27: '🥔', 28: '🍆', 29: '🎃', 30: '🥬', 31: '🥥', 32: '🥔',
+    33: '🍍', 34: '🍈', 35: '🍈', 36: '🥬', 37: '🥬', 38: '🥬', 39: '🍉', 40: '🎃'
+  };
+
+  function getActiveWeek(container: HTMLElement): number {
+    // 1. Check if hardcoded via Astro props
+    const staticWeek = container.getAttribute('data-static-week');
+    if (staticWeek) {
+      const parsed = parseInt(staticWeek, 10);
+      if (!isNaN(parsed) && parsed >= 1 && parsed <= 40) return parsed;
+    }
+
+    // 2. Check localStorage state
+    const state = getPregnancyState();
+    if (state) {
+      const { weeks } = calculatePregnancyData(state.date, state.mode);
+      return Math.max(1, Math.min(40, weeks + 1));
+    }
+
+    return 12; // Fallback default
+  }
+
+  function drawCanvas(canvas: HTMLCanvasElement, week: number): void {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, 1080, 1080);
+
+    // Apply solid light cream background
+    ctx.fillStyle = '#fff9f6';
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // Draw elegant decorative geometric accent circles
+    ctx.fillStyle = 'rgba(216, 27, 96, 0.02)'; // soft pink tint matching global primary brand
+    ctx.beginPath();
+    ctx.arc(150, 150, 450, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(930, 930, 550, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Solid border card frame (Apple-style)
+    const margin = 50;
+    ctx.strokeStyle = '#3c2218'; // Charcoal/Chocolate text color
+    ctx.lineWidth = 6;
+    ctx.strokeRect(margin, margin, 1080 - 2 * margin, 1080 - 2 * margin);
+
+    // Inner hairline frame
+    ctx.strokeStyle = 'rgba(60, 34, 24, 0.2)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(margin + 12, margin + 12, 1080 - 2 * margin - 24, 1080 - 2 * margin - 24);
+
+    // Render Brand Header Watermark
+    ctx.fillStyle = '#7a6358';
+    ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🌸   P R E G W E E K S . C O M', 540, 130);
+
+    // Render Main Week Title Text
+    ctx.fillStyle = '#3c2218';
+    ctx.font = 'bold 80px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('I AM', 540, 260);
+
+    ctx.font = 'bold 280px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(String(week), 540, 500);
+
+    ctx.font = 'bold 65px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('WEEKS PREGNANT!', 540, 590);
+
+    // Draw Size Comparison Emoji
+    const emoji = emojiMap[week] || '🌸';
+    ctx.font = '160px "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
+    ctx.fillText(emoji, 540, 780);
+
+    // Draw Size Comparison Text description
+    ctx.fillStyle = '#7a6358';
+    ctx.font = 'italic 34px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('baby is the size of', 540, 850);
+
+    ctx.fillStyle = '#d81b60'; // Brand pink color
+    ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText(fruitMap[week] || 'a tiny seed', 540, 910);
+
+    // Watermark Footer message
+    ctx.fillStyle = '#7a6358';
+    ctx.font = '18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('Track your gestational age daily at PregWeeks.com', 540, 990);
+  }
+
+  // Set up click listeners for each component instance
+  const wrappers = document.querySelectorAll('.instagram-milestone-wrapper');
+  
+  wrappers.forEach((wrapper) => {
+    const btn = wrapper.querySelector('#btn-share-milestone') as HTMLButtonElement;
+    const label = wrapper.querySelector('.share-week-label') as HTMLSpanElement;
+    const canvas = wrapper.querySelector('#milestone-share-canvas') as HTMLCanvasElement;
+
+    if (!btn || !canvas) return;
+
+    // Load active week to display on the share button on load
+    const week = getActiveWeek(wrapper as HTMLElement);
+    if (label) label.textContent = String(week);
+
+    // Listen to updates if dynamic
+    document.addEventListener('pregnancy-updated', (e: any) => {
+      const updatedWeek = e.detail.week;
+      if (!wrapper.getAttribute('data-static-week') && label) {
+        label.textContent = String(updatedWeek);
+      }
+    });
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      const activeWeek = getActiveWeek(wrapper as HTMLElement);
+      
+      // Draw graphic on canvas
+      drawCanvas(canvas, activeWeek);
+
+      // Attempt to invoke system Web Share API
+      try {
+        canvas.toBlob(async (blob) => {
+          if (!blob) {
+            btn.disabled = false;
+            return;
+          }
+
+          const file = new File([blob], `pregweeks-week-${activeWeek}.png`, { type: 'image/png' });
+          const fruit = fruitMap[activeWeek] || 'a little seed';
+          
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: `I'm ${activeWeek} Weeks Pregnant! 🎉`,
+                text: `My baby is the size of ${fruit}! Track your pregnancy timeline week-by-week at PregWeeks.com.`,
+              });
+            } catch (err: any) {
+              // Share cancelled or rejected, fallback to direct download only if not user abort
+              if (err.name !== 'AbortError') {
+                triggerDownload(canvas, activeWeek);
+              }
+            }
+          } else {
+            // Sharing files not supported, fallback to direct file download
+            triggerDownload(canvas, activeWeek);
+          }
+          btn.disabled = false;
+        }, 'image/png');
+      } catch (err) {
+        console.error('Error drawing or sharing canvas:', err);
+        triggerDownload(canvas, activeWeek);
+        btn.disabled = false;
+      }
+    });
+  });
+
+  function triggerDownload(canvas: HTMLCanvasElement, week: number): void {
+    try {
+      const link = document.createElement('a');
+      link.download = `pregweeks-week-${week}-milestone.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      console.error('Direct download failed:', e);
+    }
+  }
+</script>

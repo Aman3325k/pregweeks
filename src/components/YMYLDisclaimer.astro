@@ -1,0 +1,55 @@
+---
+// src/components/YMYLDisclaimer.astro
+---
+
+<div 
+  id="ymyl-disclaimer-banner" 
+  class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md bg-canvas-parchment border border-hairline rounded-apple-lg shadow-[3px_5px_30px_0px_rgba(0,0,0,0.08)] p-4 z-50 transition-opacity duration-300 opacity-0 pointer-events-none print:hidden"
+>
+  <div class="flex items-start justify-between gap-4">
+    <div class="flex-1">
+      <span class="text-[10px] md:text-xs font-bold text-primary uppercase tracking-wider block mb-1">🏥 Medical Disclaimer</span>
+      <p class="text-[11px] md:text-xs text-ink leading-relaxed tracking-apple-dense">
+        PregWeeks is an educational planning tool and does not provide clinical diagnoses or medical advice. Always consult your obstetrician or healthcare professional for health concerns.
+      </p>
+    </div>
+    <button 
+      id="close-disclaimer-btn" 
+      class="text-ink-muted-48 hover:text-ink w-8 h-8 rounded-full hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 flex items-center justify-center transition-colors cursor-pointer focus:outline-none"
+      aria-label="Dismiss disclaimer"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    try {
+      const banner = document.getElementById('ymyl-disclaimer-banner');
+      const closeBtn = document.getElementById('close-disclaimer-btn');
+      
+      if (!banner || !closeBtn) return;
+      
+      const isDismissed = localStorage.getItem('ymyl_disclaimer_dismissed');
+      if (isDismissed === 'true') {
+        return;
+      }
+      
+      // Trigger display transitions shortly after load
+      setTimeout(() => {
+        banner.classList.remove('opacity-0', 'pointer-events-none');
+      }, 1000);
+      
+      closeBtn.addEventListener('click', () => {
+        banner.classList.add('opacity-0', 'pointer-events-none');
+        localStorage.setItem('ymyl_disclaimer_dismissed', 'true');
+      });
+    } catch (e) {
+      console.error('Disclaimer execution failed:', e);
+    }
+  })();
+</script>

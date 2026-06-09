@@ -99,7 +99,7 @@ const schemas = [breadcrumbs, medicalSchema, genderHowTo];
       <!-- Part 2: Heart Rate Form -->
       <div id="panel-heartrate" class="flex flex-col gap-5" style="display: none;">
         <h2 class="font-display font-semibold text-lg text-ink font-display">Fetal Heart Rate Theory</h2>
-        <p class="text-xs text-ink-muted-48 -mt-2">Traditional theory says a faster heartbeat (>140 bpm) points to a girl, while a slower heartbeat (<140 bpm) points to a boy.</p>
+        <p class="text-xs text-ink-muted-48 -mt-2">Traditional theory says a faster heartbeat (&gt;140 bpm) points to a girl, while a slower heartbeat {`(<140 bpm)`} points to a boy.</p>
         
         <form id="hr-form" class="flex flex-col gap-4">
           <div class="flex flex-col gap-1.5">
@@ -141,8 +141,6 @@ const schemas = [breadcrumbs, medicalSchema, genderHowTo];
 </Layout>
 
 <script>
-  let activeMethod = 'chinese';
-
   const tabChinese = document.getElementById('tab-chinese');
   const tabHeartRate = document.getElementById('tab-heartrate');
   const panelChinese = document.getElementById('panel-chinese');
@@ -156,7 +154,6 @@ const schemas = [breadcrumbs, medicalSchema, genderHowTo];
   const revealText = document.getElementById('gender-reveal-text');
 
   tabChinese?.addEventListener('click', () => {
-    activeMethod = 'chinese';
     tabChinese.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
     tabChinese.classList.remove('text-ink-muted-80');
     tabHeartRate?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
@@ -168,7 +165,6 @@ const schemas = [breadcrumbs, medicalSchema, genderHowTo];
   });
 
   tabHeartRate?.addEventListener('click', () => {
-    activeMethod = 'heartrate';
     tabHeartRate.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
     tabHeartRate.classList.remove('text-ink-muted-80');
     tabChinese?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');

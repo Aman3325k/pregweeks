@@ -1,6 +1,7 @@
 ---
 // src/pages/checklist/hospital-bag.astro
 import Layout from '../../layouts/Layout.astro';
+import DigitalProductCheckout from '../../components/DigitalProductCheckout.astro';
 import { getMedicalPageSchema, getBreadcrumbSchema } from '../../utils/seo';
 
 const title = "Ultimate Pregnancy Hospital Bag Checklist: What to Pack | PregWeeks";
@@ -96,6 +97,13 @@ const checklistData = [
       <button onclick="window.print()" class="text-xs border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-1.5 px-4 rounded-apple-pill cursor-pointer transition-colors">
         Print Checklist
       </button>
+    </div>
+  </section>
+
+  <!-- Digital PDF Checkout Card (Pillar 5 Upsell) -->
+  <section class="bg-canvas pt-8 px-4 print:hidden">
+    <div class="max-w-[720px] mx-auto">
+      <DigitalProductCheckout />
     </div>
   </section>
 

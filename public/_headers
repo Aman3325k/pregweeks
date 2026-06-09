@@ -1,0 +1,9 @@
+# Cache-Control headers for Cloudflare Pages
+
+# Hashed assets cached indefinitely
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages cached at edge, checking freshness at client
+/*
+  Cache-Control: public, max-age=0, must-revalidate

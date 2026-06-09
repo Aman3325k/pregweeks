@@ -1,7 +1,7 @@
 ---
 // src/pages/tools/ivf-calculator.astro
 import Layout from '../../layouts/Layout.astro';
-import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema } from '../../utils/seo';
+import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema, getSoftwareApplicationSchema } from '../../utils/seo';
 
 const title = "IVF Due Date Calculator | Embryo Transfer & Retrieval | PregWeeks";
 const description = "Calculate your estimated pregnancy due date (EDD) and gestational age for IVF cycles. Supports Egg Retrieval, 3-Day Embryo, and 5-Day Embryo transfers.";
@@ -9,7 +9,7 @@ const canonicalUrl = "https://pregweeks.com/tools/ivf-calculator";
 
 const breadcrumbs = getBreadcrumbSchema([
   { name: "Home", url: "https://pregweeks.com" },
-  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Tools", url: "https://pregweeks.com/tools" },
   { name: "IVF Due Date Calculator", url: canonicalUrl }
 ]);
 
@@ -24,9 +24,11 @@ const ivfHowTo = getHowToSchema(
     { name: "Generate Due Date", text: "Click the 'Calculate IVF Due Date' button to compute your target due date and current weeks." }
   ]
 );
+
+const appSchema = getSoftwareApplicationSchema("IVF Due Date Calculator", description, canonicalUrl);
 ---
 
-<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema, ivfHowTo]}>
+<Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema, ivfHowTo, appSchema]}>
   <div class="max-w-[760px] mx-auto px-4 py-8 md:py-12">
     <!-- Breadcrumbs -->
     <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">

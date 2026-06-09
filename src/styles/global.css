@@ -43,7 +43,7 @@
 }
 
 :root {
-  --color-primary: #e91e8c;
+  --color-primary: #d81b60; /* Accessible vibrant pink (4.95:1 on white, 4.53:1 on surface) */
   --color-primary-dark: #c2185b;
   --color-primary-on-dark: #f472b6;
   --color-bg: #ffffff;
@@ -57,6 +57,7 @@
 }
 
 .dark {
+  --color-primary: #f472b6; /* Accessible light pink for dark mode (6.64:1 on dark bg) */
   --color-bg: #0f0f0f;
   --color-surface: #1a1a2e;
   --color-text: #f0f0f0;
@@ -164,4 +165,31 @@
     line-height: 1.15;
     color: var(--color-text);
   }
+}
+
+/* Accessibility contrast overrides for badges and buttons */
+
+/* 1. Badge/pill styles override (light mode: dark pink text on light background) */
+.bg-primary\/10 {
+  background-color: color-mix(in srgb, var(--color-primary-dark) 8%, transparent) !important;
+  color: var(--color-primary-dark) !important;
+}
+
+/* 2. Badge/pill styles override (dark mode: restore light pink on translucent background) */
+.dark .bg-primary\/10 {
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
+  color: var(--color-primary) !important;
+}
+
+/* 3. Button background override in dark mode to guarantee text contrast against white text */
+.dark .bg-primary.text-white,
+.dark button.bg-primary.text-white,
+.dark a.bg-primary.text-white {
+  background-color: var(--color-primary-dark) !important;
+}
+
+.dark .bg-primary.text-white:hover,
+.dark button.bg-primary.text-white:hover,
+.dark a.bg-primary.text-white:hover {
+  background-color: #a0134a !important; /* Slightly darker shade of primary-dark for hover state */
 }

@@ -1,46 +1,66 @@
 ---
 // src/components/Calculator.astro
+const isSpanish = Astro.url.pathname.startsWith('/es');
+
+// Build-time static translation dictionary
+const t = {
+  title: isSpanish ? 'Calculadora de Fecha de Parto' : 'Due Date Calculator',
+  lmp: isSpanish ? 'Último Período (LMP)' : 'Last Period (LMP)',
+  conception: isSpanish ? 'Fecha de Concepción' : 'Conception Date',
+  edd: isSpanish ? 'Fecha de Parto (EDD)' : 'Due Date (EDD)',
+  lblLmp: isSpanish ? 'Primer día de tu último período:' : 'First day of your last period:',
+  btnCalculate: isSpanish ? 'Calcular Fecha de Parto' : 'Calculate Due Date',
+  btnReset: isSpanish ? 'Reiniciar' : 'Reset',
+  resTitle: isSpanish ? 'Fecha de Parto Estimada' : 'Estimated Due Date',
+  resAge: isSpanish ? 'Actualmente Tienes' : 'You Are Currently',
+  resTrimester: isSpanish ? 'Trimestre Actual' : 'Current Trimester',
+  resRemaining: isSpanish ? 'Días Restantes' : 'Days Remaining',
+  progressConception: isSpanish ? 'Concepción' : 'Conception',
+  progressPercent: isSpanish ? 'Completado' : 'Complete',
+  progressDue: isSpanish ? 'Fecha de Parto' : 'Due Date'
+};
 ---
 
 <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 max-w-2xl mx-auto transition-colors duration-300" id="pregnancy-calculator">
-  <h3 class="font-display font-semibold text-2xl md:text-3xl text-center mb-6 tracking-apple-tight">Due Date Calculator</h3>
+  <h3 class="font-display font-semibold text-2xl md:text-3xl text-center mb-6 tracking-apple-tight">{t.title}</h3>
   
   <div class="flex bg-canvas-parchment p-1 rounded-apple-sm mb-6 gap-1 border border-hairline/10">
-    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-primary bg-canvas shadow-sm min-h-[44px] flex items-center justify-center" data-mode="lmp" id="mode-lmp">Last Period (LMP)</button>
-    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink min-h-[44px] flex items-center justify-center" data-mode="conception" id="mode-conception">Conception Date</button>
+    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-primary bg-canvas shadow-sm min-h-[44px] flex items-center justify-center" data-mode="lmp" id="mode-lmp">{t.lmp}</button>
+    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink min-h-[44px] flex items-center justify-center" data-mode="conception" id="mode-conception">{t.conception}</button>
+    <button type="button" class="flex-1 py-2 rounded-apple-xs text-xs md:text-sm font-semibold cursor-pointer transition-all duration-200 active:scale-95 text-ink-muted-80 hover:text-ink min-h-[44px] flex items-center justify-center" data-mode="edd" id="mode-edd">{t.edd}</button>
   </div>
 
   <form class="flex flex-col gap-5" id="calculator-form">
     <div class="flex flex-col gap-1.5">
-      <label for="calc-date" id="date-label" class="font-medium text-xs md:text-sm text-ink">First day of your last period:</label>
+      <label for="calc-date" id="date-label" class="font-medium text-xs md:text-sm text-ink">{t.lblLmp}</label>
       <input type="date" id="calc-date" required class="w-full p-3 border border-hairline rounded-apple-lg bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 font-sans text-sm md:text-base min-h-[44px]" />
     </div>
     
     <div class="flex flex-col sm:flex-row gap-3 mt-2">
-      <button type="submit" class="flex-2 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center">Calculate Due Date</button>
-      <button type="button" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center" id="reset-btn" style="display: none;">Reset</button>
+      <button type="submit" class="flex-2 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center">{t.btnCalculate}</button>
+      <button type="button" class="flex-1 border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-4 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center" id="reset-btn" style="display: none;">{t.btnReset}</button>
     </div>
   </form>
 
   <div class="mt-8 border-t border-hairline pt-6" id="calculator-results" style="display: none;">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
-        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Estimated Due Date</span>
+        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">{t.resTitle}</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-edd">--</span>
       </div>
       
       <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
-        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">You Are Currently</span>
+        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">{t.resAge}</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-age">--</span>
       </div>
 
       <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
-        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Current Trimester</span>
+        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">{t.resTrimester}</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-trimester">--</span>
       </div>
 
       <div class="bg-canvas-parchment p-4 rounded-apple-lg border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1">
-        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Days Remaining</span>
+        <span class="text-[10px] md:text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">{t.resRemaining}</span>
         <span class="text-lg md:text-xl font-bold text-primary" id="res-countdown">--</span>
       </div>
     </div>
@@ -48,9 +68,9 @@
     <!-- Progress Bar -->
     <div class="mt-4">
       <div class="flex justify-between text-xs text-ink-muted-48 mb-2 font-medium">
-        <span>Conception</span>
-        <span id="progress-percent" class="text-primary font-semibold">0% Complete</span>
-        <span>Due Date</span>
+        <span>{t.progressConception}</span>
+        <span id="progress-percent" class="text-primary font-semibold">0% {t.progressPercent}</span>
+        <span>{t.progressDue}</span>
       </div>
       <div class="h-2 bg-canvas-parchment rounded-full overflow-hidden border border-hairline/30">
         <div class="h-full bg-primary rounded-full transition-all duration-700 ease-out" id="res-progress-fill" style="width: 0%;"></div>
@@ -60,12 +80,16 @@
 </div>
 
 <script>
-  let activeMode = 'lmp';
+  import { getPregnancyState, savePregnancyState, clearPregnancyState, calculatePregnancyData } from '../utils/pregnancyState';
+
+  let activeMode: 'lmp' | 'conception' | 'edd' = 'lmp';
+  const isSpanish = window.location.pathname.startsWith('/es');
 
   const dateInput = document.getElementById('calc-date') as HTMLInputElement;
   const dateLabel = document.getElementById('date-label') as HTMLLabelElement;
   const modeLmp = document.getElementById('mode-lmp');
   const modeConception = document.getElementById('mode-conception');
+  const modeEdd = document.getElementById('mode-edd');
   const calcForm = document.getElementById('calculator-form') as HTMLFormElement;
   const resultsContainer = document.getElementById('calculator-results');
   const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
@@ -77,16 +101,28 @@
   const resProgressFill = document.getElementById('res-progress-fill');
   const progressPercent = document.getElementById('progress-percent');
 
-  // Load stored calculator state on load
+  // Client-side localizing strings
+  const labels = {
+    lmp: isSpanish ? 'Primer día de tu último período:' : 'First day of your last period:',
+    conception: isSpanish ? 'Fecha estimada de concepción:' : 'Estimated date of conception:',
+    edd: isSpanish ? 'Tu fecha estimada de parto (FPP):' : 'Your estimated due date:'
+  };
+
+  const trimesterLabels = {
+    1: isSpanish ? 'Primer Trimestre' : 'First Trimester',
+    2: isSpanish ? 'Segundo Trimestre' : 'Second Trimester',
+    3: isSpanish ? 'Tercer Trimestre' : 'Third Trimester'
+  };
+
+  // Load stored calculator state on mount
   document.addEventListener('DOMContentLoaded', () => {
-    const savedCalculation = localStorage.getItem('pregnancy_calc_v2');
-    if (savedCalculation) {
-      const data = JSON.parse(savedCalculation);
-      activeMode = data.mode;
-      dateInput.value = data.date;
+    const saved = getPregnancyState();
+    if (saved) {
+      activeMode = saved.mode;
+      dateInput.value = saved.date;
       
       updateModeUI();
-      calculate(new Date(data.date), activeMode, false);
+      calculate(new Date(saved.date), activeMode, false);
     }
   });
 
@@ -101,19 +137,24 @@
     updateModeUI();
   });
 
+  modeEdd?.addEventListener('click', () => {
+    activeMode = 'edd';
+    updateModeUI();
+  });
+
   function updateModeUI() {
-    if (activeMode === 'lmp') {
-      modeLmp?.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
-      modeLmp?.classList.remove('text-ink-muted-80');
-      modeConception?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
-      modeConception?.classList.add('text-ink-muted-80');
-      dateLabel.textContent = "First day of your last period:";
-    } else {
-      modeConception?.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
-      modeConception?.classList.remove('text-ink-muted-80');
-      modeLmp?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
-      modeLmp?.classList.add('text-ink-muted-80');
-      dateLabel.textContent = "Estimated date of conception:";
+    const btns = [modeLmp, modeConception, modeEdd];
+    btns.forEach(btn => {
+      btn?.classList.remove('bg-canvas', 'text-primary', 'shadow-sm');
+      btn?.classList.add('text-ink-muted-80');
+    });
+
+    const activeBtn = activeMode === 'lmp' ? modeLmp : activeMode === 'conception' ? modeConception : modeEdd;
+    activeBtn?.classList.add('bg-canvas', 'text-primary', 'shadow-sm');
+    activeBtn?.classList.remove('text-ink-muted-80');
+    
+    if (dateLabel) {
+      dateLabel.textContent = labels[activeMode];
     }
   }
 
@@ -126,81 +167,71 @@
   });
 
   resetBtn.addEventListener('click', () => {
-    localStorage.removeItem('pregnancy_calc_v2');
+    clearPregnancyState();
     dateInput.value = '';
-    resultsContainer!.style.display = 'none';
+    if (resultsContainer) resultsContainer.style.display = 'none';
     resetBtn.style.display = 'none';
     
-    // Dispatch event to reset weeks
+    // Dispatch event to reset widgets
     const event = new CustomEvent('pregnancy-reset');
     document.dispatchEvent(event);
   });
 
-  function calculate(date: Date, mode: string, dispatchEvent = true) {
-    let edd: Date;
-    let gestationalAgeDays = 0;
-    const now = new Date();
-    
-    // Set hours to midday to prevent timezone shifting errors
+  function calculate(date: Date, mode: 'lmp' | 'conception' | 'edd', dispatchEvent = true) {
+    // Midday hour setting to prevent timezone errors
     date.setHours(12, 0, 0, 0);
-    now.setHours(12, 0, 0, 0);
 
-    if (mode === 'lmp') {
-      // Due date is LMP + 280 days
-      edd = new Date(date.getTime() + 280 * 24 * 60 * 60 * 1000);
-      gestationalAgeDays = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000));
-    } else {
-      // Due date is Conception + 266 days
-      edd = new Date(date.getTime() + 266 * 24 * 60 * 60 * 1000);
-      gestationalAgeDays = Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000)) + 14;
-    }
+    // Save to LocalStorage using central helper
+    savePregnancyState(dateInput.value, mode);
 
-    if (gestationalAgeDays < 0) gestationalAgeDays = 0;
-    
-    const totalPregnancyDays = 280;
-    const daysRemaining = Math.max(0, Math.floor((edd.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)));
-
-    const weeks = Math.floor(gestationalAgeDays / 7);
-    const remainingDays = gestationalAgeDays % 7;
-
-    // Save to LocalStorage
-    localStorage.setItem('pregnancy_calc_v2', JSON.stringify({
-      mode,
-      date: dateInput.value
-    }));
+    const { edd, weeks, days, daysRemaining, progressPercent: percentVal, trimester } = calculatePregnancyData(dateInput.value, mode);
 
     // Update UI Results
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    resEdd!.textContent = edd.toLocaleDateString('en-US', options);
+    const localeStr = isSpanish ? 'es-ES' : 'en-US';
     
-    if (weeks === 0 && remainingDays === 0) {
-      resAge!.textContent = "Early Cycle / Not started";
-    } else {
-      resAge!.textContent = `${weeks} Weeks, ${remainingDays} Day${remainingDays !== 1 ? 's' : ''}`;
+    if (resEdd) {
+      resEdd.textContent = edd.toLocaleDateString(localeStr, options);
+    }
+    
+    if (resAge) {
+      if (weeks === 0 && days === 0) {
+        resAge.textContent = isSpanish ? 'Embarazo no iniciado / Temprano' : 'Early Cycle / Not started';
+      } else {
+        resAge.textContent = isSpanish 
+          ? `${weeks} Semanas, ${days} Día${days !== 1 ? 's' : ''}` 
+          : `${weeks} Weeks, ${days} Day${days !== 1 ? 's' : ''}`;
+      }
     }
 
-    let trimesterVal = "First Trimester";
-    if (weeks >= 28) trimesterVal = "Third Trimester";
-    else if (weeks >= 13) trimesterVal = "Second Trimester";
-    resTrimester!.textContent = trimesterVal;
+    if (resTrimester) {
+      const isTriIndex = trimester === 'Third Trimester' ? 3 : trimester === 'Second Trimester' ? 2 : 1;
+      resTrimester.textContent = trimesterLabels[isTriIndex];
+    }
 
-    resCountdown!.textContent = `${daysRemaining} Day${daysRemaining !== 1 ? 's' : ''}`;
+    if (resCountdown) {
+      resCountdown.textContent = isSpanish
+        ? `${daysRemaining} Día${daysRemaining !== 1 ? 's' : ''}`
+        : `${daysRemaining} Day${daysRemaining !== 1 ? 's' : ''}`;
+    }
 
-    const progressPercentVal = Math.min(100, Math.max(0, Math.floor((gestationalAgeDays / totalPregnancyDays) * 100)));
-    resProgressFill!.style.width = `${progressPercentVal}%`;
-    progressPercent!.textContent = `${progressPercentVal}% Complete`;
+    if (resProgressFill) resProgressFill.style.width = `${percentVal}%`;
+    if (progressPercent) {
+      const pctText = isSpanish ? 'Completado' : 'Complete';
+      progressPercent.textContent = `${percentVal}% ${pctText}`;
+    }
 
-    resultsContainer!.style.display = 'block';
+    if (resultsContainer) resultsContainer.style.display = 'block';
     resetBtn.style.display = 'inline-block';
 
-    let currentWeek = Math.max(1, Math.min(40, weeks + 1));
+    const currentWeek = Math.max(1, Math.min(40, weeks + 1));
     
     if (dispatchEvent) {
       const event = new CustomEvent('pregnancy-updated', {
         detail: {
           week: currentWeek,
           weeks: weeks,
-          days: remainingDays
+          days: days
         }
       });
       document.dispatchEvent(event);

@@ -1,7 +1,7 @@
 ---
 // src/pages/tools/weight-tracker.astro
 import Layout from '../../layouts/Layout.astro';
-import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema } from '../../utils/seo';
+import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema, getSoftwareApplicationSchema } from '../../utils/seo';
 
 const title = "Pregnancy Weight Gain Tracker & Chart | BMI Calculator | PregWeeks";
 const description = "Track your pregnancy weight gain week-by-week based on pre-pregnancy BMI. Interactive calculator, weight log tracker, and recommended weight curves chart.";
@@ -9,7 +9,7 @@ const canonicalUrl = "https://pregweeks.com/tools/weight-tracker";
 
 const breadcrumbs = getBreadcrumbSchema([
   { name: "Home", url: "https://pregweeks.com" },
-  { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+  { name: "Tools", url: "https://pregweeks.com/tools" },
   { name: "Weight Tracker", url: canonicalUrl }
 ]);
 
@@ -26,7 +26,9 @@ const weightHowTo = getHowToSchema(
   ]
 );
 
-const schemas = [breadcrumbs, medicalSchema, weightHowTo];
+const appSchema = getSoftwareApplicationSchema("Pregnancy Weight Gain Tracker", description, canonicalUrl);
+
+const schemas = [breadcrumbs, medicalSchema, weightHowTo, appSchema];
 ---
 
 <Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={schemas}>
@@ -257,7 +259,6 @@ const schemas = [breadcrumbs, medicalSchema, weightHowTo];
   
   const logTableBody = document.getElementById('log-table-body');
   
-  const chartSvg = document.getElementById('chart-svg');
   const chartTargetArea = document.getElementById('chart-target-area');
   const chartMinLine = document.getElementById('chart-min-line');
   const chartMaxLine = document.getElementById('chart-max-line');

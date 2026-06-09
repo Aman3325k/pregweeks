@@ -2,6 +2,8 @@
 // src/pages/week/[week].astro
 import Layout from '../../layouts/Layout.astro';
 import { pregnancyData } from '../../data/pregnancyData';
+import ContextualAffiliates from '../../components/ContextualAffiliates.astro';
+import DigitalProductCheckout from '../../components/DigitalProductCheckout.astro';
 import { symptomItems } from '../../data/symptomData';
 import { foodItems } from '../../data/foodData';
 import { getMedicalPageSchema, getBreadcrumbSchema, getFAQSchema } from '../../utils/seo';
@@ -258,6 +260,11 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
         </p>
       </div>
     </div>
+    
+    <!-- Contextual Commerce Affiliate Placement (Pillar 5) -->
+    <div class="max-w-[960px] mx-auto mt-6">
+      <ContextualAffiliates currentWeek={weekNum} />
+    </div>
   </section>
 
   <!-- Tile 2: Baby's Development (Dark surface) -->
@@ -318,6 +325,11 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
           ))}
         </ul>
       </div>
+    </div>
+    
+    <!-- Premium Digital Checklist Upsell (Pillar 5) -->
+    <div class="max-w-[960px] mx-auto mt-10">
+      <DigitalProductCheckout />
     </div>
   </section>
 

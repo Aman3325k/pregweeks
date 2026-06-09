@@ -1,0 +1,286 @@
+---
+// src/pages/tools/chinese-gender-predictor.astro
+import Layout from '../../layouts/Layout.astro';
+import { getMedicalPageSchema, getBreadcrumbSchema, getSoftwareApplicationSchema } from '../../utils/seo';
+
+const title = "Chinese Gender Predictor & Chart | PregWeeks";
+const description = "Calculate your baby's gender based on the ancient Chinese Lunar Calendar chart. Input mother's birthday and conception month for instant, fun results.";
+const url = "https://pregweeks.com/tools/chinese-gender-predictor";
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getSoftwareApplicationSchema("Chinese Gender Predictor", description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Tools", url: "https://pregweeks.com/calculators" },
+    { name: "Chinese Gender Predictor", url: url }
+  ])
+];
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <a href="/" class="text-primary hover:underline">Home</a>
+      <span class="mx-2 text-hairline">/</span>
+      <a href="/calculators" class="text-primary hover:underline">Tools</a>
+      <span class="mx-2 text-hairline">/</span>
+      <span class="text-ink">Chinese Gender Predictor</span>
+    </div>
+  </div>
+
+  <!-- Hero Tile (Light Canvas) -->
+  <section class="bg-canvas py-12 px-4 transition-colors">
+    <div class="max-w-[720px] mx-auto text-center mb-10">
+      <span class="text-3xl mb-3 block">🔮</span>
+      <h1 class="font-display font-semibold text-3xl md:text-4xl text-ink tracking-apple-tight mb-4">
+        Chinese Gender Predictor
+      </h1>
+      <p class="text-base md:text-lg text-ink-muted-80 leading-relaxed tracking-apple-dense">
+        Predict your baby's gender using the ancient Chinese calendar. Cross-reference the mother's lunar age at conception with the month of conception.
+      </p>
+    </div>
+    
+    <!-- Calculator Card -->
+    <div class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 max-w-xl mx-auto transition-all duration-300" id="gender-predictor-widget">
+      <form id="gender-form" class="flex flex-col gap-5">
+        
+        <!-- Mother's Birthdate -->
+        <div class="flex flex-col gap-1.5">
+          <label for="mother-dob" class="font-semibold text-xs md:text-sm text-ink">Mother's Date of Birth:</label>
+          <input 
+            type="date" 
+            id="mother-dob" 
+            required 
+            max={new Date().toISOString().split('T')[0]}
+            class="w-full p-3 border border-hairline rounded-apple-lg bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 font-sans text-sm md:text-base min-h-[44px]"
+          />
+        </div>
+
+        <!-- Month of Conception -->
+        <div class="flex flex-col gap-1.5">
+          <label for="conception-month" class="font-semibold text-xs md:text-sm text-ink">Conception Month:</label>
+          <select 
+            id="conception-month" 
+            required
+            class="w-full p-3 border border-hairline rounded-apple-lg bg-canvas text-ink outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 font-sans text-sm md:text-base min-h-[44px]"
+          >
+            <option value="">Select Month...</option>
+            <option value="1">January (Month 1)</option>
+            <option value="2">February (Month 2)</option>
+            <option value="3">March (Month 3)</option>
+            <option value="4">April (Month 4)</option>
+            <option value="5">May (Month 5)</option>
+            <option value="6">June (Month 6)</option>
+            <option value="7">July (Month 7)</option>
+            <option value="8">August (Month 8)</option>
+            <option value="9">September (Month 9)</option>
+            <option value="10">October (Month 10)</option>
+            <option value="11">November (Month 11)</option>
+            <option value="12">December (Month 12)</option>
+          </select>
+        </div>
+
+        <div class="flex gap-3 mt-2">
+          <button 
+            type="submit" 
+            class="flex-1 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-6 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center"
+          >
+            Predict Gender
+          </button>
+          <button 
+            type="button" 
+            id="btn-reset-gender" 
+            class="border border-hairline text-ink-muted-80 hover:text-ink hover:border-ink font-semibold py-3 px-5 rounded-apple-pill transition-all active:scale-95 text-center cursor-pointer text-sm md:text-base min-h-[44px] flex items-center justify-center hidden"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+
+      <!-- Outcome Results Card -->
+      <div id="gender-results" class="mt-8 border-t border-hairline pt-6 text-center hidden">
+        <h3 class="text-xs uppercase tracking-wider font-semibold text-ink-muted-48 mb-2">Prediction Results</h3>
+        
+        <div id="gender-outcome-box" class="p-6 rounded-apple-lg border transition-all duration-500 animate-scale-in flex flex-col items-center gap-3">
+          <span id="gender-emoji" class="text-6xl animate-bounce">👶</span>
+          <span class="text-sm text-ink-muted-80 font-medium" id="results-details-label">Based on Lunar Age: --</span>
+          <span class="text-3xl md:text-4xl font-extrabold tracking-apple-tight" id="gender-text">--</span>
+        </div>
+
+        <!-- Social Engagement CTA -->
+        <div class="mt-6 p-4 bg-canvas-parchment rounded-apple-lg border border-hairline text-left flex flex-col gap-3">
+          <span class="text-xs font-bold text-ink">🎉 Share Your Prediction!</span>
+          <p class="text-xs text-ink-muted-80 leading-relaxed">
+            Let your friends know what the ancient Chinese chart predicts for your little one.
+          </p>
+          <button 
+            type="button" 
+            id="btn-copy-prediction" 
+            class="w-full bg-primary hover:bg-primary-focus text-white text-xs font-semibold py-2 px-4 rounded-apple-pill transition-all active:scale-95 text-center min-h-[44px] flex items-center justify-center gap-1.5"
+          >
+            🔗 Copy Prediction Results
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Informational/YMYL Explanation section -->
+  <section class="bg-canvas-parchment py-16 px-4 border-t border-b border-hairline transition-colors">
+    <div class="max-w-[720px] mx-auto flex flex-col gap-8">
+      <div>
+        <h2 class="font-display font-semibold text-2xl text-ink tracking-apple-tight mb-3">Origin & Science of the Chinese Gender Chart</h2>
+        <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed mb-4">
+          According to Chinese folklore, the chart was discovered in a royal tomb near Beijing over 700 years ago. It utilizes the mother's Chinese lunar age at the time of conception and the lunar month of conception to forecast whether the baby is a boy or a girl.
+        </p>
+        <p class="text-sm md:text-base text-ink-muted-80 leading-relaxed">
+          <strong>Scientific Validity Notice:</strong> While the predictor is a highly popular and fun novelty tool among expectant parents, it lacks any scientific or clinical backing. Chromosomal pairings at fertilization (X or Y sperm meeting the egg) determine genetic gender at a 50/50 probability rate. This calculator serves as an entertaining guide rather than medical forecasting.
+        </p>
+      </div>
+
+      <div class="bg-canvas border border-hairline p-5 rounded-apple-sm">
+        <h3 class="font-semibold text-sm md:text-base text-ink mb-2">How Age Reckoning Works</h3>
+        <p class="text-xs md:text-sm text-ink-muted-80 leading-relaxed">
+          Traditional Chinese age (Lunar Age) counts the gestational period inside the womb. A newborn is considered 1 year old at birth and adds another year at the Lunar New Year. To approximate this client-side without full calendar charts, we calculate: <code class="bg-canvas-parchment px-1.5 py-0.5 rounded font-mono">Lunar Age = Western Chronological Age + 1</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive script -->
+  <script>
+    // Simplified standard Chinese Gender Chart Matrix
+    // 'B' = Boy, 'G' = Girl
+    // Rows: Mother's Lunar Age from 18 to 45 (indices 0 to 27)
+    // Columns: Lunar month of conception 1 to 12 (indices 0 to 11)
+    const genderChart = [
+      "BGBGBBBBBBGB", // 18
+      "GBGBGBBGBBGB", // 19
+      "BGBGBGBGBBGG", // 20
+      "BGGGGGGGGGGB", // 21
+      "GBBGBGGGBGBB", // 22
+      "BBGBBGGGBGBG", // 23
+      "BBGGGBGBGBGG", // 24
+      "GBBGGGBGBBGG", // 25
+      "BGBGBGGGBGGB", // 26
+      "GBGBGBBGBBGB", // 27
+      "BGBGBGGGBGGB", // 28
+      "GBBGBBGGGGGG", // 29
+      "BGGGGGGGGGGB", // 30
+      "BGBGGGGGGGGB", // 31
+      "BGBGGGGGGGGB", // 32
+      "GBBGGGGGGGGB", // 33
+      "BGBBGGGGGGGB", // 34
+      "BBGBGGGGGGGB", // 35
+      "BGBBGGGGGGGB", // 36
+      "GBGBGGGGGGGB", // 37
+      "BGBBGGGGGGGB", // 38
+      "GBGBBGGGGGBB", // 39
+      "BGBBGBGGGGGB", // 40
+      "GBGBBGBGGGGG", // 41
+      "BGBGBBGBGGGB", // 42
+      "GBGBGBBGBGGG", // 43
+      "BGBGBGBBGBGG", // 44
+      "GBBGBGBGBBGB"  // 45
+    ];
+
+    const form = document.getElementById('gender-form') as HTMLFormElement;
+    const dobInput = document.getElementById('mother-dob') as HTMLInputElement;
+    const monthSelect = document.getElementById('conception-month') as HTMLSelectElement;
+    const resetBtn = document.getElementById('btn-reset-gender') as HTMLButtonElement;
+    const resultsContainer = document.getElementById('gender-results');
+    const outcomeBox = document.getElementById('gender-outcome-box');
+    const genderEmoji = document.getElementById('gender-emoji');
+    const detailsLabel = document.getElementById('results-details-label');
+    const genderText = document.getElementById('gender-text');
+    const copyBtn = document.getElementById('btn-copy-prediction');
+
+    let currentPrediction = '';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const dobVal = dobInput.value;
+      const monthVal = parseInt(monthSelect.value, 10);
+      if (!dobVal || isNaN(monthVal)) return;
+
+      const dob = new Date(dobVal);
+      const today = new Date();
+
+      // 1. Calculate mother's chronological age at conception
+      // (Approximate conception date as middle of the selected month of the current year)
+      const conceptionYear = today.getFullYear();
+      const conceptionDate = new Date(conceptionYear, monthVal - 1, 15);
+      
+      let age = conceptionYear - dob.getFullYear();
+      const monthDiff = conceptionDate.getMonth() - dob.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && conceptionDate.getDate() < dob.getDate())) {
+        age--;
+      }
+
+      // 2. Adjust to Lunar Age (Chronological + 1)
+      const lunarAge = age + 1;
+      
+      // Clamp age between 18 and 45 to match chart indices
+      const lookupAge = Math.max(18, Math.min(45, lunarAge));
+      const chartRowIndex = lookupAge - 18;
+      const chartColIndex = monthVal - 1;
+
+      // 3. Lookup result
+      const resultChar = genderChart[chartRowIndex].charAt(chartColIndex);
+      const isBoy = resultChar === 'B';
+
+      // 4. Update UI Styling & Results
+      currentPrediction = isBoy ? 'Boy 💙' : 'Girl 💖';
+      
+      if (genderText) genderText.textContent = isBoy ? 'It\'s a BOY!' : 'It\'s a GIRL!';
+      if (genderEmoji) genderEmoji.textContent = isBoy ? '👶🏼💙' : '👶🏼💖';
+      
+      if (detailsLabel) {
+        detailsLabel.textContent = `Mother's Lunar Age at Conception: ${lunarAge} years | Conception Month: ${monthSelect.options[monthSelect.selectedIndex].text.split(' ')[0]}`;
+      }
+
+      if (outcomeBox) {
+        outcomeBox.className = "p-6 rounded-apple-lg border transition-all duration-500 animate-scale-in flex flex-col items-center gap-3";
+        if (isBoy) {
+          outcomeBox.classList.add('bg-blue-50/50', 'border-blue-200', 'text-blue-900', 'dark:bg-blue-950/20', 'dark:border-blue-900/50', 'dark:text-blue-100');
+        } else {
+          outcomeBox.classList.add('bg-pink-50/50', 'border-pink-200', 'text-pink-900', 'dark:bg-pink-950/20', 'dark:border-pink-900/50', 'dark:text-pink-100');
+        }
+      }
+
+      if (resultsContainer) resultsContainer.classList.remove('hidden');
+      if (resetBtn) resetBtn.classList.remove('hidden');
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      if (resultsContainer) resultsContainer.classList.add('hidden');
+      if (resetBtn) resetBtn.classList.add('hidden');
+    });
+
+    copyBtn?.addEventListener('click', async () => {
+      if (!currentPrediction) return;
+
+      try {
+        const text = `The ancient Chinese Gender Chart predicts my baby will be a ${currentPrediction}! Try it yourself at ${window.location.href}`;
+        await navigator.clipboard.writeText(text);
+
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '✓ Copied Prediction!';
+        copyBtn.classList.remove('bg-primary');
+        copyBtn.classList.add('bg-green-600');
+
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+          copyBtn.classList.add('bg-primary');
+          copyBtn.classList.remove('bg-green-600');
+        }, 2000);
+      } catch (err) {
+        console.error('Copy prediction text failed:', err);
+      }
+    });
+  </script>
+</Layout>
