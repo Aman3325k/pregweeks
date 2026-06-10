@@ -1,9 +1,16 @@
-# Cache-Control headers for Cloudflare Pages
+# Block pages.dev from Google indexing
+https://pregweeks.pages.dev/*
+  X-Robots-Tag: noindex
+
+# Security headers for production domain
+https://pregweeks.com/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
 
 # Hashed assets cached indefinitely
-/_astro/*
+https://pregweeks.com/_astro/*
   Cache-Control: public, max-age=31536000, immutable
-
-# HTML pages cached at edge, checking freshness at client
-/*
-  Cache-Control: public, max-age=0, must-revalidate
