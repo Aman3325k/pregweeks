@@ -5,18 +5,18 @@ const ASSETS_TO_CACHE = [
   '/favicon.svg',
   '/favicon.ico',
   '/manifest.json',
-  '/tools/due-date-calculator',
-  '/tools/ivf-calculator',
-  '/tools/weight-tracker',
-  '/tools/ovulation-calculator',
-  '/tools/kick-counter',
-  '/tools/contraction-timer',
-  '/tools/baby-cost-calculator',
-  '/tools/journal',
-  '/checklist/hospital-bag',
-  '/checklist/baby-shower',
-  '/checklist/nursery',
-  '/checklist/baby-gear'
+  '/tools/due-date-calculator/',
+  '/tools/ivf-calculator/',
+  '/tools/weight-tracker/',
+  '/tools/ovulation-calculator/',
+  '/tools/kick-counter/',
+  '/tools/contraction-timer/',
+  '/tools/baby-cost-calculator/',
+  '/tools/journal/',
+  '/checklist/hospital-bag/',
+  '/checklist/baby-shower/',
+  '/checklist/nursery/',
+  '/checklist/baby-gear/'
 ];
 
 self.addEventListener('install', (event) => {
@@ -50,8 +50,22 @@ self.addEventListener('fetch', (event) => {
   // Skip caching external domains (e.g. analytics scripts)
   if (url.origin !== self.location.origin) return;
 
+  // Normalize navigation requests to have trailing slashes
+  let request = event.request;
+  if (event.request.mode === 'navigate') {
+    if (!url.pathname.endsWith('/') && !url.pathname.split('/').pop().includes('.')) {
+      url.pathname += '/';
+      request = new Request(url.toString(), {
+        method: event.request.method,
+        headers: event.request.headers,
+        credentials: event.request.credentials,
+        redirect: 'manual'
+      });
+    }
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(request).then((cachedResponse) => {
       // Check if the requested asset is part of our static app shell
       const isStaticShell = ASSETS_TO_CACHE.some(asset => 
         url.pathname === asset || url.pathname === `${asset}/`
@@ -63,12 +77,12 @@ self.addEventListener('fetch', (event) => {
       }
 
       // Stale-While-Revalidate for other pages (like /week/15) and compiled bundles
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
+      const fetchPromise = fetch(request).then((networkResponse) => {
         // Only cache valid successful GET requests
         if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
+            cache.put(request, responseToCache);
           });
         }
         return networkResponse;

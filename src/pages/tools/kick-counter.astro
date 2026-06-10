@@ -5,7 +5,7 @@ import { getMedicalPageSchema, getBreadcrumbSchema, getHowToSchema } from '../..
 
 const title = "Fetal Kick Counter: Track Baby Movements Online | PregWeeks";
 const description = "Monitor your baby's health with our easy-to-use, secure fetal kick counter. Track and log baby kicks offline with no ads or backend tracking.";
-const url = "https://pregweeks.com/tools/kick-counter";
+const url = "https://pregweeks.com/tools/kick-counter/";
 
 const kickHowTo = getHowToSchema(
   "How to Use the Fetal Kick Counter",
@@ -22,7 +22,7 @@ const schemas = [
   getMedicalPageSchema(title, description, url),
   getBreadcrumbSchema([
     { name: "Home", url: "https://pregweeks.com" },
-    { name: "Tools", url: "https://pregweeks.com/tools/due-date-calculator" },
+    { name: "Tools", url: "https://pregweeks.com/calculators/" },
     { name: "Fetal Kick Counter", url: url }
   ]),
   kickHowTo
@@ -166,9 +166,9 @@ const schemas = [
     <div class="max-w-[720px] mx-auto text-center">
       <h2 class="font-display font-semibold text-lg text-ink mb-6 tracking-apple-tight">Related Pregnancy Tools</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <a href="/tools/due-date-calculator" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
-        <a href="/tools/contraction-timer" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Contraction Timer</a>
-        <a href="/tools/weight-tracker" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Weight Gain Tracker</a>
+        <a href="/tools/due-date-calculator/" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
+        <a href="/tools/contraction-timer/" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Contraction Timer</a>
+        <a href="/tools/weight-tracker/" class="bg-canvas-parchment border border-hairline hover:border-primary p-4 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Weight Gain Tracker</a>
       </div>
     </div>
   </section>

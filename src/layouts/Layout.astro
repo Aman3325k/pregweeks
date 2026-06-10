@@ -113,11 +113,11 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         
         <!-- Desktop Nav Links -->
         <div class="hidden md:flex items-center gap-6 text-[12px] text-neutral-400">
-          <a href="/symptoms" class="hover:text-white transition-colors">Symptoms</a>
-          <a href="/nutrition" class="hover:text-white transition-colors">Nutrition</a>
-          <a href="/faq" class="hover:text-white transition-colors">FAQ</a>
-          <a href="/glossary" class="hover:text-white transition-colors">Glossary</a>
-          <a href="/compare" class="hover:text-white transition-colors font-semibold text-primary">Compare Weeks</a>
+          <a href="/symptoms/" class="hover:text-white transition-colors">Symptoms</a>
+          <a href="/nutrition/" class="hover:text-white transition-colors">Nutrition</a>
+          <a href="/faq/" class="hover:text-white transition-colors">FAQ</a>
+          <a href="/glossary/" class="hover:text-white transition-colors">Glossary</a>
+          <a href="/compare/" class="hover:text-white transition-colors font-semibold text-primary">Compare Weeks</a>
         </div>
 
         <button 
@@ -157,8 +157,8 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         <div class="flex items-center gap-1 md:gap-4 text-[12px] md:text-[14px]">
           <!-- Desktop Only Sub-Nav Links -->
           <div class="hidden md:flex items-center gap-4">
-            <a href="/calculators" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Tools</a>
-            <a href="/checklist/hospital-bag" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklists</a>
+            <a href="/calculators/" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Tools</a>
+            <a href="/checklist/hospital-bag/" class="text-ink hover:text-primary transition-colors px-1 py-1 font-medium">Checklists</a>
           </div>
           
           <!-- Fuse.js search trigger -->
@@ -172,7 +172,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
           </button>
 
           <!-- Track Week (Desktop Only) -->
-          <a href="/tools/due-date-calculator" class="hidden md:inline-block bg-primary text-white text-[12px] font-semibold tracking-wide uppercase px-3 py-1.5 rounded-full hover:bg-primary-focus transition-colors cursor-pointer">
+          <a href="/tools/due-date-calculator/" class="hidden md:inline-block bg-primary text-white text-[12px] font-semibold tracking-wide uppercase px-3 py-1.5 rounded-full hover:bg-primary-focus transition-colors cursor-pointer">
             Track Week
           </a>
 
@@ -201,14 +201,14 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
           id="mobile-dropdown-menu" 
           class="hidden absolute top-[52px] left-0 w-full bg-canvas border-b border-hairline shadow-lg z-50 py-4 px-6 flex flex-col gap-1 transition-all duration-300"
         >
-          <a href="/symptoms" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Symptoms</a>
-          <a href="/nutrition" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Nutrition</a>
-          <a href="/faq" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">FAQ</a>
-          <a href="/glossary" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Glossary</a>
-          <a href="/compare" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base font-semibold text-primary">Compare Weeks</a>
-          <a href="/calculators" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Tools & Calculators</a>
-          <a href="/checklist/hospital-bag" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Hospital Bag Checklist</a>
-          <a href="/tools/due-date-calculator" class="mobile-nav-link text-white bg-primary hover:bg-primary-focus py-3 px-4 font-semibold rounded-apple-pill flex items-center justify-center min-h-[44px] mt-2 text-base">Track Week</a>
+          <a href="/symptoms/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Symptoms</a>
+          <a href="/nutrition/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Nutrition</a>
+          <a href="/faq/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">FAQ</a>
+          <a href="/glossary/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Glossary</a>
+          <a href="/compare/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base font-semibold text-primary">Compare Weeks</a>
+          <a href="/calculators/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Tools & Calculators</a>
+          <a href="/checklist/hospital-bag/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Hospital Bag Checklist</a>
+          <a href="/tools/due-date-calculator/" class="mobile-nav-link text-white bg-primary hover:bg-primary-focus py-3 px-4 font-semibold rounded-apple-pill flex items-center justify-center min-h-[44px] mt-2 text-base">Track Week</a>
         </div>
       </div>
     </div>
@@ -241,40 +241,40 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
           <div>
             <h3 class="font-semibold text-ink uppercase tracking-wider mb-3">Weeks & Guides</h3>
             <ul class="space-y-1 text-ink-muted-48">
-              <li><a href="/symptoms" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Symptom Guide</a></li>
-              <li><a href="/nutrition" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Nutrition Guide</a></li>
-              <li><a href="/faq" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">FAQs Index</a></li>
-              <li><a href="/glossary" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">A-Z Glossary</a></li>
-              <li><a href="/early-pregnancy-signs" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Early Signs</a></li>
-              <li><a href="/when-to-take-pregnancy-test" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">When to Test</a></li>
+              <li><a href="/symptoms/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Symptom Guide</a></li>
+              <li><a href="/nutrition/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Nutrition Guide</a></li>
+              <li><a href="/faq/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">FAQs Index</a></li>
+              <li><a href="/glossary/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">A-Z Glossary</a></li>
+              <li><a href="/early-pregnancy-signs/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Early Signs</a></li>
+              <li><a href="/when-to-take-pregnancy-test/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">When to Test</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-semibold text-ink uppercase tracking-wider mb-3">Labor & Conditions</h3>
             <ul class="space-y-1 text-ink-muted-48">
-              <li><a href="/labor" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Labor & Birth Hub</a></li>
-              <li><a href="/conditions" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Pregnancy Conditions</a></li>
-              <li><a href="/overdue" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Overdue Pregnancies</a></li>
-              <li><a href="/sources" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Medical Sources</a></li>
+              <li><a href="/labor/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Labor & Birth Hub</a></li>
+              <li><a href="/conditions/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Pregnancy Conditions</a></li>
+              <li><a href="/overdue/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Overdue Pregnancies</a></li>
+              <li><a href="/sources/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Medical Sources</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-semibold text-ink uppercase tracking-wider mb-3">Interactive Tools</h3>
             <ul class="space-y-1 text-ink-muted-48">
-              <li><a href="/calculators" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Calculators Hub</a></li>
-              <li><a href="/tools/due-date-calculator" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Due Date Tracker</a></li>
-              <li><a href="/tools/weight-tracker" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Weight Grapher</a></li>
-              <li><a href="/tools/ovulation-calculator" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Ovulation Forecast</a></li>
-              <li><a href="/tools/journal" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Pregnancy Journal</a></li>
+              <li><a href="/calculators/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Calculators Hub</a></li>
+              <li><a href="/tools/due-date-calculator/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Due Date Tracker</a></li>
+              <li><a href="/tools/weight-tracker/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Weight Grapher</a></li>
+              <li><a href="/tools/ovulation-calculator/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Ovulation Forecast</a></li>
+              <li><a href="/tools/journal/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Pregnancy Journal</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-semibold text-ink uppercase tracking-wider mb-3">Checklists Directory</h3>
             <ul class="space-y-1 text-ink-muted-48">
-              <li><a href="/checklist/hospital-bag" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Hospital Bag</a></li>
-              <li><a href="/checklist/baby-shower" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Baby Shower</a></li>
-              <li><a href="/checklist/nursery" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Nursery Setup</a></li>
-              <li><a href="/checklist/baby-gear" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Baby Newborn Gear</a></li>
+              <li><a href="/checklist/hospital-bag/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Hospital Bag</a></li>
+              <li><a href="/checklist/baby-shower/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Baby Shower</a></li>
+              <li><a href="/checklist/nursery/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Nursery Setup</a></li>
+              <li><a href="/checklist/baby-gear/" class="hover:text-primary hover:underline min-h-[44px] flex items-center justify-center md:justify-start py-1 text-sm md:text-xs">Baby Newborn Gear</a></li>
             </ul>
           </div>
         </div>
@@ -286,11 +286,11 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-ink-muted-48 pt-2 text-center md:text-left">
           <span>&copy; {new Date().getFullYear()} PregWeeks.com. All rights reserved.</span>
           <div class="flex flex-wrap justify-center gap-x-4 gap-y-2">
-            <a href="/about" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">About</a>
-            <a href="/contact" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Contact</a>
-            <a href="/privacy-policy" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Privacy Policy</a>
-            <a href="/terms" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Terms</a>
-            <a href="/disclaimer" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Disclaimer</a>
+            <a href="/about/" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">About</a>
+            <a href="/contact/" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Contact</a>
+            <a href="/privacy-policy/" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Privacy Policy</a>
+            <a href="/terms/" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Terms</a>
+            <a href="/disclaimer/" class="hover:text-primary hover:underline min-h-[44px] flex items-center px-2">Disclaimer</a>
           </div>
           <div class="flex gap-4">
             <span>Client-side Privacy Enabled (LocalStorage)</span>

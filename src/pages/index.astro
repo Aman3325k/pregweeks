@@ -220,7 +220,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
           }
           const guideLink = document.getElementById('widget-guide-link');
           if (guideLink) {
-            guideLink.setAttribute('href', '/week/' + Math.min(40, cw));
+            guideLink.setAttribute('href', '/week/' + Math.min(40, cw) + '/');
             guideLink.textContent = 'View Week ' + Math.min(40, cw) + ' Guide →';
           }
         }
@@ -232,12 +232,12 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     <div id="popular-links-section" class="max-w-2xl mx-auto mb-8 bg-canvas border border-hairline rounded-apple-lg p-6 text-left transition-all duration-300 min-h-[140px]">
       <h3 class="font-display font-semibold text-xs text-ink-muted-48 uppercase tracking-wider mb-3">Popular This Week</h3>
       <div id="popular-links-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <a href="/week/4" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 4 Guide: Early Development</a>
-        <a href="/week/8" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 8 Guide: First Ultrasound</a>
-        <a href="/week/12" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 12 Guide: End of T1</a>
-        <a href="/week/20" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 20 Guide: Anatomy Scan</a>
-        <a href="/week/28" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 28 Guide: Third Trimester</a>
-        <a href="/week/36" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 36 Guide: Final Stretch</a>
+        <a href="/week/4/" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 4 Guide: Early Development</a>
+        <a href="/week/8/" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 8 Guide: First Ultrasound</a>
+        <a href="/week/12/" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 12 Guide: End of T1</a>
+        <a href="/week/20/" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 20 Guide: Anatomy Scan</a>
+        <a href="/week/28/" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 28 Guide: Third Trimester</a>
+        <a href="/week/36/" class="popular-link bg-canvas-parchment p-3 rounded-apple-sm border border-hairline hover:border-primary transition-all text-xs font-semibold text-ink leading-tight block min-h-[44px] flex items-center">Week 36 Guide: Final Stretch</a>
       </div>
     </div>
 
@@ -333,7 +333,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
             <h3 class="font-display font-semibold text-2xl text-white mb-4 tracking-apple-tight">First Trimester</h3>
             <p class="text-neutral-300 text-sm leading-relaxed mb-6">Embryonic cell development, early organ creation, positive tests, and adjusting to hormonal surges (nausea & fatigue).</p>
           </div>
-          <a href="/trimester/first" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
+          <a href="/trimester/first/" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
             Explore Trimester 1 &rarr;
           </a>
         </div>
@@ -345,7 +345,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
             <h3 class="font-display font-semibold text-2xl text-white mb-4 tracking-apple-tight">Second Trimester</h3>
             <p class="text-neutral-300 text-sm leading-relaxed mb-6">The 'honeymoon' phase. Baby kicks start (quickening), energy returns, and the crucial mid-pregnancy anatomy scan takes place.</p>
           </div>
-          <a href="/trimester/second" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
+          <a href="/trimester/second/" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
             Explore Trimester 2 &rarr;
           </a>
         </div>
@@ -357,7 +357,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
             <h3 class="font-display font-semibold text-2xl text-white mb-4 tracking-apple-tight">Third Trimester</h3>
             <p class="text-neutral-300 text-sm leading-relaxed mb-6">Rapid fetal growth, lung maturation, structural body strain, nesting instinct spikes, and active labor preparation.</p>
           </div>
-          <a href="/trimester/third" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
+          <a href="/trimester/third/" class="text-primary-on-dark hover:underline font-semibold text-sm flex items-center gap-1.5 cursor-pointer min-h-[44px]">
             Explore Trimester 3 &rarr;
           </a>
         </div>
@@ -463,7 +463,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
       }
 
       if (widgetGuideLink) {
-        widgetGuideLink.href = `/week/${currentWeek}`;
+        widgetGuideLink.href = `/week/${currentWeek}/`;
         widgetGuideLink.textContent = `View Week ${currentWeek} Guide →`;
       }
 
@@ -496,15 +496,15 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
           symptomSlug = 'round-ligament-pain';
         }
 
-        const nextWeekLink = currentWeek < 40 ? `/week/${currentWeek + 1}` : `/postpartum/1`;
+        const nextWeekLink = currentWeek < 40 ? `/week/${currentWeek + 1}/` : `/postpartum/1/`;
         const nextWeekText = currentWeek < 40 ? `Week ${currentWeek + 1} Dev Guide` : `Postpartum Week 1 Guide`;
 
         const newLinks = [
-          { href: `/week/${currentWeek}`, text: `Week ${currentWeek} Developmental Guide` },
-          { href: `/partner/${currentWeek}`, text: `Week ${currentWeek} Partner Guide` },
-          { href: `/trimester/${trimesterSlug}`, text: `${trimesterSlug.charAt(0).toUpperCase() + trimesterSlug.slice(1)} Trimester Guide` },
-          { href: `/symptoms/${symptomSlug}`, text: `${symptomName} Relief` },
-          { href: `/tools/weight-tracker`, text: `Weight Gain Grapher` },
+          { href: `/week/${currentWeek}/`, text: `Week ${currentWeek} Developmental Guide` },
+          { href: `/partner/${currentWeek}/`, text: `Week ${currentWeek} Partner Guide` },
+          { href: `/trimester/${trimesterSlug}/`, text: `${trimesterSlug.charAt(0).toUpperCase() + trimesterSlug.slice(1)} Trimester Guide` },
+          { href: `/symptoms/${symptomSlug}/`, text: `${symptomName} Relief` },
+          { href: `/tools/weight-tracker/`, text: `Weight Gain Grapher` },
           { href: nextWeekLink, text: nextWeekText }
         ];
 
@@ -543,12 +543,12 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     const popularGrid = document.getElementById('popular-links-grid');
     if (popularGrid) {
       const defaults = [
-        { href: "/week/4", text: "Week 4 Guide: Early Development" },
-        { href: "/week/8", text: "Week 8 Guide: First Ultrasound" },
-        { href: "/week/12", text: "Week 12 Guide: End of T1" },
-        { href: "/week/20", text: "Week 20 Guide: Anatomy Scan" },
-        { href: "/week/28", text: "Week 28 Guide: Third Trimester" },
-        { href: "/week/36", text: "Week 36 Guide: Final Stretch" }
+        { href: "/week/4/", text: "Week 4 Guide: Early Development" },
+        { href: "/week/8/", text: "Week 8 Guide: First Ultrasound" },
+        { href: "/week/12/", text: "Week 12 Guide: End of T1" },
+        { href: "/week/20/", text: "Week 20 Guide: Anatomy Scan" },
+        { href: "/week/28/", text: "Week 28 Guide: Third Trimester" },
+        { href: "/week/36/", text: "Week 36 Guide: Final Stretch" }
       ];
       const linkEls = popularGrid.querySelectorAll('.popular-link');
       defaults.forEach((linkData, idx) => {

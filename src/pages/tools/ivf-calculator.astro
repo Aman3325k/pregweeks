@@ -5,11 +5,11 @@ import { getBreadcrumbSchema, getMedicalPageSchema, getHowToSchema, getSoftwareA
 
 const title = "IVF Due Date Calculator | Embryo Transfer & Retrieval | PregWeeks";
 const description = "Calculate your estimated pregnancy due date (EDD) and gestational age for IVF cycles. Supports Egg Retrieval, 3-Day Embryo, and 5-Day Embryo transfers.";
-const canonicalUrl = "https://pregweeks.com/tools/ivf-calculator";
+const canonicalUrl = "https://pregweeks.com/tools/ivf-calculator/";
 
 const breadcrumbs = getBreadcrumbSchema([
   { name: "Home", url: "https://pregweeks.com" },
-  { name: "Tools", url: "https://pregweeks.com/tools" },
+  { name: "Tools", url: "https://pregweeks.com/calculators/" },
   { name: "IVF Due Date Calculator", url: canonicalUrl }
 ]);
 
@@ -34,7 +34,7 @@ const appSchema = getSoftwareApplicationSchema("IVF Due Date Calculator", descri
     <nav class="text-[12px] text-ink-muted-48 mb-6 flex items-center gap-1.5" aria-label="Breadcrumb">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
       <span>&rsaquo;</span>
-      <a href="/tools/due-date-calculator" class="hover:text-primary transition-colors">Tools</a>
+      <a href="/tools/due-date-calculator/" class="hover:text-primary transition-colors">Tools</a>
       <span>&rsaquo;</span>
       <span class="text-ink font-medium">IVF Calculator</span>
     </nav>
@@ -133,9 +133,9 @@ const appSchema = getSoftwareApplicationSchema("IVF Due Date Calculator", descri
     <div class="mt-8 pt-6 border-t border-hairline text-center">
       <h3 class="font-display font-semibold text-base text-ink mb-4">Related Tools</h3>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <a href="/tools/due-date-calculator" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
-        <a href="/tools/ovulation-calculator" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Ovulation Calculator</a>
-        <a href="/tools/weight-tracker" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Weight Tracker</a>
+        <a href="/tools/due-date-calculator/" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Due Date Calculator</a>
+        <a href="/tools/ovulation-calculator/" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Ovulation Calculator</a>
+        <a href="/tools/weight-tracker/" class="bg-canvas border border-hairline hover:border-primary p-3 rounded-apple-lg transition-all text-xs font-semibold text-ink leading-tight block">Weight Tracker</a>
       </div>
     </div>
   </div>

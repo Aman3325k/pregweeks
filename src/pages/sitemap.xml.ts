@@ -8,101 +8,101 @@ import { laborGuides } from '../data/laborData';
 
 export const GET: APIRoute = async () => {
   const baseUrls = [
-    'https://pregweeks.com',
-    'https://pregweeks.com/tools/due-date-calculator',
-    'https://pregweeks.com/tools/kick-counter',
-    'https://pregweeks.com/tools/contraction-timer',
-    'https://pregweeks.com/checklist/hospital-bag',
-    'https://pregweeks.com/trimester/first',
-    'https://pregweeks.com/trimester/second',
-    'https://pregweeks.com/trimester/third',
-    'https://pregweeks.com/symptoms',
-    'https://pregweeks.com/nutrition',
-    'https://pregweeks.com/faq',
-    'https://pregweeks.com/food/sushi',
+    'https://pregweeks.com/',
+    'https://pregweeks.com/tools/due-date-calculator/',
+    'https://pregweeks.com/tools/kick-counter/',
+    'https://pregweeks.com/tools/contraction-timer/',
+    'https://pregweeks.com/checklist/hospital-bag/',
+    'https://pregweeks.com/trimester/first/',
+    'https://pregweeks.com/trimester/second/',
+    'https://pregweeks.com/trimester/third/',
+    'https://pregweeks.com/symptoms/',
+    'https://pregweeks.com/nutrition/',
+    'https://pregweeks.com/faq/',
+    'https://pregweeks.com/food/sushi/',
     // Phase 1 Expansion
-    'https://pregweeks.com/food-safety',
-    'https://pregweeks.com/tools/ivf-calculator',
-    'https://pregweeks.com/tools/weight-tracker',
-    'https://pregweeks.com/tools/birth-plan',
-    'https://pregweeks.com/partner',
-    'https://pregweeks.com/milestone',
-    'https://pregweeks.com/postpartum',
-    'https://pregweeks.com/tools/gender-prediction',
-    'https://pregweeks.com/quiz/can-i-eat-this',
-    'https://pregweeks.com/medication-safety',
-    'https://pregweeks.com/prenatal-vitamins',
+    'https://pregweeks.com/food-safety/',
+    'https://pregweeks.com/tools/ivf-calculator/',
+    'https://pregweeks.com/tools/weight-tracker/',
+    'https://pregweeks.com/tools/birth-plan/',
+    'https://pregweeks.com/partner/',
+    'https://pregweeks.com/milestone/',
+    'https://pregweeks.com/postpartum/',
+    'https://pregweeks.com/tools/gender-prediction/',
+    'https://pregweeks.com/quiz/can-i-eat-this/',
+    'https://pregweeks.com/medication-safety/',
+    'https://pregweeks.com/prenatal-vitamins/',
     // Phase 2 Expansion
-    'https://pregweeks.com/baby-names',
-    'https://pregweeks.com/tools/ovulation-calculator',
-    'https://pregweeks.com/quiz/am-i-pregnant',
-    'https://pregweeks.com/pregnancy-announcement',
-    'https://pregweeks.com/checklist/baby-shower',
+    'https://pregweeks.com/baby-names/',
+    'https://pregweeks.com/tools/ovulation-calculator/',
+    'https://pregweeks.com/quiz/am-i-pregnant/',
+    'https://pregweeks.com/pregnancy-announcement/',
+    'https://pregweeks.com/checklist/baby-shower/',
     // Info & SEO Pages
-    'https://pregweeks.com/about',
-    'https://pregweeks.com/contact',
-    'https://pregweeks.com/privacy-policy',
-    'https://pregweeks.com/terms',
-    'https://pregweeks.com/disclaimer',
+    'https://pregweeks.com/about/',
+    'https://pregweeks.com/contact/',
+    'https://pregweeks.com/privacy-policy/',
+    'https://pregweeks.com/terms/',
+    'https://pregweeks.com/disclaimer/',
     // Phase 3 Professional Features & Guides
-    'https://pregweeks.com/glossary',
-    'https://pregweeks.com/compare',
-    'https://pregweeks.com/conditions',
-    'https://pregweeks.com/labor',
-    'https://pregweeks.com/calculators',
-    'https://pregweeks.com/when-to-take-pregnancy-test',
-    'https://pregweeks.com/early-pregnancy-signs',
-    'https://pregweeks.com/overdue',
-    'https://pregweeks.com/sources',
-    'https://pregweeks.com/tools/baby-cost-calculator',
-    'https://pregweeks.com/tools/journal',
-    'https://pregweeks.com/checklist/nursery',
-    'https://pregweeks.com/checklist/baby-gear',
+    'https://pregweeks.com/glossary/',
+    'https://pregweeks.com/compare/',
+    'https://pregweeks.com/conditions/',
+    'https://pregweeks.com/labor/',
+    'https://pregweeks.com/calculators/',
+    'https://pregweeks.com/when-to-take-pregnancy-test/',
+    'https://pregweeks.com/early-pregnancy-signs/',
+    'https://pregweeks.com/overdue/',
+    'https://pregweeks.com/sources/',
+    'https://pregweeks.com/tools/baby-cost-calculator/',
+    'https://pregweeks.com/tools/journal/',
+    'https://pregweeks.com/checklist/nursery/',
+    'https://pregweeks.com/checklist/baby-gear/',
   ];
 
   // Generate URLs for all 40 pregnancy weeks
   for (let i = 1; i <= 40; i++) {
-    baseUrls.push(`https://pregweeks.com/week/${i}`);
+    baseUrls.push(`https://pregweeks.com/week/${i}/`);
   }
 
   // Generate URLs for all 40 weekly partner guides
   for (let i = 1; i <= 40; i++) {
-    baseUrls.push(`https://pregweeks.com/partner/${i}`);
+    baseUrls.push(`https://pregweeks.com/partner/${i}/`);
   }
 
   // Generate URLs for all 12 weekly postpartum recovery guides
   for (let i = 1; i <= 12; i++) {
-    baseUrls.push(`https://pregweeks.com/postpartum/${i}`);
+    baseUrls.push(`https://pregweeks.com/postpartum/${i}/`);
   }
 
   // Generate URLs for all individual food safety pages (103)
   foodItems.forEach((food) => {
-    baseUrls.push(`https://pregweeks.com/food/${food.slug}`);
+    baseUrls.push(`https://pregweeks.com/food/${food.slug}/`);
   });
 
   // Generate URLs for all individual symptom guide pages (32)
   symptomItems.forEach((symptom) => {
-    baseUrls.push(`https://pregweeks.com/symptoms/${symptom.slug}`);
+    baseUrls.push(`https://pregweeks.com/symptoms/${symptom.slug}/`);
   });
 
   // Generate URLs for all individual baby names pages (500)
   babyNames.forEach((name) => {
-    baseUrls.push(`https://pregweeks.com/baby-names/${name.slug}`);
+    baseUrls.push(`https://pregweeks.com/baby-names/${name.slug}/`);
   });
 
   // Generate URLs for all individual glossary term pages (105)
   glossaryTerms.forEach((term) => {
-    baseUrls.push(`https://pregweeks.com/glossary/${term.slug}`);
+    baseUrls.push(`https://pregweeks.com/glossary/${term.slug}/`);
   });
 
   // Generate URLs for all individual pregnancy condition pages (6)
   pregnancyConditions.forEach((cond) => {
-    baseUrls.push(`https://pregweeks.com/conditions/${cond.slug}`);
+    baseUrls.push(`https://pregweeks.com/conditions/${cond.slug}/`);
   });
 
   // Generate URLs for all individual labor guide pages (6)
   laborGuides.forEach((guide) => {
-    baseUrls.push(`https://pregweeks.com/labor/${guide.slug}`);
+    baseUrls.push(`https://pregweeks.com/labor/${guide.slug}/`);
   });
 
   const today = new Date().toISOString().split('T')[0];
