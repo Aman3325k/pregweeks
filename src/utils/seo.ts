@@ -45,14 +45,15 @@ export interface MedicalReviewer {
 }
 
 const DEFAULT_REVIEWER: MedicalReviewer = {
-  name: "Dr. Sarah Jenkins, MD, FACOG",
-  jobTitle: "Board-Certified Obstetrician-Gynecologist",
+  name: "PregWeeks Editorial Team",
+  jobTitle: "Medical Content Reviewers",
   sameAs: [
-    "https://www.linkedin.com/in/dr-sarah-jenkins-obgyn-mock",
-    "https://www.npidb.org/doctors/obstetrics_gynecology/1234567890.html"
+    "https://www.acog.org",
+    "https://www.who.int/health-topics/pregnancy",
+    "https://www.cdc.gov/pregnancy"
   ],
-  organization: "Women's Health Specialist Registry",
-  organizationUrl: "https://www.npidb.org"
+  organization: "American College of Obstetricians and Gynecologists",
+  organizationUrl: "https://www.acog.org"
 };
 
 export function getMedicalPageSchema(
