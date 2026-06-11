@@ -1,0 +1,82 @@
+---
+// src/components/CookieConsent.astro
+---
+
+<div
+  id="cookie-consent-banner"
+  class="fixed bottom-0 left-0 right-0 w-full bg-white border-t border-black text-black py-4 px-6 z-50 transform translate-y-full transition-transform duration-300 ease-out hidden print:hidden"
+  style="font-family: var(--font-text), system-ui, -apple-system, sans-serif;"
+>
+  <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="text-xs md:text-sm text-center md:text-left leading-relaxed font-normal text-black max-w-3xl">
+      We use cookies to improve your experience and serve personalized ads. By clicking 'Accept All', you consent to our use of cookies.
+      <a href="/privacy-policy/" class="underline hover:text-neutral-700 font-medium transition-colors ml-1 inline-block">Privacy Policy</a>
+    </p>
+    <div class="flex items-center gap-3 flex-shrink-0 w-full md:w-auto justify-center md:justify-end">
+      <button
+        id="decline-cookies"
+        class="flex-1 md:flex-none px-6 py-2.5 border border-black text-black bg-white hover:bg-neutral-100 transition-all font-medium text-xs md:text-sm cursor-pointer rounded-sm active:scale-95 duration-150 min-h-[44px] flex items-center justify-center"
+      >
+        Decline
+      </button>
+      <button
+        id="accept-cookies"
+        class="flex-1 md:flex-none px-6 py-2.5 bg-black text-white hover:bg-neutral-900 transition-all font-medium text-xs md:text-sm cursor-pointer rounded-sm active:scale-95 duration-150 min-h-[44px] flex items-center justify-center"
+      >
+        Accept All
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    function initCookieConsent() {
+      const banner = document.getElementById('cookie-consent-banner');
+      const acceptBtn = document.getElementById('accept-cookies');
+      const declineBtn = document.getElementById('decline-cookies');
+
+      if (!banner || !acceptBtn || !declineBtn) return;
+
+      const consent = localStorage.getItem('cookie_consent');
+
+      // Show banner only if no decision has been saved yet
+      if (!consent) {
+        banner.classList.remove('hidden');
+        // Trigger smooth slide-in after browser registers display removal
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            banner.style.transform = 'translateY(0)';
+          }, 50);
+        });
+      }
+
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem('cookie_consent', 'accepted');
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(() => {
+          banner.classList.add('hidden');
+        }, 300);
+
+        // Allow tracking scripts to run
+        if (typeof window.loadTrackingScripts === 'function') {
+          window.loadTrackingScripts();
+        }
+      });
+
+      declineBtn.addEventListener('click', () => {
+        localStorage.setItem('cookie_consent', 'declined');
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(() => {
+          banner.classList.add('hidden');
+        }, 300);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCookieConsent);
+    } else {
+      initCookieConsent();
+    }
+  })();
+</script>
