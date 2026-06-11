@@ -444,23 +444,29 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
   <!-- Pagination Bottom Navigation (Light Canvas) - side-by-side buttons row on mobile -->
   <section class="bg-canvas-parchment border-t border-hairline py-8 px-4 transition-colors">
     <div class="max-w-[960px] mx-auto flex flex-col gap-4">
-      <div class="flex items-center justify-between gap-4 w-full">
+      <nav class="flex items-center justify-between gap-4 w-full" aria-label="Week navigation">
         {prevWeek ? (
-          <a href={`/week/${prevWeek}`} class="flex-1 bg-canvas hover:bg-canvas-parchment text-primary border border-hairline font-semibold py-3 px-4 rounded-apple-pill text-center text-sm min-h-[44px] flex items-center justify-center transition-all active:scale-95">
+          <a 
+            href={`/week/${prevWeek}`} 
+            class="flex-1 bg-canvas hover:bg-canvas-parchment text-primary border border-primary font-semibold py-3 px-4 rounded-apple-pill text-center text-sm min-h-[44px] flex items-center justify-center transition-all active:scale-95"
+          >
             &larr; Week {prevWeek}
           </a>
         ) : (
-          <span class="flex-1 bg-canvas opacity-40 text-ink-muted-48 border border-hairline font-semibold py-3 px-4 rounded-apple-pill text-center text-sm min-h-[44px] flex items-center justify-center select-none">&larr; Week 1</span>
+          <div class="flex-1 hidden sm:block"></div>
         )}
 
         {nextWeek ? (
-          <a href={`/week/${nextWeek}`} class="flex-1 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-4 rounded-apple-pill text-center text-sm min-h-[44px] flex items-center justify-center transition-all active:scale-95">
+          <a 
+            href={`/week/${nextWeek}`} 
+            class="flex-1 bg-primary hover:bg-primary-focus text-white font-semibold py-3 px-4 rounded-apple-pill text-center text-sm min-h-[44px] flex items-center justify-center transition-all active:scale-95 shadow-none"
+          >
             Week {nextWeek} &rarr;
           </a>
         ) : (
-          <span class="flex-1 bg-canvas opacity-40 text-ink-muted-48 border border-hairline font-semibold py-3 px-4 rounded-apple-pill text-center text-sm min-h-[44px] flex items-center justify-center select-none">Week 40 &rarr;</span>
+          <div class="flex-1 hidden sm:block"></div>
         )}
-      </div>
+      </nav>
       <div class="text-center">
         <a href="/#weeks-directory" class="inline-block text-ink-muted-80 hover:text-ink text-sm py-2 min-h-[44px] flex items-center justify-center">
           All Weeks Grid
