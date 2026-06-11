@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!-- Background circle -->
-  <circle cx="16" cy="16" r="16" fill="#f97316"/>
+  <circle cx="16" cy="16" r="16" fill="#e91e8c"/>
   <!-- Heart shape representing pregnancy/baby love -->
   <path d="M16 23s-8-5.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 5.5-8 11-8 11z" fill="white"/>
   <!-- Small dot representing baby -->
-  <circle cx="16" cy="13" r="2.5" fill="#f97316"/>
+  <circle cx="16" cy="13" r="2.5" fill="#e91e8c"/>
 </svg>

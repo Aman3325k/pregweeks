@@ -4,6 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import Calculator from '../components/Calculator.astro';
 import InstagramMilestone from '../components/InstagramMilestone.astro';
 import { getMedicalPageSchema, getBreadcrumbSchema } from '../utils/seo';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/pregnancy-hero.webp';
 
 const title = "PregWeeks.com | Interactive Pregnancy Week-by-Week Guide & Due Date Tracker";
 const description = "How far along are you? Get your week-by-week pregnancy guide — baby size, symptoms, what to expect, and free tools. Trusted by new moms.";
@@ -147,12 +149,12 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
         
         <div class="flex justify-center items-center">
           <!-- Hero Illustration with the ONLY drop-shadow in the system -->
-          <img 
-            src="/pregnancy-hero.webp" 
+          <Image 
+            src={heroImage} 
             alt="Artistic abstract pregnancy line-art illustration" 
             class="w-full max-w-[420px] h-auto rounded-apple-lg border border-hairline shadow-[3px_5px_30px_0px_rgba(0,0,0,0.22)] object-cover bg-canvas transition-colors duration-300" 
-            width="473"
-            height="473"
+            width={473}
+            height={473}
             loading="eager"
             fetchpriority="high"
           />
