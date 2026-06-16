@@ -9,18 +9,37 @@ import MedicalSourcesBlock from '../../components/MedicalSourcesBlock.astro';
 
 export async function getStaticPaths() {
   const mdxFood = await getCollection('food');
-  const mdxMap = new Map(mdxFood.map(item => [item.id, item]));
+  const mdxSlugs = new Set(mdxFood.map(item => item.id));
 
-  return foodItems.map((food) => {
-    const mdxEntry = mdxMap.get(food.slug);
-    return {
+  // Paths from markdown
+  const mdxPaths = mdxFood.map((entry) => ({
+    params: { slug: entry.id },
+    props: {
+      food: {
+        slug: entry.id,
+        name: entry.data.name,
+        category: entry.data.category,
+        status: entry.data.status,
+        alternatives: entry.data.alternatives,
+        tip: entry.data.tip,
+        explanation: "" // empty fallback since MD is used
+      },
+      mdxEntry: entry
+    }
+  }));
+
+  // Paths from TS data (filtering out migrated ones)
+  const tsPaths = foodItems
+    .filter(item => !mdxSlugs.has(item.slug))
+    .map((food) => ({
       params: { slug: food.slug },
-      props: { 
+      props: {
         food,
-        mdxEntry: mdxEntry || null
+        mdxEntry: null
       }
-    };
-  });
+    }));
+
+  return [...mdxPaths, ...tsPaths];
 }
 
 const { food, mdxEntry } = Astro.props;

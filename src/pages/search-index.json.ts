@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 import { pregnancyData } from '../data/pregnancyData';
 import { foodItems } from '../data/foodData';
 import { symptomItems } from '../data/symptomData';
@@ -7,6 +8,9 @@ import { pregnancyConditions } from '../data/conditionsData';
 import { laborGuides } from '../data/laborData';
 
 export const GET: APIRoute = async () => {
+  const mdxSymptoms = await getCollection('symptoms');
+  const mdxFood = await getCollection('food');
+
   const searchIndex = [
     // Core Pages & Tools
     { title: "Pregnancy Due Date Calculator", desc: "Calculate your due date (EDD) and gestational age based on LMP.", url: "/tools/due-date-calculator/" },
@@ -42,14 +46,24 @@ export const GET: APIRoute = async () => {
       url: `/week/${d.week}/`
     })),
 
-    // Food Safety Items (103)
+    // Food Safety Items (MDX + TS fallback)
+    ...mdxFood.map(f => ({
+      title: `${f.data.name} Pregnancy Safety`,
+      desc: `Is it safe to eat ${f.data.name} while pregnant? Safety status: ${f.data.status}.`,
+      url: `/food/${f.id}/`
+    })),
     ...foodItems.map(f => ({
       title: `${f.name} Pregnancy Safety`,
       desc: `Is it safe to eat ${f.name} while pregnant? Safety status: ${f.status}.`,
       url: `/food/${f.slug}/`
     })),
 
-    // Symptoms (32)
+    // Symptoms (MDX + TS fallback)
+    ...mdxSymptoms.map(s => ({
+      title: `${s.data.name} During Pregnancy`,
+      desc: `Why ${s.data.name.toLowerCase()} occurs, remedies, and when to call the doctor.`,
+      url: `/symptoms/${s.id}/`
+    })),
     ...symptomItems.map(s => ({
       title: `${s.name} During Pregnancy`,
       desc: `Why ${s.name.toLowerCase()} occurs, remedies, and when to call the doctor.`,

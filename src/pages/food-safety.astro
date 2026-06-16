@@ -1,8 +1,36 @@
 ---
 // src/pages/food-safety.astro
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { foodItems } from '../data/foodData';
 import { getBreadcrumbSchema, getMedicalPageSchema } from '../utils/seo';
+
+const mdxFood = await getCollection('food');
+
+// Helper to extract first paragraph as fallback explanation
+function getFirstParagraph(body: string): string {
+  const lines = body.split('\n');
+  for (const line of lines) {
+    const clean = line.trim();
+    if (clean && !clean.startsWith('#') && !clean.startsWith('-') && !clean.startsWith('*')) {
+      return clean.replace(/[\*\_]/g, '');
+    }
+  }
+  return "";
+}
+
+const allFoods = [
+  ...mdxFood.map(entry => ({
+    slug: entry.id,
+    name: entry.data.name,
+    category: entry.data.category,
+    status: entry.data.status,
+    explanation: getFirstParagraph(entry.body),
+    alternatives: entry.data.alternatives,
+    tip: entry.data.tip
+  })),
+  ...foodItems
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const title = "Pregnancy Food Safety Checker | Can I Eat This? | PregWeeks";
 const description = "Search our database of 100+ pregnancy foods. Find out what is safe to eat, what to avoid, and what to consume in moderation during pregnancy.";
@@ -63,7 +91,7 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
     <!-- Grouped Food Grid -->
     <div id="food-container" class="flex flex-col gap-10">
       {['Dairy & Eggs', 'Seafood', 'Beverages', 'Meats & Poultry', 'Fruits & Vegetables', 'Sweets & Others'].map((category) => {
-        const categoryFoods = foodItems.filter(f => f.category === category);
+        const categoryFoods = allFoods.filter(f => f.category === category);
         return (
           <section class="food-category-section" data-category={category}>
             <h2 class="text-xl md:text-2xl font-display font-semibold border-b border-hairline pb-2.5 mb-5 text-ink tracking-apple-tight">{category}</h2>

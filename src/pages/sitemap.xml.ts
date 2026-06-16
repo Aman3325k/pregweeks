@@ -67,6 +67,9 @@ export const GET: APIRoute = async () => {
     baseUrls.push(`https://pregweeks.com/blog/${post.id}/`);
   });
 
+  const mdxSymptoms = await getCollection('symptoms');
+  const mdxFood = await getCollection('food');
+
   // Generate URLs for all 40 pregnancy weeks
   for (let i = 1; i <= 40; i++) {
     baseUrls.push(`https://pregweeks.com/week/${i}/`);
@@ -86,10 +89,22 @@ export const GET: APIRoute = async () => {
   foodItems.forEach((food) => {
     baseUrls.push(`https://pregweeks.com/food/${food.slug}/`);
   });
+  // Add migrated food pages
+  mdxFood.forEach((food) => {
+    if (!foodItems.some(f => f.slug === food.id)) {
+      baseUrls.push(`https://pregweeks.com/food/${food.id}/`);
+    }
+  });
 
   // Generate URLs for all individual symptom guide pages (32)
   symptomItems.forEach((symptom) => {
     baseUrls.push(`https://pregweeks.com/symptoms/${symptom.slug}/`);
+  });
+  // Add migrated symptom pages
+  mdxSymptoms.forEach((symptom) => {
+    if (!symptomItems.some(s => s.slug === symptom.id)) {
+      baseUrls.push(`https://pregweeks.com/symptoms/${symptom.id}/`);
+    }
   });
 
   // Generate URLs for all individual baby names pages (500)

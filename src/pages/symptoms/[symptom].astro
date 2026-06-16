@@ -10,18 +10,38 @@ import MedicalSourcesBlock from '../../components/MedicalSourcesBlock.astro';
 
 export async function getStaticPaths() {
   const mdxSymptoms = await getCollection('symptoms');
-  const mdxMap = new Map(mdxSymptoms.map(item => [item.id, item]));
+  const mdxSlugs = new Set(mdxSymptoms.map(item => item.id));
 
-  return symptomItems.map((symptom) => {
-    const mdxEntry = mdxMap.get(symptom.slug);
-    return {
+  // Paths from markdown
+  const mdxPaths = mdxSymptoms.map((entry) => ({
+    params: { symptom: entry.id },
+    props: {
+      symptom: {
+        slug: entry.id,
+        name: entry.data.name,
+        weeks: entry.data.weeks,
+        normalcy: entry.data.normalcy,
+        faqs: entry.data.faqs,
+        description: "",
+        whenToCallDoctor: "",
+        remedies: []
+      },
+      mdxEntry: entry
+    }
+  }));
+
+  // Paths from TS data (filtering out any that are already in markdown to prevent duplicates)
+  const tsPaths = symptomItems
+    .filter(item => !mdxSlugs.has(item.slug))
+    .map((symptom) => ({
       params: { symptom: symptom.slug },
-      props: { 
+      props: {
         symptom,
-        mdxEntry: mdxEntry || null
+        mdxEntry: null
       }
-    };
-  });
+    }));
+
+  return [...mdxPaths, ...tsPaths];
 }
 
 const { symptom, mdxEntry } = Astro.props;

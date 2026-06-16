@@ -1,8 +1,34 @@
 ---
-// src/pages/quiz/can-i-eat-this.astro
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { foodItems } from '../../data/foodData';
 import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+const mdxFood = await getCollection('food');
+
+function getFirstParagraph(body: string): string {
+  const lines = body.split('\n');
+  for (const line of lines) {
+    const clean = line.trim();
+    if (clean && !clean.startsWith('#') && !clean.startsWith('-') && !clean.startsWith('*')) {
+      return clean.replace(/[\*\_]/g, '');
+    }
+  }
+  return "";
+}
+
+const allFoodItems = [
+  ...mdxFood.map(f => ({
+    slug: f.id,
+    name: f.data.name,
+    category: f.data.category,
+    status: f.data.status,
+    explanation: getFirstParagraph(f.body),
+    alternatives: f.data.alternatives,
+    tip: f.data.tip
+  })),
+  ...foodItems
+];
 
 const title = "Pregnancy Food Safety Quiz & Quick Search | PregWeeks";
 const description = "Test your pregnancy food safety knowledge with our interactive trivia quiz and search 100+ foods instantly for Listeria, Salmonela, and mercury risk.";
@@ -157,7 +183,7 @@ const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
         <button id="restart-trivia" class="bg-primary hover:bg-primary-focus text-white font-semibold py-2 px-5 rounded-apple-pill text-xs transition-all active:scale-95 cursor-pointer mt-2">Restart Quiz</button>
       </div>
     </div>
-  <div id="quiz-food-data" data-foods={JSON.stringify(foodItems)} style="display: none;"></div>
+  <div id="quiz-food-data" data-foods={JSON.stringify(allFoodItems)} style="display: none;"></div>
 </Layout>
 
 <script>

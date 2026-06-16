@@ -12,15 +12,7 @@ export interface FoodItem {
 
 export const foodItems: FoodItem[] = [
   // DAIRY & EGGS (1-20)
-  {
-    slug: 'raw-milk',
-    name: 'Raw Milk (Unpasteurized)',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Unpasteurized milk can carry dangerous bacteria such as Listeria, Salmonella, E. coli, and Campylobacter, which pose severe risks to pregnancy, including miscarriage or stillbirth.',
-    alternatives: 'Pasteurized cow milk, almond milk, soy milk, or oat milk.',
-    tip: 'Always check label markings to ensure the milk is explicitly labeled as pasteurized.'
-  },
+
   {
     slug: 'pasteurized-milk',
     name: 'Pasteurized Milk',
@@ -30,15 +22,7 @@ export const foodItems: FoodItem[] = [
     alternatives: 'None needed. Organic pasteurized milk is highly recommended.',
     tip: 'Ensure it is kept refrigerated below 40°F (4°C) and consumed before the expiration date.'
   },
-  {
-    slug: 'brie-cheese',
-    name: 'Brie Cheese (Unpasteurized)',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Soft cheeses made from raw milk have a high moisture content and low acidity, creating an ideal environment for Listeria monocytogenes growth.',
-    alternatives: 'Brie made from pasteurized milk (cooked until bubbling) or hard pasteurized cheeses like Cheddar.',
-    tip: 'Check the ingredient list; if it says "made with pasteurized milk," it is safe, but heating it until steaming is safest.'
-  },
+
   {
     slug: 'feta-cheese',
     name: 'Feta Cheese',
@@ -212,15 +196,7 @@ export const foodItems: FoodItem[] = [
     alternatives: 'None needed.',
     tip: 'Ask the chef to use clean knives and boards to avoid raw fish juices.'
   },
-  {
-    slug: 'salmon',
-    name: 'Salmon (Cooked)',
-    category: 'Seafood',
-    status: 'safe',
-    explanation: 'Salmon is low in mercury and packed with omega-3 fatty acids (DHA/EPA), which are essential for baby’s brain and eye development.',
-    alternatives: 'None needed; this is one of the best fish choices during pregnancy.',
-    tip: 'Cook until the internal temperature reaches 145°F (63°C) or until the flesh flakes easily.'
-  },
+
   {
     slug: 'tuna-light',
     name: 'Canned Light Tuna',
@@ -230,24 +206,7 @@ export const foodItems: FoodItem[] = [
     alternatives: 'Salmon, sardines, or anchovies for lower mercury levels.',
     tip: 'Limit consumption to 2 servings a week to stay well within safety margins.'
   },
-  {
-    slug: 'tuna-albacore',
-    name: 'Albacore (White) Tuna',
-    category: 'Seafood',
-    status: 'moderate',
-    explanation: 'Albacore tuna contains higher mercury levels than light tuna. Too much mercury can harm baby’s developing nervous system.',
-    alternatives: 'Canned light tuna or salmon.',
-    tip: 'Limit to no more than 6 ounces (1 meal) per week.'
-  },
-  {
-    slug: 'swordfish',
-    name: 'Swordfish',
-    category: 'Seafood',
-    status: 'avoid',
-    explanation: 'A large predatory fish containing exceptionally high levels of methylmercury, which bioaccumulates and can damage the fetal brain.',
-    alternatives: 'Salmon, cod, or tilapia.',
-    tip: 'Avoid completely. Check seafood warnings when traveling abroad.'
-  },
+
   {
     slug: 'shark',
     name: 'Shark',
@@ -293,15 +252,7 @@ export const foodItems: FoodItem[] = [
     alternatives: 'Trout, salmon, or halibut (in moderation).',
     tip: 'Avoid marlin steaks and sashimi.'
   },
-  {
-    slug: 'shrimp',
-    name: 'Shrimp',
-    category: 'Seafood',
-    status: 'safe',
-    explanation: 'Shrimp is very low in mercury, high in protein, and a safe, nutritious choice for pregnant women.',
-    alternatives: 'None needed.',
-    tip: 'Cook until shrimp turn pink and the flesh becomes opaque.'
-  },
+
   {
     slug: 'crab',
     name: 'Crab (Cooked)',

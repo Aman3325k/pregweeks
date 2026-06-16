@@ -1,5 +1,6 @@
 ---
 // src/pages/week/[week].astro
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { pregnancyData } from '../../data/pregnancyData';
 import ContextualAffiliates from '../../components/ContextualAffiliates.astro';
@@ -9,6 +10,32 @@ import { foodItems } from '../../data/foodData';
 import { getMedicalPageSchema, getBreadcrumbSchema, getFAQSchema } from '../../utils/seo';
 import MedicalReviewLine from '../../components/MedicalReviewLine.astro';
 import MedicalSourcesBlock from '../../components/MedicalSourcesBlock.astro';
+
+const mdxSymptoms = await getCollection('symptoms');
+const mdxFood = await getCollection('food');
+
+const allSymptoms = [
+  ...symptomItems,
+  ...mdxSymptoms.map(entry => ({
+    slug: entry.id,
+    name: entry.data.name,
+    weeks: entry.data.weeks,
+    normalcy: entry.data.normalcy
+  }))
+];
+
+const allFoods = [
+  ...foodItems,
+  ...mdxFood.map(entry => ({
+    slug: entry.id,
+    name: entry.data.name,
+    category: entry.data.category,
+    status: entry.data.status,
+    alternatives: entry.data.alternatives,
+    tip: entry.data.tip
+  }))
+];
+
 
 // 1. Generate paths for all 40 weeks at compile time
 export async function getStaticPaths() {
@@ -113,20 +140,21 @@ function isSymptomRelevant(symptomWeeks: string, week: number): boolean {
 }
 
 // 3 Related Symptoms
-let relatedSymptoms = symptomItems.filter(s => isSymptomRelevant(s.weeks, weekNum)).slice(0, 3);
+let relatedSymptoms = allSymptoms.filter(s => isSymptomRelevant(s.weeks, weekNum)).slice(0, 3);
 if (relatedSymptoms.length < 3) {
   const fallbackSlugs = ['cramping', 'fatigue', 'nausea'];
-  const fallbacks = symptomItems.filter(s => fallbackSlugs.includes(s.slug) && !relatedSymptoms.some(rs => rs.slug === s.slug));
+  const fallbacks = allSymptoms.filter(s => fallbackSlugs.includes(s.slug) && !relatedSymptoms.some(rs => rs.slug === s.slug));
   relatedSymptoms = [...relatedSymptoms, ...fallbacks].slice(0, 3);
 }
 
 // 2 Related Food Safety Pages (rotating selection)
-const safeFoods = foodItems.filter(f => f.status === 'safe');
-const avoidFoods = foodItems.filter(f => f.status === 'avoid');
+const safeFoods = allFoods.filter(f => f.status === 'safe');
+const avoidFoods = allFoods.filter(f => f.status === 'avoid');
 const relatedFoods = [
   safeFoods[weekNum % safeFoods.length],
   avoidFoods[weekNum % avoidFoods.length]
 ];
+
 
 // Calculate visual SVG parameters (Max length: 51.2cm)
 const svgSize = 140; // SVG ViewBox width/height

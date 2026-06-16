@@ -36,24 +36,7 @@ export const symptomItems: SymptomItem[] = [
       { q: 'How do I distinguish normal cramps from miscarriage?', a: 'Normal cramps are mild and intermittent. Miscarriage cramps are usually severe, rhythmic, and accompanied by bleeding.' }
     ]
   },
-  {
-    slug: 'spotting',
-    name: 'Spotting / Light Bleeding',
-    weeks: 'Weeks 4-12',
-    normalcy: 'common',
-    description: 'Light bleeding or spotting can occur during early pregnancy (implantation bleeding) or after intercourse, pelvic exams, or heavy lifting due to increased cervical vascularity.',
-    whenToCallDoctor: 'Contact your healthcare provider for any spotting or bleeding during pregnancy to rule out complications. Go to the ER if bleeding is heavy (soaking a pad in an hour) or accompanied by severe pain.',
-    remedies: [
-      'Avoid sexual intercourse until cleared by your doctor.',
-      'Rest and avoid strenuous exercise or heavy lifting.',
-      'Use a panty liner (avoid tampons) to monitor the amount and color of blood.'
-    ],
-    faqs: [
-      { q: 'What is implantation bleeding?', a: 'Light spotting that occurs 10-14 days after conception when the fertilized egg attaches to the uterine lining.' },
-      { q: 'Can sex cause spotting during pregnancy?', a: 'Yes, because the cervix has increased blood supply and can bleed easily upon contact.' },
-      { q: 'Should I worry about pink discharge?', a: 'Pink discharge is often just a small amount of blood mixed with cervical mucus. Inform your OB-GYN, but do not panic.' }
-    ]
-  },
+
   {
     slug: 'nausea',
     name: 'Nausea & Morning Sickness',
@@ -92,44 +75,8 @@ export const symptomItems: SymptomItem[] = [
       { q: 'Can back pain be a sign of labor?', a: 'Yes, rhythmic lower back pain can be a sign of back labor, especially if it wraps around to the abdomen.' }
     ]
   },
-  {
-    slug: 'headache',
-    name: 'Headaches',
-    weeks: 'Weeks 1-40',
-    normalcy: 'common',
-    description: 'Hormonal fluctuations, fatigue, stress, nasal congestion, or caffeine withdrawal can trigger headaches during pregnancy, especially in the first trimester.',
-    whenToCallDoctor: 'Seek immediate medical attention if you have a severe, persistent headache in the second or third trimester that does not go away with Tylenol, as it can be a primary symptom of preeclampsia.',
-    remedies: [
-      'Apply a cold compress to your forehead or neck.',
-      'Rest in a quiet, dark room.',
-      'Ensure you are eating regular meals to avoid low blood sugar.',
-      'Take Acetaminophen (Tylenol) if cleared by your doctor.'
-    ],
-    faqs: [
-      { q: 'Can I take Ibuprofen for headaches during pregnancy?', a: 'No, Ibuprofen should generally be avoided, especially in the third trimester. Use Acetaminophen instead.' },
-      { q: 'What is a preeclampsia headache like?', a: 'A severe, throbbing headache that feels like a migraine, often accompanied by vision changes or swelling.' },
-      { q: 'Can sinus congestion cause pregnancy headaches?', a: 'Yes, increased blood flow can swell nasal passages, leading to sinus pressure and headaches.' }
-    ]
-  },
-  {
-    slug: 'swelling',
-    name: 'Swelling / Edema',
-    weeks: 'Weeks 20-40',
-    normalcy: 'common',
-    description: 'Your body produces about 50% more blood and body fluids during pregnancy. Extra water retention and pressure from the growing uterus on veins cause swelling in the ankles, feet, and hands.',
-    whenToCallDoctor: 'Contact your doctor immediately if you experience sudden swelling in your face or around your eyes, or if one leg is significantly more swollen than the other (which can indicate a blood clot).',
-    remedies: [
-      'Elevate your feet above heart level when sitting.',
-      'Drink plenty of water to help flush out fluids.',
-      'Avoid standing or sitting in one position for long periods.',
-      'Wear compression socks.'
-    ],
-    faqs: [
-      { q: 'Is swelling normal at 36 weeks?', a: 'Yes, mild swelling in the feet and ankles is extremely common in the late third trimester.' },
-      { q: 'How does drinking water help with swelling?', a: 'Staying hydrated signals the body that it doesn\'t need to retain extra water, helping reduce edema.' },
-      { q: 'Can swelling indicate preeclampsia?', a: 'Yes, sudden, rapid swelling in the face, hands, or feet is a red flag for preeclampsia.' }
-    ]
-  },
+
+
   {
     slug: 'discharge',
     name: 'Vaginal Discharge (Leukorrhea)',
@@ -259,25 +206,7 @@ export const symptomItems: SymptomItem[] = [
       { q: 'How do I tell mood swings apart from depression?', a: 'Mood swings are transient. Pregnancy depression involves persistent sadness, hopelessness, and loss of interest for weeks.' }
     ]
   },
-  {
-    slug: 'constipation',
-    name: 'Constipation',
-    weeks: 'Weeks 4-40',
-    normalcy: 'common',
-    description: 'High levels of progesterone relax the smooth muscles of the digestive tract, slowing down food passage. Iron supplements can also contribute.',
-    whenToCallDoctor: 'Contact your doctor if constipation is severe, accompanied by severe abdominal pain, or if you pass blood in your stool.',
-    remedies: [
-      'Eat high-fiber foods like fruits, vegetables, and whole grains.',
-      'Drink at least 8-10 glasses of water daily.',
-      'Stay physically active.',
-      'Consult your doctor about safe stool softeners.'
-    ],
-    faqs: [
-      { q: 'Can prenatal vitamins cause constipation?', a: 'Yes, the iron in prenatal vitamins is a common cause of constipation.' },
-      { q: 'Is it safe to take laxatives while pregnant?', a: 'Do not take over-the-counter laxatives without consulting your OB-GYN. Stool softeners are generally safer.' },
-      { q: 'Does straining harm the baby?', a: 'No, straining during bowel movements does not harm the baby, but it can lead to hemorrhoids.' }
-    ]
-  },
+
   {
     slug: 'bloating',
     name: 'Bloating & Gas',
@@ -371,24 +300,7 @@ export const symptomItems: SymptomItem[] = [
       { q: 'Can low potassium cause leg cramps?', a: 'Yes, mineral imbalances (calcium, magnesium, potassium) can trigger cramps.' }
     ]
   },
-  {
-    slug: 'frequent-urination',
-    name: 'Frequent Urination',
-    weeks: 'Weeks 4-12, 28-40',
-    normalcy: 'normal',
-    description: 'In the first trimester, hormonal changes increase blood flow to the kidneys. In the third trimester, the baby’s head presses directly on the bladder.',
-    whenToCallDoctor: 'Contact your doctor if urination is painful, burning, accompanied by fever, or if you see blood in your urine, which are signs of a urinary tract infection (UTI).',
-    remedies: [
-      'Lean forward while urinating to help empty your bladder completely.',
-      'Drink plenty of fluids during the day, but limit them before bedtime.',
-      'Avoid caffeine, which acts as a diuretic.'
-    ],
-    faqs: [
-      { q: 'Why did my frequent urination return at 32 weeks?', a: 'The baby has grown larger and is sitting directly on top of your bladder.' },
-      { q: 'Should I drink less water to stop peeing so much?', a: 'No, staying hydrated is crucial. Never restrict water intake.' },
-      { q: 'Is leaking urine normal when coughing?', a: 'Yes, stress incontinence is common due to pressure on pelvic floor muscles.' }
-    ]
-  },
+
   {
     slug: 'nosebleeds',
     name: 'Nosebleeds',
