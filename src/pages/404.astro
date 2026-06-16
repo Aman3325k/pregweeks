@@ -4,34 +4,86 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout 
   title="Page Not Found | 404 Error | PregWeeks"
-  description="The page you are looking for does not exist on PregWeeks.com."
+  description="The page you are looking for does not exist on PregWeeks.com. Explore our week-by-week pregnancy guides, tools, and blog."
 >
-  <main class="min-h-[60vh] flex flex-col items-center justify-center px-4 py-16 text-center">
-    <div class="space-y-6 max-w-md">
-      <!-- 404 Header -->
-      <span class="text-xs font-semibold text-[#0066cc] uppercase tracking-widest bg-blue-50 px-3.5 py-1 rounded-full">Error 404</span>
+  <main class="min-h-[75vh] flex flex-col items-center justify-center px-4 py-16 md:py-24 text-center bg-canvas transition-colors">
+    <div class="space-y-8 max-w-[960px] mx-auto flex flex-col items-center">
+      <!-- 404 Badge -->
+      <span class="text-xs font-semibold text-primary uppercase tracking-widest bg-primary/10 px-4 py-1.5 rounded-full select-none">
+        Error 404
+      </span>
       
-      <h1 class="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
-        Page Not Found
+      <!-- Display Headline -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-semibold tracking-apple-tight text-ink max-w-[720px] leading-tight">
+        Looks like you've wandered off the path.
       </h1>
       
-      <p class="text-sm text-neutral-500 leading-relaxed">
-        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. 
+      <!-- Supportive Text -->
+      <p class="text-base sm:text-lg text-ink-muted-80 max-w-[540px] leading-relaxed tracking-apple-dense">
+        The page you are looking for doesn't exist, has been moved, or is temporarily unavailable. Let's help you find your way back.
       </p>
 
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row justify-center gap-3 pt-4">
+      <!-- Grid of Choices (Store Utility Card Pattern) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-[800px] mt-6">
+        <!-- Homepage Card -->
         <a 
           href="/" 
-          class="bg-[#0066cc] hover:bg-[#0055b3] text-white py-3 px-6 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all active:scale-95 shadow-none"
+          class="group bg-canvas border border-hairline hover:border-primary/30 rounded-apple-lg p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-[0px_4px_24px_rgba(216,27,96,0.06)] dark:hover:shadow-[0px_4px_24px_rgba(244,114,182,0.06)] active:scale-[0.98]"
         >
-          Go Back Home
+          <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary/10 transition-colors select-none">
+            🏠
+          </div>
+          <h2 class="text-base font-display font-semibold text-ink mb-2">Homepage</h2>
+          <p class="text-xs text-ink-muted-80 leading-relaxed mb-4 flex-grow">
+            Calculate your due date and get a personalized timeline of your pregnancy journey.
+          </p>
+          <span class="text-xs font-semibold text-primary inline-flex items-center gap-1 group-hover:underline">
+            Go Home <span class="text-[10px]">&rarr;</span>
+          </span>
         </a>
+
+        <!-- Week Guides Card -->
         <a 
-          href="/tools/due-date-calculator" 
-          class="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 py-3 px-6 rounded-xl text-xs font-semibold tracking-wider uppercase border border-neutral-200 transition-all active:scale-95"
+          href="/#weeks-directory" 
+          class="group bg-canvas border border-hairline hover:border-primary/30 rounded-apple-lg p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-[0px_4px_24px_rgba(216,27,96,0.06)] dark:hover:shadow-[0px_4px_24px_rgba(244,114,182,0.06)] active:scale-[0.98]"
         >
-          Tools & Calculators
+          <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary/10 transition-colors select-none">
+            📅
+          </div>
+          <h2 class="text-base font-display font-semibold text-ink mb-2">Week-by-Week</h2>
+          <p class="text-xs text-ink-muted-80 leading-relaxed mb-4 flex-grow">
+            Dive directly into detailed articles and milestones for any pregnancy week from 1 to 40.
+          </p>
+          <span class="text-xs font-semibold text-primary inline-flex items-center gap-1 group-hover:underline">
+            Browse Weeks <span class="text-[10px]">&rarr;</span>
+          </span>
+        </a>
+
+        <!-- Blog Card -->
+        <a 
+          href="/blog/" 
+          class="group bg-canvas border border-hairline hover:border-primary/30 rounded-apple-lg p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-[0px_4px_24px_rgba(216,27,96,0.06)] dark:hover:shadow-[0px_4px_24px_rgba(244,114,182,0.06)] active:scale-[0.98]"
+        >
+          <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary text-xl mb-4 group-hover:bg-primary/10 transition-colors select-none">
+            ✍️
+          </div>
+          <h2 class="text-base font-display font-semibold text-ink mb-2">Pregnancy Blog</h2>
+          <p class="text-xs text-ink-muted-80 leading-relaxed mb-4 flex-grow">
+            Read medical team reviewed articles on morning sickness, trimester changes, and more.
+          </p>
+          <span class="text-xs font-semibold text-primary inline-flex items-center gap-1 group-hover:underline">
+            Read Blog <span class="text-[10px]">&rarr;</span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Quick Back Button link -->
+      <div class="pt-8">
+        <a 
+          href="javascript:history.back()" 
+          class="text-xs font-semibold text-ink-muted-48 hover:text-primary transition-colors inline-flex items-center gap-1.5"
+        >
+          <span>&larr;</span> Go back to the previous page
         </a>
       </div>
     </div>
