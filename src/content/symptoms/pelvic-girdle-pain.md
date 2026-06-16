@@ -31,7 +31,7 @@ You can protect your pelvic joints and relieve pain safely with these physical t
 *   **Wear a Support Belt:** A maternity pelvic support band or SI joint belt can help compress the pelvis, stabilization the joints and relieving pressure.
 *   **Sleep with Pillows:** Sleep on your side with a firm pillow between your knees and ankles to keep your hips aligned and prevent the top leg from crossing over.
 *   **Apply Cool or Warm Packs:** Apply a cool pack or a warm compress to the pubic bone or lower back for 15 minutes to reduce inflammation and muscle tension.
-*   **Consult a Physical Therapist:** Seek a referral for a pelvic floor physical therapist who specializes in prenatal care. They can provide targeted strengthening exercises for your core and glutes.
+*   **Consult Your Provider:** Talk to your healthcare provider or midwife about your pelvic pain. They can evaluate your joints and refer you to a specialist or prenatal physical therapist if necessary.
 
 ## When to Call the Doctor (Red Flags)
 
