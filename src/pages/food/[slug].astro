@@ -1,46 +1,68 @@
 ---
 // src/pages/food/[slug].astro
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { foodItems } from '../../data/foodData';
 import { getBreadcrumbSchema, getFAQSchema, getMedicalPageSchema } from '../../utils/seo';
+import MedicalReviewLine from '../../components/MedicalReviewLine.astro';
+import MedicalSourcesBlock from '../../components/MedicalSourcesBlock.astro';
 
 export async function getStaticPaths() {
-  return foodItems.map((food) => ({
-    params: { slug: food.slug },
-    props: { food }
-  }));
+  const mdxFood = await getCollection('food');
+  const mdxMap = new Map(mdxFood.map(item => [item.id, item]));
+
+  return foodItems.map((food) => {
+    const mdxEntry = mdxMap.get(food.slug);
+    return {
+      params: { slug: food.slug },
+      props: { 
+        food,
+        mdxEntry: mdxEntry || null
+      }
+    };
+  });
 }
 
-const { food } = Astro.props;
+const { food, mdxEntry } = Astro.props;
 
-const title = `Is ${food.name} Safe During Pregnancy? | PregWeeks`;
-const description = `Find out if it is safe to eat ${food.name} during pregnancy. Learn about Listeria and mercury risk, safe alternatives, and clinical doctor tips.`;
+// Override data if mdxEntry exists
+const name = mdxEntry ? mdxEntry.data.name : food.name;
+const category = mdxEntry ? mdxEntry.data.category : food.category;
+const status = mdxEntry ? mdxEntry.data.status : food.status;
+const alternatives = mdxEntry ? mdxEntry.data.alternatives : food.alternatives;
+const tip = mdxEntry ? mdxEntry.data.tip : food.tip;
+
+const renderResult = mdxEntry ? await render(mdxEntry) : null;
+const Content = renderResult ? renderResult.Content : null;
+
+const title = `Is ${name} Safe During Pregnancy? | PregWeeks`;
+const description = `Find out if it is safe to eat ${name} during pregnancy. Learn about Listeria and mercury risk, safe alternatives, and clinical doctor tips.`;
 const canonicalUrl = `https://pregweeks.com/food/${food.slug}`;
 
 const relatedFoods = foodItems
-  .filter(f => f.slug !== food.slug && (f.category === food.category || f.status === food.status))
+  .filter(f => f.slug !== food.slug && (f.category === category || f.status === status))
   .slice(0, 3);
 
-// Custom FAQs for the food page schema
-const faqs = [
+// Use mdxEntry custom faqs if available, otherwise build defaults
+const faqs = (mdxEntry && mdxEntry.data.faqs) ? mdxEntry.data.faqs : [
   {
-    q: `Can I eat ${food.name} while pregnant?`,
-    a: `Eating ${food.name} during pregnancy is classified as: ${food.status.toUpperCase()}. ${food.explanation}`
+    q: `Can I eat ${name} while pregnant?`,
+    a: `Eating ${name} during pregnancy is classified as: ${status.toUpperCase()}. ${food.explanation}`
   },
   {
-    q: `What are safe alternatives to ${food.name} during pregnancy?`,
-    a: `Some excellent safe alternatives to ${food.name} include: ${food.alternatives}.`
+    q: `What are safe alternatives to ${name} during pregnancy?`,
+    a: `Some excellent safe alternatives to ${name} include: ${alternatives}.`
   },
   {
-    q: `What is the doctor's tip for ${food.name} during pregnancy?`,
-    a: `${food.tip}`
+    q: `What is the doctor's tip for ${name} during pregnancy?`,
+    a: `${tip}`
   }
 ];
 
 const breadcrumbs = getBreadcrumbSchema([
   { name: "Home", url: "https://pregweeks.com" },
   { name: "Food Safety", url: "https://pregweeks.com/food-safety" },
-  { name: food.name, url: canonicalUrl }
+  { name: name, url: canonicalUrl }
 ]);
 
 const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
@@ -55,7 +77,7 @@ const faqSchema = getFAQSchema(faqs);
       <span>&rsaquo;</span>
       <a href="/food-safety" class="hover:text-primary transition-colors">Food Safety</a>
       <span>&rsaquo;</span>
-      <span class="text-ink font-medium truncate max-w-[200px]">{food.name}</span>
+      <span class="text-ink font-medium truncate max-w-[200px]">{name}</span>
     </nav>
 
     <!-- Food Detail Card -->
@@ -64,29 +86,37 @@ const faqSchema = getFAQSchema(faqs);
       <!-- Title & Category Header -->
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-hairline pb-5">
         <div>
-          <span class="text-[10px] md:text-xs font-semibold text-ink-muted-48 uppercase tracking-wider">{food.category}</span>
-          <h1 class="text-2xl md:text-4xl font-display font-semibold tracking-apple-tight mt-1">{food.name}</h1>
-          <span class="text-[10px] text-ink-muted-48 block mt-1">Last reviewed by medical team: June 2026</span>
+          <span class="text-[10px] md:text-xs font-semibold text-ink-muted-48 uppercase tracking-wider">{category}</span>
+          <h1 class="text-2xl md:text-4xl font-display font-semibold tracking-apple-tight mt-1">{name}</h1>
+          <span class="text-[10px] text-ink-muted-48 block mt-1">
+            <MedicalReviewLine />
+          </span>
         </div>
         
         <!-- Large Safety Badge -->
         <div class={`self-start sm:self-center text-center font-bold px-4 py-2 rounded-full text-xs md:text-sm uppercase tracking-widest ${
-          food.status === 'safe' ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300' :
-          food.status === 'moderate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/40 dark:text-yellow-300' :
+          status === 'safe' ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300' :
+          status === 'moderate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/40 dark:text-yellow-300' :
           'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300'
         }`}>
-          {food.status === 'safe' ? '🟢 Generally Safe' :
-           food.status === 'moderate' ? '🟡 In Moderation' :
+          {status === 'safe' ? '🟢 Generally Safe' :
+           status === 'moderate' ? '🟡 In Moderation' :
            '🔴 Avoid Entirely'}
         </div>
       </div>
 
-      <!-- Main Clinical Verdict -->
-      <div class="flex flex-col gap-3">
-        <h2 class="text-lg md:text-xl font-display font-semibold text-ink tracking-apple-tight">Pregnancy Safety Verdict</h2>
-        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
-          {food.explanation}
-        </p>
+      <!-- Main Clinical Verdict / Markdown Content -->
+      <div class="flex flex-col gap-3 food-content">
+        {Content ? (
+          <Content />
+        ) : (
+          <>
+            <h2 class="text-lg md:text-xl font-display font-semibold text-ink tracking-apple-tight">Pregnancy Safety Verdict</h2>
+            <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
+              {food.explanation}
+            </p>
+          </>
+        )}
       </div>
 
       <!-- Quick Data Grid -->
@@ -94,14 +124,14 @@ const faqSchema = getFAQSchema(faqs);
         <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1.5">
           <h3 class="text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">Safe Alternatives</h3>
           <p class="text-sm text-ink-muted-80 leading-relaxed font-medium">
-            {food.alternatives}
+            {alternatives}
           </p>
         </div>
         
         <div class="bg-canvas-parchment p-5 rounded-apple-sm border border-hairline hover:border-primary/20 transition-all flex flex-col gap-1.5">
           <h3 class="text-xs text-ink-muted-48 uppercase tracking-wider font-semibold">OB-GYN Clinical Tip</h3>
           <p class="text-sm text-ink-muted-80 leading-relaxed font-medium">
-            {food.tip}
+            {tip}
           </p>
         </div>
       </div>
@@ -139,9 +169,12 @@ const faqSchema = getFAQSchema(faqs);
       </div>
     </article>
 
+    <!-- Medical Sources Block (E-E-A-T element) -->
+    {Content && <MedicalSourcesBlock weekNum={5} />}
+
     <!-- FAQs section -->
     <section class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors">
-      <h2 class="text-xl md:text-2xl font-display font-semibold mb-6 text-ink tracking-apple-tight">Pregnancy FAQs: {food.name}</h2>
+      <h2 class="text-xl md:text-2xl font-display font-semibold mb-6 text-ink tracking-apple-tight">Pregnancy FAQs: {name}</h2>
       <div class="flex flex-col gap-5">
         {faqs.map((faq, index) => (
           <div class="flex flex-col gap-1.5 border-b border-hairline/60 pb-4 last:border-0 last:pb-0">
@@ -168,3 +201,45 @@ const faqSchema = getFAQSchema(faqs);
     </div>
   </div>
 </Layout>
+
+<style is:global>
+  .food-content h2 {
+    font-size: clamp(18px, 3.5vw, 22px) !important;
+    font-family: var(--font-display) !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    color: var(--color-ink) !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+    letter-spacing: -0.28px !important;
+  }
+  .food-content p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--color-ink-muted-80) !important;
+    margin-bottom: 1rem !important;
+  }
+  @media (min-width: 768px) {
+    .food-content p {
+      font-size: 16px !important;
+    }
+  }
+  .food-content ul {
+    list-style-type: disc !important;
+    list-style-position: inside !important;
+    margin-bottom: 1.25rem !important;
+    padding-left: 0.25rem !important;
+  }
+  .food-content li {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--color-ink-muted-80) !important;
+    margin-bottom: 0.5rem !important;
+    display: list-item !important;
+  }
+  .food-content strong {
+    font-weight: 600 !important;
+    color: var(--color-ink) !important;
+  }
+</style>
+
