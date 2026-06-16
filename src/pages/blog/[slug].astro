@@ -1,0 +1,149 @@
+---
+// src/pages/blog/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { getBreadcrumbSchema, getMedicalPageSchema } from '../../utils/seo';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const title = `${post.data.title} | PregWeeks`;
+const description = post.data.description;
+const url = post.data.canonicalUrl;
+
+const schemas = [
+  getMedicalPageSchema(title, description, url),
+  getBreadcrumbSchema([
+    { name: "Home", url: "https://pregweeks.com" },
+    { name: "Blog", url: "https://pregweeks.com/blog/" },
+    { name: post.data.title, url: url }
+  ])
+];
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC'
+  });
+};
+---
+
+<Layout title={title} description={description} canonicalUrl={url} schemas={schemas}>
+  <!-- Header Breadcrumb -->
+  <div class="bg-canvas border-b border-hairline py-3.5 px-4 transition-colors">
+    <div class="max-w-[960px] mx-auto text-xs md:text-sm text-ink-muted-80 font-medium">
+      <nav class="flex items-center space-x-1.5 text-xs text-ink-muted-80 print:hidden" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-primary transition-colors">Home</a>
+        <span class="text-ink-muted-48">&gt;</span>
+        <a href="/blog/" class="hover:text-primary transition-colors">Blog</a>
+        <span class="text-ink-muted-48">&gt;</span>
+        <span class="text-ink font-semibold truncate max-w-[200px] sm:max-w-none">{post.data.title}</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Article Layout (Parchment background for reading) -->
+  <main class="bg-canvas-parchment py-12 px-4 transition-colors">
+    <article class="max-w-[720px] mx-auto bg-canvas border border-hairline rounded-apple-lg p-6 sm:p-10">
+      
+      <!-- Article Header -->
+      <header class="border-b border-hairline pb-6 mb-8">
+        <div class="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-ink-muted-48 mb-3">
+          <span>PregWeeks Insights</span>
+          <span class="w-1 h-1 rounded-full bg-neutral-300"></span>
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        </div>
+        
+        <h1 class="font-display font-semibold text-3xl sm:text-4xl text-ink leading-tight tracking-apple-tight mb-4">
+          {post.data.title}
+        </h1>
+        
+        <p class="text-sm text-ink-muted-80 leading-relaxed italic">
+          {post.data.description}
+        </p>
+
+        <div class="flex items-center justify-between text-[10px] text-ink-muted-48 mt-6">
+          <span>By PregWeeks Editorial Team</span>
+          <a href="/sources/" class="hover:underline hover:text-primary">Medical Sources Cited</a>
+        </div>
+      </header>
+
+      <!-- Article Content -->
+      <div class="prose-custom">
+        <Content />
+      </div>
+
+      <!-- Evidence-Based Review Policy Footer (E-E-A-T) -->
+      <footer class="border-t border-hairline mt-10 pt-6">
+        <div class="bg-canvas-parchment border border-hairline rounded-apple-sm p-5 text-left text-xs text-ink-muted-80 leading-relaxed">
+          <h4 class="font-bold text-ink mb-1">Methodology & Medical Accuracy</h4>
+          <p class="mb-2">
+            This article is based on current clinical guidance from the American College of Obstetricians and Gynecologists (ACOG), the World Health Organization (WHO), and the Centers for Disease Control and Prevention (CDC).
+          </p>
+          <p>
+            At PregWeeks.com, we do not present subjective medical opinions or employ fabricated reviewers. All insights are direct, evidence-based interpretations of established institutional safety standards and developmental metrics. Review our full methodology on the <a href="/sources/" class="text-primary hover:underline font-semibold">Medical Sources</a> page.
+          </p>
+        </div>
+      </footer>
+
+    </article>
+  </main>
+</Layout>
+
+<style is:global>
+  /* Premium typographic styles for rendered markdown content */
+  .prose-custom h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--color-ink, #1c1917);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .prose-custom p {
+    font-size: 0.925rem;
+    line-height: 1.65;
+    color: var(--color-ink-muted-80, #44403c);
+    margin-bottom: 1.25rem;
+  }
+  .prose-custom ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+    color: var(--color-ink-muted-80, #44403c);
+  }
+  .prose-custom li {
+    font-size: 0.925rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+  .prose-custom a {
+    color: var(--color-primary, #e91e8c);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  .prose-custom a:hover {
+    opacity: 0.85;
+  }
+  .prose-custom hr {
+    border: 0;
+    border-top: 1px solid var(--color-hairline, #e5e5e0);
+    margin: 2rem 0;
+  }
+  .prose-custom strong {
+    color: var(--color-ink, #1c1917);
+    font-weight: 600;
+  }
+</style>

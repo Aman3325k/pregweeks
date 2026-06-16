@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 import { foodItems } from '../data/foodData';
 import { symptomItems } from '../data/symptomData';
 import { babyNames } from '../data/namesData';
@@ -19,6 +20,7 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/symptoms/',
     'https://pregweeks.com/nutrition/',
     'https://pregweeks.com/faq/',
+    'https://pregweeks.com/blog/',
     'https://pregweeks.com/food/sushi/',
     // Phase 1 Expansion
     'https://pregweeks.com/food-safety/',
@@ -59,6 +61,11 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/checklist/nursery/',
     'https://pregweeks.com/checklist/baby-gear/',
   ];
+
+  const blogPosts = await getCollection('blog');
+  blogPosts.forEach((post) => {
+    baseUrls.push(`https://pregweeks.com/blog/${post.id}/`);
+  });
 
   // Generate URLs for all 40 pregnancy weeks
   for (let i = 1; i <= 40; i++) {
@@ -119,6 +126,12 @@ export const GET: APIRoute = async () => {
       freq = 'weekly';
     } else if (url.includes('/week/')) {
       priority = '0.9';
+      freq = 'monthly';
+    } else if (url === 'https://pregweeks.com/blog/') {
+      priority = '0.9';
+      freq = 'weekly';
+    } else if (url.includes('/blog/')) {
+      priority = '0.8';
       freq = 'monthly';
     } else if (url.includes('/tools/') || url.includes('/calculators')) {
       priority = '0.8';

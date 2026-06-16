@@ -22,6 +22,23 @@ const {
 
 // Format the canonical URL to ensure consistency
 const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1) : canonicalUrl;
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://pregweeks.com/#organization",
+  "name": "PregWeeks",
+  "url": "https://pregweeks.com",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://pregweeks.com/favicon.svg"
+  },
+  "sameAs": [
+    "https://www.acog.org",
+    "https://www.who.int/health-topics/pregnancy",
+    "https://www.cdc.gov/pregnancy"
+  ]
+};
 ---
 
 <!doctype html>
@@ -108,6 +125,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
     </script>
 
     <!-- Schema Markup -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     {schemas.map((schema) => (
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
@@ -134,6 +152,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         <div class="hidden md:flex items-center gap-6 text-[12px] text-neutral-400">
           <a href="/symptoms/" class="hover:text-white transition-colors">Symptoms</a>
           <a href="/nutrition/" class="hover:text-white transition-colors">Nutrition</a>
+          <a href="/blog/" class="hover:text-white transition-colors">Blog</a>
           <a href="/faq/" class="hover:text-white transition-colors">FAQ</a>
           <a href="/glossary/" class="hover:text-white transition-colors">Glossary</a>
           <a href="/compare/" class="hover:text-white transition-colors font-semibold text-primary">Compare Weeks</a>
@@ -222,6 +241,7 @@ const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1
         >
           <a href="/symptoms/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Symptoms</a>
           <a href="/nutrition/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Nutrition</a>
+          <a href="/blog/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Blog</a>
           <a href="/faq/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">FAQ</a>
           <a href="/glossary/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base">Glossary</a>
           <a href="/compare/" class="mobile-nav-link text-ink hover:text-primary py-3 px-2 font-medium border-b border-hairline flex items-center min-h-[44px] text-base font-semibold text-primary">Compare Weeks</a>
