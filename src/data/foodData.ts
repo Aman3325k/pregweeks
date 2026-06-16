@@ -13,34 +13,7 @@ export interface FoodItem {
 export const foodItems: FoodItem[] = [
   // DAIRY & EGGS (1-20)
 
-  {
-    slug: 'pasteurized-milk',
-    name: 'Pasteurized Milk',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Pasteurization heats milk to kill harmful pathogens while maintaining nutritional value, providing a safe source of calcium and vitamin D.',
-    alternatives: 'None needed. Organic pasteurized milk is highly recommended.',
-    tip: 'Ensure it is kept refrigerated below 40°F (4°C) and consumed before the expiration date.'
-  },
 
-  {
-    slug: 'feta-cheese',
-    name: 'Feta Cheese',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Most feta sold commercially in the US and Europe is pasteurized and safe. However, feta imported or purchased at local farms might be unpasteurized.',
-    alternatives: 'Hard pasteurized cheeses, or verify that the feta is made from pasteurized milk.',
-    tip: 'If dining out, confirm with the staff that their soft cheeses are pasteurized.'
-  },
-  {
-    slug: 'blue-cheese',
-    name: 'Blue Cheese',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Refrigerated soft blue-veined cheeses (like Roquefort or Gorgonzola) made with unpasteurized milk carry Listeria risk. Pasteurized versions are safer but still carry minor risks unless cooked.',
-    alternatives: 'Pasteurized cream cheese, cottage cheese, or hard cheeses.',
-    tip: 'Cook blue cheese into sauces until bubbling hot to eliminate any potential bacterial trace.'
-  },
   {
     slug: 'camembert',
     name: 'Camembert Cheese',
@@ -77,15 +50,7 @@ export const foodItems: FoodItem[] = [
     alternatives: 'None needed.',
     tip: 'Pizza toppings containing mozzarella are perfectly safe because baking kills any potential pathogens.'
   },
-  {
-    slug: 'raw-eggs',
-    name: 'Raw Eggs',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Raw or undercooked eggs can contain Salmonella enteritidis, leading to severe food poisoning, high fever, abdominal cramps, and diarrhea.',
-    alternatives: 'Pasteurized eggs, or eggs cooked until both the white and yolk are completely firm.',
-    tip: 'Avoid tasting raw cake batter, cookie dough, or homemade ice cream made with raw eggs.'
-  },
+
   {
     slug: 'pasteurized-eggs',
     name: 'Pasteurized Eggs (Cooked)',
@@ -178,15 +143,7 @@ export const foodItems: FoodItem[] = [
   },
 
   // SEAFOOD (21-45)
-  {
-    slug: 'sushi-raw',
-    name: 'Sushi (Raw Fish)',
-    category: 'Seafood',
-    status: 'avoid',
-    explanation: 'Raw fish can harbor parasites (anisakis) and bacteria (Vibrio vulnificus, Listeria) that can cause severe gastrointestinal illness and endanger the fetus.',
-    alternatives: 'Cooked sushi (California rolls, eel, shrimp, sweet potato rolls).',
-    tip: 'Choose vegetarian or fully cooked rolls at reputable establishments.'
-  },
+
   {
     slug: 'sushi-cooked',
     name: 'Sushi (Cooked)',
@@ -197,15 +154,7 @@ export const foodItems: FoodItem[] = [
     tip: 'Ask the chef to use clean knives and boards to avoid raw fish juices.'
   },
 
-  {
-    slug: 'tuna-light',
-    name: 'Canned Light Tuna',
-    category: 'Seafood',
-    status: 'safe',
-    explanation: 'Canned light tuna is made from smaller fish (skipjack) and contains lower levels of mercury than white/albacore tuna. Safe up to 12 oz (2 meals) per week.',
-    alternatives: 'Salmon, sardines, or anchovies for lower mercury levels.',
-    tip: 'Limit consumption to 2 servings a week to stay well within safety margins.'
-  },
+
 
   {
     slug: 'shark',
@@ -253,15 +202,7 @@ export const foodItems: FoodItem[] = [
     tip: 'Avoid marlin steaks and sashimi.'
   },
 
-  {
-    slug: 'crab',
-    name: 'Crab (Cooked)',
-    category: 'Seafood',
-    status: 'safe',
-    explanation: 'Fully cooked crab is low in mercury and safe. It provides zinc, iron, and protein.',
-    alternatives: 'Cooked lobster or shrimp.',
-    tip: 'Avoid raw crab or raw crab paste, which are popular in some Asian dishes.'
-  },
+
   {
     slug: 'lobster',
     name: 'Lobster (Cooked)',
@@ -372,15 +313,7 @@ export const foodItems: FoodItem[] = [
   },
 
   // BEVERAGES (46-65)
-  {
-    slug: 'coffee',
-    name: 'Coffee',
-    category: 'Beverages',
-    status: 'moderate',
-    explanation: 'High caffeine intake is linked to restricted fetal growth and low birth weight. Limit caffeine to under 200 mg per day (about one 12 oz cup).',
-    alternatives: 'Decaf coffee, chicory herbal coffee, or hot water with lemon.',
-    tip: 'Be aware that espresso shots and cold brew can contain higher caffeine concentrations than drip coffee.'
-  },
+
   {
     slug: 'espresso',
     name: 'Espresso',
@@ -554,15 +487,7 @@ export const foodItems: FoodItem[] = [
   },
 
   // MEATS & POULTRY (66-85)
-  {
-    slug: 'deli-meat-cold',
-    name: 'Cold Deli Meats',
-    category: 'Meats & Poultry',
-    status: 'avoid',
-    explanation: 'Pre-sliced deli meats (turkey, ham, roast beef) are prone to Listeria contamination post-processing. Listeria can survive and multiply in the refrigerator.',
-    alternatives: 'Heated deli meats, grilled chicken, or roast beef cooked hot at home.',
-    tip: 'If you choose to eat deli meats, microwave them until steaming hot (165°F/74°C) before serving.'
-  },
+
   {
     slug: 'deli-meat-heated',
     name: 'Heated Deli Meats (Steaming)',
