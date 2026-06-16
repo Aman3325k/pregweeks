@@ -7,6 +7,8 @@ import DigitalProductCheckout from '../../components/DigitalProductCheckout.astr
 import { symptomItems } from '../../data/symptomData';
 import { foodItems } from '../../data/foodData';
 import { getMedicalPageSchema, getBreadcrumbSchema, getFAQSchema } from '../../utils/seo';
+import MedicalReviewLine from '../../components/MedicalReviewLine.astro';
+import MedicalSourcesBlock from '../../components/MedicalSourcesBlock.astro';
 
 // 1. Generate paths for all 40 weeks at compile time
 export async function getStaticPaths() {
@@ -76,6 +78,7 @@ const pageSchemas = [
   getMedicalPageSchema(title, description, pageUrl),
   getBreadcrumbSchema([
     { name: "Home", url: "https://pregweeks.com" },
+    { name: "Week Guides", url: "https://pregweeks.com/#weeks-directory" },
     { name: `Week ${weekNum}`, url: pageUrl }
   ]),
   getFAQSchema(faqItems),
@@ -181,7 +184,7 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
       </div>
     </div>
     <div class="max-w-[960px] mx-auto flex justify-between items-center text-[10px] text-ink-muted-48 mt-2.5">
-      <span>Last reviewed by medical team: June 2026</span>
+      <MedicalReviewLine date="June 2026" />
       <span>Evidence-Based Care Check</span>
     </div>
     <div class="max-w-[960px] mx-auto h-1 bg-canvas-parchment rounded-full mt-2.5 overflow-hidden">
@@ -414,6 +417,13 @@ const nextWeek = weekNum < 40 ? weekNum + 1 : null;
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Clinical Sources Block -->
+  <section class="bg-canvas pb-12 px-4 print:px-0">
+    <div class="max-w-[720px] mx-auto">
+      <MedicalSourcesBlock weekNum={weekNum} />
     </div>
   </section>
 

@@ -1,0 +1,11 @@
+---
+// src/components/MedicalReviewLine.astro
+interface Props {
+  date?: string;
+}
+
+const { date = "June 2026" } = Astro.props;
+---
+<a href="/sources/" class="hover:underline hover:text-primary transition-colors duration-200">
+  Last reviewed by medical team: {date}
+</a>

@@ -94,19 +94,27 @@ export function getMedicalPageSchema(
     }
   };
 
-  baseSchema.reviewedBy = {
-    "@type": "Person",
-    "name": activeReviewer.name,
-    "jobTitle": activeReviewer.jobTitle,
-    "sameAs": activeReviewer.sameAs,
-    ...(activeReviewer.organization ? {
-      "worksFor": {
-        "@type": "MedicalOrganization",
-        "name": activeReviewer.organization,
-        ...(activeReviewer.organizationUrl ? { "sameAs": activeReviewer.organizationUrl } : {})
-      }
-    } : {})
-  };
+  if (activeReviewer.name.includes("Team") || activeReviewer.name.includes("Board")) {
+    baseSchema.reviewedBy = {
+      "@type": "MedicalOrganization",
+      "name": activeReviewer.name,
+      "sameAs": activeReviewer.sameAs
+    };
+  } else {
+    baseSchema.reviewedBy = {
+      "@type": "Person",
+      "name": activeReviewer.name,
+      "jobTitle": activeReviewer.jobTitle,
+      "sameAs": activeReviewer.sameAs,
+      ...(activeReviewer.organization ? {
+        "worksFor": {
+          "@type": "MedicalOrganization",
+          "name": activeReviewer.organization,
+          ...(activeReviewer.organizationUrl ? { "sameAs": activeReviewer.organizationUrl } : {})
+        }
+      } : {})
+    };
+  }
   
   // Add medical audience and OB-GYN specialty details to solidify YMYL credentials
   baseSchema.medicalAudience = "Patient";

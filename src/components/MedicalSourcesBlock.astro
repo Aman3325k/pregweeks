@@ -1,0 +1,165 @@
+---
+// src/components/MedicalSourcesBlock.astro
+
+interface Props {
+  weekNum: number;
+}
+
+const { weekNum } = Astro.props;
+
+interface SourceLink {
+  title: string;
+  org: string;
+  url: string;
+  description: string;
+}
+
+// Dynamically fetch guidelines based on the current pregnancy week
+function getSourcesForWeek(week: number): SourceLink[] {
+  if (week >= 1 && week <= 4) {
+    return [
+      {
+        title: "Methods for Estimating Due Date (Committee Opinion No. 721)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-due-date",
+        description: "Official clinical recommendations on calculating gestational age and due dates using last menstrual period (LMP) and ultrasound measurements."
+      },
+      {
+        title: "Folic Acid Guidance to Prevent Neural Tube Defects",
+        org: "Centers for Disease Control and Prevention (CDC)",
+        url: "https://www.cdc.gov/folic-acid/about/index.html",
+        description: "Public health guidelines on the daily recommended intake of prenatal folic acid (400 mcg) before and during early pregnancy."
+      },
+      {
+        title: "Antenatal Care for a Positive Pregnancy Experience",
+        org: "World Health Organization (WHO)",
+        url: "https://www.who.int/publications/i/item/9789241549660",
+        description: "Global standard guidelines recommending early prenatal visits, nutritional counseling, and basic blood screening starting in the first trimester."
+      }
+    ];
+  } else if (week >= 5 && week <= 13) {
+    return [
+      {
+        title: "Nutrition During Pregnancy FAQ",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/womens-health/faqs/nutrition-during-pregnancy",
+        description: "Patient and practitioner reference guidelines on prenatal nutritional intake, including essential vitamins, iron, calcium, and weight thresholds."
+      },
+      {
+        title: "Early Pregnancy Loss (Practice Bulletin No. 200)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2018/11/early-pregnancy-loss",
+        description: "Clinical guidelines on diagnostics, physical symptoms, and care options during early pregnancy challenges in the first trimester."
+      },
+      {
+        title: "Food Safety for Pregnant Women",
+        org: "U.S. Food and Drug Administration (FDA) / CDC",
+        url: "https://www.fda.gov/food/people-risk-groups/food-safety-pregnant-women",
+        description: "Standard warnings and food safety guidelines regarding Listeria, Salmonella, and mercury levels in seafood during gestation."
+      }
+    ];
+  } else if (week >= 14 && week <= 27) {
+    return [
+      {
+        title: "Prenatal Diagnostic Testing for Genetic Disorders (Practice Bulletin No. 162)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2016/05/prenatal-diagnostic-testing-for-genetic-disorders",
+        description: "Clinical recommendations for mid-pregnancy screening options, including the anatomy ultrasound scan commonly scheduled between weeks 18 and 22."
+      },
+      {
+        title: "Gestational Diabetes Mellitus (Practice Bulletin No. 190)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2018/02/gestational-diabetes-mellitus",
+        description: "Practice standards for screening and diagnosing gestational diabetes mellitus (GDM), typically scheduled between weeks 24 and 28."
+      },
+      {
+        title: "Implementing a Gestational Diabetes Screening Protocol (Committee Opinion No. 798)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2020/01/implementing-a-gestational-diabetes-screening-protocol",
+        description: "Standardized protocols for glucose screening tests to detect gestational diabetes and optimize maternal-fetal metabolic health."
+      }
+    ];
+  } else if (week >= 28 && week <= 35) {
+    return [
+      {
+        title: "Gestational Hypertension and Preeclampsia (Practice Bulletin No. 202)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2019/01/gestational-hypertension-and-preeclampsia",
+        description: "Clinical guidelines for monitoring blood pressure, proteinuria, and warning signs of preeclampsia during third-trimester prenatal care."
+      },
+      {
+        title: "Fetal Growth Restriction (Practice Bulletin No. 219)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2020/06/fetal-growth-restriction",
+        description: "Recommendations for measuring fundal height, tracking fetal growth scales, and diagnosing growth limitations in the third trimester."
+      },
+      {
+        title: "WHO Guidelines on Physical Activity and Sedentary Behaviour",
+        org: "World Health Organization (WHO)",
+        url: "https://www.who.int/publications/i/item/9789240015128",
+        description: "Global physical activity standards for pregnant women to support circulation, minimize excessive weight gain, and prepare for labor."
+      }
+    ];
+  } else {
+    // Weeks 36 - 40
+    return [
+      {
+        title: "Prevention of Group B Streptococcal (GBS) Early-Onset Disease in Newborns",
+        org: "Centers for Disease Control and Prevention (CDC)",
+        url: "https://www.cdc.gov/group-b-strep/hcp/clinical-guidance/index.html",
+        description: "Clinical guidelines on the recommended routine GBS screening swab at 36-37 weeks of gestation and intrapartum antibiotic prophylaxis."
+      },
+      {
+        title: "Medically Indicated Late-Term and Term Deliveries (Committee Opinion No. 764)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2019/02/medically-indicated-late-term-and-term-deliveries",
+        description: "Standard guidelines on medical criteria and timings for elective vs. medically indicated induction or delivery near the due date."
+      },
+      {
+        title: "Management of Late-Term and Post-Term Pregnancies (Practice Bulletin No. 146)",
+        org: "American College of Obstetricians and Gynecologists (ACOG)",
+        url: "https://www.acog.org/clinical/clinical-guidance/practice-bulletin/articles/2014/08/management-of-late-term-and-post-term-pregnancies",
+        description: "Clinical recommendations for fetal monitoring and labor induction timelines for pregnancies extending beyond week 40."
+      }
+    ];
+  }
+}
+
+const sources = getSourcesForWeek(weekNum);
+---
+<div class="mt-12 bg-canvas-parchment border border-hairline rounded-apple-lg p-6 text-left transition-colors">
+  <div class="flex items-center gap-2 border-b border-hairline pb-3 mb-4">
+    <span class="text-lg">📚</span>
+    <h3 class="font-display font-semibold text-base text-ink tracking-apple-tight">
+      Evidence-Based Clinical Sources for Week {weekNum}
+    </h3>
+  </div>
+  
+  <p class="text-xs text-ink-muted-80 leading-relaxed mb-6">
+    PregWeeks is dedicated to medical transparency. Every milestone, symptom tip, and fetal development guideline for Week {weekNum} is sourced directly from clinical guidelines published by leading obstetric authorities. Read more about our editorial methodology on our <a href="/sources/" class="text-primary hover:underline font-semibold">Medical Sources</a> page.
+  </p>
+  
+  <div class="space-y-4">
+    {sources.map((src) => (
+      <div class="bg-canvas border border-hairline rounded-apple-sm p-4 hover:border-primary/20 transition-all">
+        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5 mb-1.5">
+          <h4 class="text-xs font-bold text-ink">{src.title}</h4>
+          <span class="text-[10px] font-semibold text-ink-muted-48 uppercase tracking-wider shrink-0 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">
+            {src.org.split('(')[1]?.replace(')', '') || src.org.substring(0, 12)}
+          </span>
+        </div>
+        <p class="text-[11px] text-ink-muted-80 leading-relaxed mb-3">
+          {src.description}
+        </p>
+        <a 
+          href={src.url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="text-[11px] font-semibold text-primary hover:underline inline-flex items-center gap-1 min-h-[32px]"
+        >
+          View Clinical Guideline <span class="text-[9px] font-normal">&nearr;</span>
+        </a>
+      </div>
+    ))}
+  </div>
+</div>
