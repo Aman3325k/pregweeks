@@ -14,51 +14,6 @@ export const foodItems: FoodItem[] = [
   // DAIRY & EGGS (1-20)
 
   {
-    slug: 'cookie-dough-raw',
-    name: 'Raw Cookie Dough',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Contains both raw eggs (Salmonella risk) and raw unbaked flour (E. coli risk). Both present severe infection risks.',
-    alternatives: 'Edible cookie dough made without eggs and with heat-treated flour.',
-    tip: 'Ensure kids and pregnant women do not lick the spoons when baking.'
-  },
-  {
-    slug: 'eggnog-homemade',
-    name: 'Homemade Eggnog',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Typically made with raw eggs, which are a source of Salmonella. Adding alcohol does not reliably kill the bacteria.',
-    alternatives: 'Commercially pasteurized, non-alcoholic eggnog from the dairy aisle.',
-    tip: 'Commercial eggnog is pasteurized and completely safe to consume.'
-  },
-  {
-    slug: 'eggnog-commercial',
-    name: 'Commercial Eggnog',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Commercial products use pasteurized milk and eggs, removing the risk of bacterial infection.',
-    alternatives: 'None needed.',
-    tip: 'Keep refrigerated and consume within 3-5 days of opening.'
-  },
-  {
-    slug: 'hollandaise-raw',
-    name: 'Homemade Hollandaise (Raw Eggs)',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Hollandaise sauce prepared in restaurants or homes is often emulsified with raw or partially cooked egg yolks, raising Salmonella risk.',
-    alternatives: 'Hollandaise made with pasteurized egg yolks or packaged powder mixes.',
-    tip: 'Ask the server if the hollandaise is made with pasteurized eggs before ordering Eggs Benedict.'
-  },
-  {
-    slug: 'hollandaise-pasteurized',
-    name: 'Pasteurized Hollandaise',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Made using pasteurized egg products, preventing Salmonella contamination.',
-    alternatives: 'None needed.',
-    tip: 'Commercial jarred or powdered hollandaise is safe and easy to prepare at home.'
-  },
-  {
     slug: 'cottage-cheese',
     name: 'Cottage Cheese',
     category: 'Dairy & Eggs',
