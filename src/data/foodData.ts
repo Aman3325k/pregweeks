@@ -14,33 +14,6 @@ export const foodItems: FoodItem[] = [
   // DAIRY & EGGS (1-20)
 
   {
-    slug: 'cottage-cheese',
-    name: 'Cottage Cheese',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Commercial cottage cheese is pasteurized and low-risk, providing high protein and calcium.',
-    alternatives: 'Greek yogurt or ricotta cheese (pasteurized).',
-    tip: 'Serve with clean utensils and keep cold until ready to consume.'
-  },
-  {
-    slug: 'cream-cheese',
-    name: 'Cream Cheese',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Commercial cream cheese is pasteurized and safe for pregnancy. It does not support Listeria growth when stored properly.',
-    alternatives: 'None needed.',
-    tip: 'Avoid sharing cream cheese tubs to prevent cross-contamination from other foods.'
-  },
-  {
-    slug: 'ricotta-cheese',
-    name: 'Ricotta Cheese',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Commercially made ricotta cheese is pasteurized and safe. However, fresh homemade raw ricotta should be avoided.',
-    alternatives: 'Any commercial pasteurized ricotta.',
-    tip: 'Excellent for baking in lasagnas or spreading on toast.'
-  },
-  {
     slug: 'parmesan-cheese',
     name: 'Parmesan Cheese',
     category: 'Dairy & Eggs',
