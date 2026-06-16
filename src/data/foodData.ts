@@ -13,53 +13,6 @@ export interface FoodItem {
 export const foodItems: FoodItem[] = [
   // DAIRY & EGGS (1-20)
 
-
-  {
-    slug: 'camembert',
-    name: 'Camembert Cheese',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Like Brie, Camembert is a soft, mold-ripened cheese that holds a higher risk of containing Listeria if unpasteurized.',
-    alternatives: 'Hard pasteurized Swiss, Gouda, or Cheddar cheese.',
-    tip: 'Avoid soft cheeses on buffet platters where they may sit at room temperature.'
-  },
-  {
-    slug: 'queso-blanco',
-    name: 'Queso Blanco / Queso Fresco',
-    category: 'Dairy & Eggs',
-    status: 'avoid',
-    explanation: 'Traditional raw-milk version of these Hispanic-style soft cheeses is a leading cause of Listeria outbreaks in pregnant women.',
-    alternatives: 'Pasteurized cheddar, mozzarella, or commercially produced pasteurized queso fresco.',
-    tip: 'Only eat queso fresco if the package clearly states it was made from pasteurized milk.'
-  },
-  {
-    slug: 'pasteurized-cheddar',
-    name: 'Pasteurized Cheddar',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Hard cheeses have low moisture content which is highly unfavorable for bacterial growth. Pasteurization kills any initial bacteria.',
-    alternatives: 'None needed; an excellent source of calcium for baby’s bone development.',
-    tip: 'Slice with clean knives and store in an airtight container to avoid cross-contamination.'
-  },
-  {
-    slug: 'pasteurized-mozzarella',
-    name: 'Pasteurized Mozzarella',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Commercially prepared mozzarella is pasteurized and has low Listeria risk, whether shredded, sliced, or fresh in water.',
-    alternatives: 'None needed.',
-    tip: 'Pizza toppings containing mozzarella are perfectly safe because baking kills any potential pathogens.'
-  },
-
-  {
-    slug: 'pasteurized-eggs',
-    name: 'Pasteurized Eggs (Cooked)',
-    category: 'Dairy & Eggs',
-    status: 'safe',
-    explanation: 'Commercial pasteurization destroys Salmonella bacteria without cooking the egg. Safe to use in recipes that call for gently cooked eggs.',
-    alternatives: 'Regular well-cooked eggs.',
-    tip: 'Look for the "P" stamp on the eggshells in supermarkets.'
-  },
   {
     slug: 'cookie-dough-raw',
     name: 'Raw Cookie Dough',
