@@ -1,31 +1,49 @@
 ---
 // src/pages/symptoms/[symptom].astro
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { symptomItems } from '../../data/symptomData';
 import { pregnancyConditions } from '../../data/conditionsData';
 import { getBreadcrumbSchema, getFAQSchema, getMedicalPageSchema } from '../../utils/seo';
+import MedicalReviewLine from '../../components/MedicalReviewLine.astro';
+import MedicalSourcesBlock from '../../components/MedicalSourcesBlock.astro';
 
 export async function getStaticPaths() {
-  return symptomItems.map((symptom) => ({
-    params: { symptom: symptom.slug },
-    props: { symptom }
-  }));
+  const mdxSymptoms = await getCollection('symptoms');
+  const mdxMap = new Map(mdxSymptoms.map(item => [item.id, item]));
+
+  return symptomItems.map((symptom) => {
+    const mdxEntry = mdxMap.get(symptom.slug);
+    return {
+      params: { symptom: symptom.slug },
+      props: { 
+        symptom,
+        mdxEntry: mdxEntry || null
+      }
+    };
+  });
 }
 
-const { symptom } = Astro.props;
+const { symptom, mdxEntry } = Astro.props;
 
-const title = `${symptom.name} During Pregnancy: Causes & Relief | PregWeeks`;
-const description = `Is ${symptom.name} normal during pregnancy? Learn when it occurs, home remedies to relieve it, and when to call your doctor.`;
+// Override fields from frontmatter if they exist in mdxEntry
+const name = mdxEntry ? mdxEntry.data.name : symptom.name;
+const weeks = mdxEntry ? mdxEntry.data.weeks : symptom.weeks;
+const normalcy = mdxEntry ? mdxEntry.data.normalcy : symptom.normalcy;
+const faqs = mdxEntry ? mdxEntry.data.faqs : symptom.faqs;
+
+const title = `${name} During Pregnancy: Causes & Relief | PregWeeks`;
+const description = `Is ${name} normal during pregnancy? Learn when it occurs, home remedies to relieve it, and when to call your doctor.`;
 const canonicalUrl = `https://pregweeks.com/symptoms/${symptom.slug}`;
 
 const breadcrumbs = getBreadcrumbSchema([
   { name: "Home", url: "https://pregweeks.com" },
   { name: "Symptoms", url: "https://pregweeks.com/symptoms" },
-  { name: symptom.name, url: canonicalUrl }
+  { name: name, url: canonicalUrl }
 ]);
 
 const medicalSchema = getMedicalPageSchema(title, description, canonicalUrl);
-const faqSchema = getFAQSchema(symptom.faqs);
+const faqSchema = getFAQSchema(faqs);
 
 // Helper to check if symptom is active in a week
 function isSymptomActiveInWeek(symptomWeeks: string, week: number): boolean {
@@ -45,7 +63,7 @@ function isSymptomActiveInWeek(symptomWeeks: string, week: number): boolean {
 
 // Find all weeks where the symptom is active
 const activeWeeks = Array.from({ length: 40 }, (_, i) => i + 1)
-  .filter(w => isSymptomActiveInWeek(symptom.weeks, w));
+  .filter(w => isSymptomActiveInWeek(weeks, w));
 
 // Take a subset of up to 6 sample weeks
 const sampleWeeks = activeWeeks.filter((_, idx) => idx % Math.ceil(activeWeeks.length / 6) === 0).slice(0, 6);
@@ -65,6 +83,13 @@ const symptomToConditionsMap: Record<string, string[]> = {
 
 const conditionSlugs = symptomToConditionsMap[symptom.slug] || ['preeclampsia', 'gestational-diabetes'];
 const relatedConditions = pregnancyConditions.filter(c => conditionSlugs.includes(c.slug));
+
+// Resolve Content component
+const renderResult = mdxEntry ? await render(mdxEntry) : null;
+const Content = renderResult ? renderResult.Content : null;
+
+// Determine source block week
+const weekNum = activeWeeks[0] || 4;
 ---
 
 <Layout title={title} description={description} canonicalUrl={canonicalUrl} schemas={[breadcrumbs, medicalSchema, faqSchema]}>
@@ -75,56 +100,68 @@ const relatedConditions = pregnancyConditions.filter(c => conditionSlugs.include
       <span>&rsaquo;</span>
       <a href="/symptoms" class="hover:text-primary transition-colors">Symptoms</a>
       <span>&rsaquo;</span>
-      <span class="text-ink font-medium truncate max-w-[200px]">{symptom.name}</span>
+      <span class="text-ink font-medium truncate max-w-[200px]">{name}</span>
     </nav>
 
     <!-- Symptom Main Card -->
     <article class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors flex flex-col gap-6">
       <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-hairline pb-5">
         <div>
-          <span class="text-[10px] md:text-xs font-semibold text-ink-muted-48 uppercase tracking-wider">{symptom.weeks}</span>
-          <h1 class="text-2xl md:text-4xl font-display font-semibold tracking-apple-tight mt-1">{symptom.name}</h1>
-          <span class="text-[10px] text-ink-muted-48 block mt-1">Last reviewed by medical team: June 2026</span>
+          <span class="text-[10px] md:text-xs font-semibold text-ink-muted-48 uppercase tracking-wider">{weeks}</span>
+          <h1 class="text-2xl md:text-4xl font-display font-semibold tracking-apple-tight mt-1">{name}</h1>
+          <span class="text-[10px] text-ink-muted-48 block mt-1">
+            <MedicalReviewLine />
+          </span>
         </div>
 
         <div class={`self-start sm:self-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${
-          symptom.normalcy === 'normal' ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300' :
-          symptom.normalcy === 'common' ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300' :
+          normalcy === 'normal' ? 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300' :
+          normalcy === 'common' ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300' :
           'bg-orange-100 text-orange-800 dark:bg-orange-950/40 dark:text-orange-300'
         }`}>
-          {symptom.normalcy === 'normal' ? '🟢 Normal Pregnancy Marker' :
-           symptom.normalcy === 'common' ? '🔵 Common Pregnancy Symptom' :
+          {normalcy === 'normal' ? '🟢 Normal Pregnancy Marker' :
+           normalcy === 'common' ? '🔵 Common Pregnancy Symptom' :
            '🟠 Seek Medical Advice'}
         </div>
       </div>
 
-      <!-- Description -->
-      <div class="flex flex-col gap-2.5">
-        <h2 class="text-lg md:text-xl font-display font-semibold text-ink tracking-apple-tight">Why It Happens</h2>
-        <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
-          {symptom.description}
-        </p>
+      <!-- Description / Content -->
+      <div class="flex flex-col gap-2.5 symptom-content">
+        {Content ? (
+          <Content />
+        ) : (
+          <>
+            <div class="flex flex-col gap-2.5">
+              <h2 class="text-lg md:text-xl font-display font-semibold text-ink tracking-apple-tight">Why It Happens</h2>
+              <p class="text-ink-muted-80 text-sm md:text-base leading-relaxed">
+                {symptom.description}
+              </p>
+            </div>
+
+            <!-- Relief and Remedies -->
+            <div class="flex flex-col gap-3 mt-4">
+              <h2 class="text-lg md:text-xl font-display font-semibold text-ink tracking-apple-tight">Safe Home Remedies</h2>
+              <ul class="list-disc list-inside space-y-2 text-sm text-ink-muted-80 pl-1">
+                {symptom.remedies.map((remedy) => (
+                  <li class="leading-relaxed">{remedy}</li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Red Flag Warning Callout -->
+            <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-apple-sm p-5 text-sm leading-relaxed flex flex-col gap-2 mt-4">
+              <h3 class="font-semibold text-red-800 dark:text-red-300 flex items-center gap-1.5">
+                <span>⚠️</span>
+                <span>When to Contact a Doctor</span>
+              </h3>
+              <p class="text-ink-muted-80 text-xs md:text-sm">
+                {symptom.whenToCallDoctor}
+              </p>
+            </div>
+          </>
+        )}
       </div>
 
-      <!-- Relief and Remedies -->
-      <div class="flex flex-col gap-3">
-        <h2 class="text-lg md:text-xl font-display font-semibold text-ink tracking-apple-tight">Safe Home Remedies</h2>
-        <ul class="list-disc list-inside space-y-2 text-sm text-ink-muted-80 pl-1">
-          {symptom.remedies.map((remedy) => (
-            <li class="leading-relaxed">{remedy}</li>
-          ))}
-        </ul>
-      </div>
-
-      <!-- Red Flag Warning Callout -->
-      <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-apple-sm p-5 text-sm leading-relaxed flex flex-col gap-2">
-        <h3 class="font-semibold text-red-800 dark:text-red-300 flex items-center gap-1.5">
-          <span>⚠️</span>
-          <span>When to Contact a Doctor</span>
-        </h3>
-        <p class="text-ink-muted-80 text-xs md:text-sm">
-          {symptom.whenToCallDoctor}
-        </p>
       <!-- Related Weeks & Conditions Section (Internal Linking Matrix) -->
       <div class="border-t border-hairline pt-5 flex flex-col gap-4">
         <h3 class="font-display font-semibold text-base text-ink tracking-apple-tight">Related Guides &amp; Resources</h3>
@@ -156,11 +193,14 @@ const relatedConditions = pregnancyConditions.filter(c => conditionSlugs.include
       </div>
     </article>
 
+    <!-- Medical Sources Block (E-E-A-T element) -->
+    {Content && <MedicalSourcesBlock weekNum={weekNum} />}
+
     <!-- FAQs section -->
     <section class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors">
       <h2 class="text-xl md:text-2xl font-display font-semibold mb-6 text-ink tracking-apple-tight">Clinical Questions & Answers</h2>
       <div class="flex flex-col gap-6">
-        {symptom.faqs.map((faq, index) => (
+        {faqs.map((faq, index) => (
           <div class="flex flex-col gap-1.5 border-b border-hairline/60 pb-4 last:border-0 last:pb-0">
             <h3 class="font-semibold text-sm md:text-base text-ink flex items-start gap-2">
               <span class="text-primary font-bold">Q{index + 1}:</span>
@@ -185,3 +225,44 @@ const relatedConditions = pregnancyConditions.filter(c => conditionSlugs.include
     </div>
   </div>
 </Layout>
+
+<style is:global>
+  .symptom-content h2 {
+    font-size: clamp(18px, 3.5vw, 22px) !important;
+    font-family: var(--font-display) !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    color: var(--color-ink) !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+    letter-spacing: -0.28px !important;
+  }
+  .symptom-content p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--color-ink-muted-80) !important;
+    margin-bottom: 1rem !important;
+  }
+  @media (min-width: 768px) {
+    .symptom-content p {
+      font-size: 16px !important;
+    }
+  }
+  .symptom-content ul {
+    list-style-type: disc !important;
+    list-style-position: inside !important;
+    margin-bottom: 1.25rem !important;
+    padding-left: 0.25rem !important;
+  }
+  .symptom-content li {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--color-ink-muted-80) !important;
+    margin-bottom: 0.5rem !important;
+    display: list-item !important;
+  }
+  .symptom-content strong {
+    font-weight: 600 !important;
+    color: var(--color-ink) !important;
+  }
+</style>
