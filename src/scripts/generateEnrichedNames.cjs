@@ -300,7 +300,7 @@ babyNames.forEach((item) => {
     `Originating from ${origin} heritage, ${name} conveys the literal meaning of "${meaning}". In its linguistic history, ${originExp} Traditionally, the name was bestowed to inspire strength and honor, making it a highly symbolic choice. It remains a strong and expressive selection for families seeking a name with historical weight, cultural depth, and a beautiful melodic flow.`,
     `${name} has its linguistic roots in the ${origin} language, where it is traditionally translated as "${meaning}". ${originExp} Over time, the name has been chosen by families to invoke these positive attributes and values in the child's life. Its historical longevity is a testament to its beauty, appealing to successive generations of parents.`,
     `With a distinguished history in ${origin} naming traditions, ${name} is understood to signify "${meaning}". ${originExp} Modern parents are drawn to the name because of its beautiful phonetic structure combined with this historical significance. It carries a classic, elegant tone that works perfectly for a child growing up in today's globalized society.`,
-    `Linguistically derived from ${origin} sources, the name ${name} carries the beautiful translation of "${meaning}". ${originExp} It represents a timeless choice that connects the child directly to qualities of ${meaning.toLowerCase()}. Throughout ancient literature and folklore, names with this background were celebrated for their nobility and enduring grace.`
+    `Linguistically derived from ${origin} sources, the name ${name} carries the beautiful translation of "${meaning}". ${originExp} It represents a timeless choice that connects the child directly to these traditional qualities. Throughout ancient literature and folklore, names with this background were celebrated for their nobility and enduring grace.`
   ];
   etymology = etymologyTemplates[templateIdx];
   
@@ -366,7 +366,7 @@ babyNames.forEach((item) => {
     [
       {
         q: `What is the meaning and origin of the name ${name}?`,
-        a: `The name ${name} originates from the ${origin} language and means "${meaning}". It has a rich cultural history reflecting qualities of ${meaning.toLowerCase()}. In its country of origin, it was historically given as a meaningful blessing, signifying that the child would embody these attributes throughout their life journey.`
+        a: `The name ${name} originates from the ${origin} language and means "${meaning}". It has a rich cultural history reflecting these unique characteristics. In its country of origin, it was historically given as a meaningful blessing, signifying that the child would embody these attributes throughout their life journey.`
       },
       {
         q: `Is ${name} considered a popular baby name?`,
@@ -384,7 +384,7 @@ babyNames.forEach((item) => {
     [
       {
         q: `What does the name ${name} signify?`,
-        a: `${name} is a ${origin}-origin name that signifies "${meaning}". It carries a positive significance tied to its cultural roots. Choosing this name provides a deep, meaningful connection to values of ${meaning.toLowerCase()}, reflecting a heritage of strength and grace.`
+        a: `${name} is a ${origin}-origin name that signifies "${meaning}". It carries a positive significance tied to its cultural roots. Choosing this name provides a deep, meaningful connection to these traditional values, reflecting a heritage of strength and grace.`
       },
       {
         q: `How common is the baby name ${name}?`,
@@ -402,7 +402,7 @@ babyNames.forEach((item) => {
     [
       {
         q: `Where does the name ${name} come from?`,
-        a: `The name ${name} comes from ${origin} roots and carries the traditional definition of "${meaning}". Over centuries, the name has traveled across borders, adapting to different cultures while retaining its deep-seated association with ${meaning.toLowerCase()}.`
+        a: `The name ${name} comes from ${origin} roots and carries the traditional definition of "${meaning}". Over centuries, the name has traveled across borders, adapting to different cultures while retaining its deep-seated significance and local heritage.`
       },
       {
         q: `Is ${name} a trendy name this year?`,
@@ -418,7 +418,7 @@ babyNames.forEach((item) => {
     [
       {
         q: `What is the significance of the name ${name}?`,
-        a: `The name ${name} traditionally represents "${meaning}" and comes from a ${origin} lineage, symbolizing ${meaning.toLowerCase()}. In regional history, naming a child ${name} was believed to invoke these specific attributes, making it a name of good fortune.`
+        a: `The name ${name} traditionally represents "${meaning}" and comes from a ${origin} lineage, symbolizing these positive values. In regional history, naming a child ${name} was believed to invoke these specific attributes, making it a name of good fortune.`
       },
       {
         q: `What popularity tier does ${name} fall into?`,
@@ -434,7 +434,7 @@ babyNames.forEach((item) => {
     [
       {
         q: `What does the baby name ${name} mean?`,
-        a: `${name} is a beautiful ${origin} name meaning "${meaning}". It has historically been given to represent ${meaning.toLowerCase()}, reflecting a timeless heritage. The name is celebrated in regional records for its positive, uplifting connotations.`
+        a: `${name} is a beautiful ${origin} name meaning "${meaning}". It has historically been given to represent these traditional virtues, reflecting a timeless heritage. The name is celebrated in regional records for its positive, uplifting connotations.`
       },
       {
         q: `Is ${name} a standard baby name?`,
