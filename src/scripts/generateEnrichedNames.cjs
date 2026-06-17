@@ -276,6 +276,14 @@ const originExplanations = {
 
 const defaultOriginExplanation = "This name represents a classic choice in regional history, evolving over generations to hold its place in contemporary naming customs.";
 
+// Helper to join lists with "and" properly
+function formatListWithAnd(list) {
+  if (!Array.isArray(list) || list.length === 0) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return `${list[0]} and ${list[1]}`;
+  return `${list.slice(0, -1).join(', ')}, and ${list[list.length - 1]}`;
+}
+
 // 5. Build Enriched Baby Names Database
 const enrichedData = {};
 
@@ -303,11 +311,11 @@ babyNames.forEach((item) => {
   let popularityTrend = null;
   if (popularity > 0 && popularity < 1000) {
     const popTemplates = [
-      `According to public data from the Social Security Administration (SSA), ${name} ranks at #${popularity} in overall popularity. This position places it in a highly favored tier of baby names, indicating strong contemporary appeal among modern parents. Its presence in public records shows that it remains a stable, attractive choice that successfully bridges historical roots with current styling preferences.`,
-      `Verified statistics from public registries like the SSA place ${name} at rank #${popularity}. This shows that the name has established a secure foothold as a trendy yet classic choice, maintaining steady interest over the years. It is particularly popular in families who appreciate names that are recognizable and easy to spell without being overly saturated.`,
-      `Registry records from the Social Security Administration highlight ${name} at popularity rank #${popularity}. This rank signifies that while the name is familiar and recognizable, it remains distinct enough to avoid feeling overused. Parents who select this name benefit from a beautiful, time-tested option that carries a sense of individuality.`,
-      `Ranking at #${popularity} in recent public birth data, ${name} sits comfortably in a prominent popularity tier. It appeals to parents looking for a name that balances current naming trends with timeless appeal. The name has demonstrated steady staying power, avoiding the sharp peaks and valleys of short-lived novelty names.`,
-      `Public name databases, including the SSA, record ${name} at rank #${popularity}. This active ranking confirms its status as a popular selection, reflecting its enduring charm in modern baby name lists. It represents a highly respected option that continues to attract interest for its combination of phonetic softness and structural strength.`
+      `According to official U.S. Social Security Administration (SSA) data, ${name} ranks at #${popularity} in overall popularity. This position places it in a highly favored tier of baby names, indicating strong contemporary appeal among modern parents. Its presence in public records shows that it remains a stable, attractive choice that successfully bridges historical roots with current styling preferences.`,
+      `Verified statistics from the U.S. Social Security Administration place ${name} at rank #${popularity}. This shows that the name has established a secure foothold as a trendy yet classic choice, maintaining steady interest over the years. It is particularly popular in families who appreciate names that are recognizable and easy to spell without being overly saturated.`,
+      `Official records from the U.S. Social Security Administration highlight ${name} at rank #${popularity}. This rank signifies that while the name is familiar and recognizable, it remains distinct enough to avoid feeling overused. Parents who select this name benefit from a beautiful, time-tested option that carries a sense of individuality.`,
+      `Ranking at #${popularity} according to U.S. Social Security Administration data, ${name} sits comfortably in a prominent popularity tier. It appeals to parents looking for a name that balances current naming trends with timeless appeal. The name has demonstrated steady staying power, avoiding the sharp peaks and valleys of short-lived novelty names.`,
+      `Official U.S. Social Security Administration databases record ${name} at rank #${popularity}. This active ranking confirms its status as a popular selection, reflecting its enduring charm in modern baby name lists. It represents a highly respected option that continues to attract interest for its combination of phonetic softness and structural strength.`
     ];
     popularityTrend = popTemplates[templateIdx];
   }
@@ -363,7 +371,7 @@ babyNames.forEach((item) => {
       {
         q: `Is ${name} considered a popular baby name?`,
         a: popularityTrend 
-          ? `Yes, ${name} ranks at #${popularity} in public registries, making it a highly recognizable and popular choice for newborns. It sits in a very favorable popularity tier, reflecting its strong contemporary appeal among modern parents looking for a classic option.`
+          ? `Yes, ${name} ranks at #${popularity} according to U.S. Social Security Administration data, making it a highly recognizable and popular choice for newborns. It sits in a very favorable popularity tier, reflecting its strong contemporary appeal among modern parents looking for a classic option.`
           : `The name ${name} is a unique choice that is less common in mainstream lists, making it excellent for parents seeking something distinct. It allows your child to have a name that stands out with its own individual personality and character.`
       },
       {
@@ -381,7 +389,7 @@ babyNames.forEach((item) => {
       {
         q: `How common is the baby name ${name}?`,
         a: popularityTrend
-          ? `In recent baby statistics, ${name} stands at position #${popularity}. This rank shows it is a fashionable name with moderate-to-high appeal, making it a familiar name that remains highly respected in modern nurseries.`
+          ? `According to U.S. Social Security Administration data, ${name} stands at position #${popularity}. This rank shows it is a fashionable name with moderate-to-high appeal, making it a familiar name that remains highly respected in modern nurseries.`
           : `${name} is an uncommon choice, allowing your baby to stand out with a beautiful, meaningful name. It is ideal for families who prefer to avoid highly saturated name lists while keeping a name with deep roots.`
       },
       {
@@ -399,12 +407,12 @@ babyNames.forEach((item) => {
       {
         q: `Is ${name} a trendy name this year?`,
         a: popularityTrend
-          ? `With a rank of #${popularity} in recent databases, ${name} remains a trendy option that blends modern appeal with class. It has avoided the trap of passing fads, establishing a stable reputation as an elegant selection.`
+          ? `With a rank of #${popularity} according to U.S. Social Security Administration data, ${name} remains a trendy option that blends modern appeal with class. It has avoided the trap of passing fads, establishing a stable reputation as an elegant selection.`
           : `${name} is a classic name that sidesteps passing trends, making it a timeless choice. Its lack of sudden spikes in popularity ensures it remains a rare, highly valued name for years to come.`
       },
       {
         q: `What are sibling names that match ${name}?`,
-        a: `Sibling names that pair well with ${name} include ${siblingSuggestions.join(', ')}. These names share compatible stylistic rhythms and cultural origins, creating a balanced and harmonious family set that flows naturally together.`
+        a: `Sibling names that pair well with ${name} include ${formatListWithAnd(siblingSuggestions)}. These names share compatible stylistic rhythms and cultural origins, creating a balanced and harmonious family set that flows naturally together.`
       }
     ],
     [
@@ -415,7 +423,7 @@ babyNames.forEach((item) => {
       {
         q: `What popularity tier does ${name} fall into?`,
         a: popularityTrend
-          ? `Ranking at #${popularity}, ${name} sits in the mainstream baby names category, indicating that it is highly popular. It is a favored choice that is widely appreciated for its beautiful sound and strong positive meaning.`
+          ? `Ranking at #${popularity} according to U.S. Social Security Administration data, ${name} sits in the mainstream baby names category, indicating that it is highly popular. It is a favored choice that is widely appreciated for its beautiful sound and strong positive meaning.`
           : `${name} falls into a rare, unique popularity tier, giving it a very exclusive feel. It is chosen by parents who prioritize originality and seek a name that is not shared by multiple classmates.`
       },
       {
@@ -431,12 +439,12 @@ babyNames.forEach((item) => {
       {
         q: `Is ${name} a standard baby name?`,
         a: popularityTrend
-          ? `Yes, ${name} is a well-established name ranking at #${popularity} in official registries. It is widely recognized and accepted, offering a reliable, classic choice that feels both familiar and elegant.`
+          ? `Yes, ${name} is a well-established name ranking at #${popularity} according to U.S. Social Security Administration data. It is widely recognized and accepted, offering a reliable, classic choice that feels both familiar and elegant.`
           : `No, ${name} is a rare name that offers a unique choice for parents. It has a beautiful, non-standard style that makes it perfect for families seeking an original title with historic depth.`
       },
       {
         q: `What are good sibling options for ${name}?`,
-        a: `Excellent sibling pairings for ${name} include ${siblingSuggestions.join(' and ')}. These sibling names match the origin and stylistic feel of ${name}, ensuring your children's names sound wonderful together as a pair.`
+        a: `Excellent sibling pairings for ${name} include ${formatListWithAnd(siblingSuggestions)}. These sibling names match the origin and stylistic feel of ${name}, ensuring your children's names sound wonderful together as a pair.`
       }
     ]
   ];
