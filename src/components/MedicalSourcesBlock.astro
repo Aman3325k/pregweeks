@@ -3,9 +3,10 @@
 
 interface Props {
   weekNum: number;
+  title?: string;
 }
 
-const { weekNum } = Astro.props;
+const { weekNum, title } = Astro.props;
 
 interface SourceLink {
   title: string;
@@ -131,12 +132,14 @@ const sources = getSourcesForWeek(weekNum);
   <div class="flex items-center gap-2 border-b border-hairline pb-3 mb-4">
     <span class="text-lg">📚</span>
     <h3 class="font-display font-semibold text-base text-ink tracking-apple-tight">
-      Evidence-Based Clinical Sources for Week {weekNum}
+      {title || `Evidence-Based Clinical Sources for Week ${weekNum}`}
     </h3>
   </div>
   
   <p class="text-xs text-ink-muted-80 leading-relaxed mb-6">
-    PregWeeks is dedicated to medical transparency. Every milestone, symptom tip, and fetal development guideline for Week {weekNum} is sourced directly from clinical guidelines published by leading obstetric authorities. Read more about our editorial methodology on our <a href="/sources/" class="text-primary hover:underline font-semibold">Medical Sources</a> page.
+    <slot name="description">
+      PregWeeks is dedicated to medical transparency. Every milestone, symptom tip, and fetal development guideline for Week {weekNum} is sourced directly from clinical guidelines published by leading obstetric authorities. Read more about our editorial methodology on our <a href="/sources/" class="text-primary hover:underline font-semibold">Medical Sources</a> page.
+    </slot>
   </p>
   
   <div class="space-y-4">

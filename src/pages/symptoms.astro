@@ -19,13 +19,48 @@ function getFirstParagraph(body: string): string {
   return "";
 }
 
+const symptomTeasers: Record<string, string> = {
+  "back-pain": "Managing lower back discomfort caused by shifting posture, expanding weight, and relaxed joint ligaments.",
+  "bleeding-gums": "Understanding why hormonal changes make gums more sensitive and prone to swelling or bleeding.",
+  "bloating": "Relieving digestive pressure, gas, and abdominal bloating triggered by elevated progesterone.",
+  "braxton-hicks": "Recognizing the sporadic, practice contractions your uterus uses to prepare for active labor.",
+  "breast-tenderness": "Coping with early hormonal surges that increase blood flow and cause breast sensitivity.",
+  "carpal-tunnel": "Reducing wrist pain and hand numbness caused by fluid retention pressing on the median nerve.",
+  "constipation": "Alleviating sluggish bowel movements and hard stools resulting from slower digestion.",
+  "cramping": "Distinguishing mild early cramping due to uterine expansion from signs that require medical care.",
+  "discharge": "Recognizing healthy changes in vaginal discharge and identifying when it signals an infection.",
+  "dizziness": "Addressing lightheadedness triggered by lower blood pressure and changing circulation patterns.",
+  "fatigue": "Navigating the deep exhaustion common as your body works to support early development.",
+  "food-cravings": "Understanding the nutritional theories and hormonal changes behind sudden dietary urges.",
+  "frequent-urination": "Managing the constant urge to urinate as blood volume rises and the uterus expands.",
+  "headache": "Identifying common triggers like hormonal shifts and dehydration that cause pregnancy headaches.",
+  "heartburn": "Preventing stomach acid reflux caused by a relaxed esophageal valve and growing baby.",
+  "insomnia": "Improving sleep quality despite physical discomforts, frequent bathroom visits, and busy thoughts.",
+  "itchiness": "Calming stretched skin on your belly and identifying when itching requires medical attention.",
+  "leg-cramps": "Relieving sudden, painful spasms in your calf muscles that often occur during the night.",
+  "mood-swings": "Navigating rapid emotional shifts driven by hormonal surges and life transitions.",
+  "nasal-congestion": "Relieving a stuffy nose caused by increased blood flow to the mucous membranes.",
+  "nausea": "Coping with morning sickness, tracking safe remedies, and managing severe vomiting concerns.",
+  "nosebleeds": "Preventing nosebleeds triggered by expanded blood vessels in dry nasal passages.",
+  "pelvic-girdle-pain": "Managing pelvic pain and joint instability with gentle exercises and support bands.",
+  "round-ligament-pain": "Relieving sharp, sudden groin pains caused by the stretching of pelvic support ligaments.",
+  "sciatica": "Soothing shooting nerve pain that travels down the leg due to pelvic pressure.",
+  "shortness-of-breath": "Adapting to the feeling of breathlessness as the diaphragm rises to accommodate baby.",
+  "skin-changes": "Understanding pigment changes, the 'glow', and acne driven by pregnancy hormones.",
+  "spotting": "Evaluating light bleeding or spotting and understanding when to contact your provider.",
+  "stretch-marks": "Coping with the natural development of stretch marks as your body expands.",
+  "swelling": "Managing normal fluid buildup in the feet and ankles while watching for preeclampsia signs.",
+  "tailbone-pain": "Relieving localized pressure on your coccyx caused by ligaments loosening before birth.",
+  "vivid-dreams": "Exploring the psychological reasons and sleep patterns behind highly detailed pregnancy dreams."
+};
+
 const allSymptoms = [
   ...mdxSymptoms.map(entry => ({
     slug: entry.id,
     name: entry.data.name,
     weeks: entry.data.weeks,
     normalcy: entry.data.normalcy,
-    description: getFirstParagraph(entry.body)
+    description: symptomTeasers[entry.id] || getFirstParagraph(entry.body)
   })),
   ...symptomItems
 ].sort((a, b) => a.name.localeCompare(b.name));

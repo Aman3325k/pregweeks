@@ -214,7 +214,16 @@ const weekNum = activeWeeks[0] || 4;
     </article>
 
     <!-- Medical Sources Block (E-E-A-T element) -->
-    {Content && <MedicalSourcesBlock weekNum={weekNum} />}
+    {Content && (
+      <MedicalSourcesBlock 
+        weekNum={weekNum} 
+        title="Evidence-Based Clinical Sources"
+      >
+        <span slot="description">
+          PregWeeks is dedicated to medical transparency. These clinical guidelines and research sources support our healthcare guidelines for managing {name.toLowerCase()} during pregnancy. Read more about our editorial methodology on our <a href="/sources/" class="text-primary hover:underline font-semibold">Medical Sources</a> page.
+        </span>
+      </MedicalSourcesBlock>
+    )}
 
     <!-- FAQs section -->
     <section class="bg-canvas border border-hairline rounded-apple-lg p-6 md:p-8 mb-8 transition-colors">
