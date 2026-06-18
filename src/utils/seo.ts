@@ -44,18 +44,6 @@ export interface MedicalReviewer {
   organizationUrl?: string;
 }
 
-const DEFAULT_REVIEWER: MedicalReviewer = {
-  name: "PregWeeks Editorial Team",
-  jobTitle: "Medical Content Reviewers",
-  sameAs: [
-    "https://www.acog.org",
-    "https://www.who.int/health-topics/pregnancy",
-    "https://www.cdc.gov/pregnancy"
-  ],
-  organization: "American College of Obstetricians and Gynecologists",
-  organizationUrl: "https://www.acog.org"
-};
-
 export function getMedicalPageSchema(
   title: string,
   desc: string,
@@ -64,7 +52,6 @@ export function getMedicalPageSchema(
   reviewer?: MedicalReviewer
 ) {
   const currentDate = new Date().toISOString().split('T')[0];
-  const activeReviewer = reviewer || DEFAULT_REVIEWER;
   
   const baseSchema: Record<string, any> = {
     "@context": "https://schema.org",
@@ -90,30 +77,32 @@ export function getMedicalPageSchema(
     },
     "author": {
       "@type": "Organization",
-      "name": "PregWeeks Medical Review Board"
+      "name": "PregWeeks"
     }
   };
 
-  if (activeReviewer.name.includes("Team") || activeReviewer.name.includes("Board")) {
-    baseSchema.reviewedBy = {
-      "@type": "MedicalOrganization",
-      "name": activeReviewer.name,
-      "sameAs": activeReviewer.sameAs
-    };
-  } else {
-    baseSchema.reviewedBy = {
-      "@type": "Person",
-      "name": activeReviewer.name,
-      "jobTitle": activeReviewer.jobTitle,
-      "sameAs": activeReviewer.sameAs,
-      ...(activeReviewer.organization ? {
-        "worksFor": {
-          "@type": "MedicalOrganization",
-          "name": activeReviewer.organization,
-          ...(activeReviewer.organizationUrl ? { "sameAs": activeReviewer.organizationUrl } : {})
-        }
-      } : {})
-    };
+  if (reviewer) {
+    if (reviewer.name.includes("Team") || reviewer.name.includes("Board")) {
+      baseSchema.reviewedBy = {
+        "@type": "MedicalOrganization",
+        "name": reviewer.name,
+        "sameAs": reviewer.sameAs
+      };
+    } else {
+      baseSchema.reviewedBy = {
+        "@type": "Person",
+        "name": reviewer.name,
+        "jobTitle": reviewer.jobTitle,
+        "sameAs": reviewer.sameAs,
+        ...(reviewer.organization ? {
+          "worksFor": {
+            "@type": "MedicalOrganization",
+            "name": reviewer.organization,
+            ...(reviewer.organizationUrl ? { "sameAs": reviewer.organizationUrl } : {})
+          }
+        } : {})
+      };
+    }
   }
   
   // Add medical audience and OB-GYN specialty details to solidify YMYL credentials
