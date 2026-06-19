@@ -4,7 +4,7 @@
 
 <div
   id="cookie-consent-banner"
-  class="fixed bottom-0 left-0 right-0 w-full bg-white border-t border-black text-black py-4 px-6 z-50 transform translate-y-full transition-transform duration-300 ease-out hidden print:hidden"
+  class="fixed bottom-0 left-0 right-0 w-full bg-white border-t border-black text-black py-4 px-6 z-50 translate-y-full transition-all duration-300 ease-out hidden print:hidden"
   style="font-family: var(--font-text), system-ui, -apple-system, sans-serif;"
 >
   <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -31,6 +31,17 @@
 
 <script is:inline>
   (function() {
+    function getCookie(name) {
+      try {
+        const value = "; " + document.cookie;
+        const parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      } catch (e) {
+        // Ignore cookie reading error
+      }
+      return null;
+    }
+
     function initCookieConsent() {
       const banner = document.getElementById('cookie-consent-banner');
       const acceptBtn = document.getElementById('accept-cookies');
@@ -38,7 +49,13 @@
 
       if (!banner || !acceptBtn || !declineBtn) return;
 
-      const consent = localStorage.getItem('cookie_consent');
+      const region = getCookie('visitor_region') || 'EU';
+      let consent = null;
+      try {
+        consent = localStorage.getItem('cookie_consent');
+      } catch (e) {
+        // Safe fallback if localStorage is disabled
+      }
 
       // Show banner only if no decision has been saved yet
       if (!consent) {
@@ -46,14 +63,20 @@
         // Trigger smooth slide-in after browser registers display removal
         requestAnimationFrame(() => {
           setTimeout(() => {
-            banner.style.transform = 'translateY(0)';
+            banner.classList.remove('translate-y-full');
+            banner.classList.add('translate-y-0');
           }, 50);
         });
       }
 
       acceptBtn.addEventListener('click', () => {
-        localStorage.setItem('cookie_consent', 'accepted');
-        banner.style.transform = 'translateY(100%)';
+        try {
+          localStorage.setItem('cookie_consent', 'accepted');
+        } catch (e) {
+          // Safe fallback if localStorage is disabled
+        }
+        banner.classList.remove('translate-y-0');
+        banner.classList.add('translate-y-full');
         setTimeout(() => {
           banner.classList.add('hidden');
         }, 300);
@@ -65,8 +88,13 @@
       });
 
       declineBtn.addEventListener('click', () => {
-        localStorage.setItem('cookie_consent', 'declined');
-        banner.style.transform = 'translateY(100%)';
+        try {
+          localStorage.setItem('cookie_consent', 'declined');
+        } catch (e) {
+          // Safe fallback if localStorage is disabled
+        }
+        banner.classList.remove('translate-y-0');
+        banner.classList.add('translate-y-full');
         setTimeout(() => {
           banner.classList.add('hidden');
         }, 300);
