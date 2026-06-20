@@ -11,7 +11,7 @@ export async function onRequest(context) {
     return context.next();
   }
 
-  const country = request.headers.get('cf-ip-country');
+  const country = request.cf?.country || request.headers.get('cf-ipcountry');
   
   const euCountries = new Set([
     'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT',
