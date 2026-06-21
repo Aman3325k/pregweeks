@@ -44,7 +44,7 @@ export async function onRequest(context) {
       // Use Cloudflare HTMLRewriter to inject the region script directly into the HTML response body
       const rewriter = new HTMLRewriter().on("head", {
         element(element) {
-          element.append(
+          element.prepend(
             `<script>window.__VISITOR_REGION__ = "${region}";</script>`,
             { html: true }
           );
