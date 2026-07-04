@@ -84,7 +84,7 @@ const organizationSchema = {
           // If localStorage is unavailable/disabled, default to null
         }
 
-        if (region === 'OTHER' || consent === 'accepted') {
+        if (consent === 'accepted') {
           window.loadTrackingScripts();
         }
       })();
