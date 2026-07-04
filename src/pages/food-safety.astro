@@ -8,7 +8,8 @@ import { getBreadcrumbSchema, getMedicalPageSchema } from '../utils/seo';
 const mdxFood = await getCollection('food');
 
 // Helper to extract first paragraph as fallback explanation
-function getFirstParagraph(body: string): string {
+function getFirstParagraph(body: string | undefined): string {
+  if (!body) return "";
   const lines = body.split('\n');
   for (const line of lines) {
     const clean = line.trim();
