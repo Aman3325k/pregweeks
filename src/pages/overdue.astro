@@ -73,7 +73,7 @@ const jsonLd = {
   description="Are you overdue? Read our clinical guide on post-term pregnancies, fetal monitoring, membrane sweeps, and medical labor induction options."
 >
   <!-- Inject Schema -->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <main class="max-w-3xl mx-auto px-4 py-12 space-y-10">
     <!-- Breadcrumb -->

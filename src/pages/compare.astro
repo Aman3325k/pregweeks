@@ -168,7 +168,7 @@ const clientWeekData = pregnancyData.map(d => ({
     </div>
   </main>
 
-  <script define:vars={{ clientWeekData }}>
+  <script is:inline define:vars={{ clientWeekData }}>
     const selectA = document.getElementById('select-week-a');
     const selectB = document.getElementById('select-week-b');
 

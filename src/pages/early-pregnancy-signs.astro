@@ -100,7 +100,7 @@ const jsonLd = {
   description="Are you pregnant? Read our clinical guide on early pregnancy signs, from implantation cramps to fatigue and nausea, before taking a test."
 >
   <!-- Inject Schema -->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <main class="max-w-4xl mx-auto px-4 py-12 space-y-10">
     <!-- Breadcrumb -->

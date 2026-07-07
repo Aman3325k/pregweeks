@@ -17,6 +17,19 @@ export interface Props {
 const { nameObj } = Astro.props;
 const { name, meaning, origin, gender, popularity, slug } = nameObj;
 
+let genderSuffix = '';
+if (gender === 'boy') genderSuffix = ' for Boys';
+else if (gender === 'girl') genderSuffix = ' for Girls';
+else if (gender === 'neutral') genderSuffix = ' (Gender Neutral)';
+
+let variantSuffix = '';
+if (slug.includes('-')) {
+  const parts = slug.split('-');
+  variantSuffix = ` [${parts[1].charAt(0).toUpperCase() + parts[1].slice(1)}]`;
+}
+
+const pageTitle = `${name}${variantSuffix} Name Meaning${genderSuffix} (${origin}), Origin, Pronunciation & Nicknames | PregWeeks`;
+
 const enriched = (enrichedNames as Record<string, any>)[slug] || {};
 const {
   etymology = '',
@@ -57,7 +70,7 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": `https://pregweeks.com/baby-names/${slug}/#webpage`,
       "url": `https://pregweeks.com/baby-names/${slug}/`,
-      "name": `${name} Name Meaning, Origin, Pronunciation & Nicknames | PregWeeks`,
+      "name": pageTitle,
       "description": `Discover the meaning, origin, pronunciation guide, nicknames, related names, and sibling pairing suggestions for the baby name ${name} on PregWeeks.`
     },
     {
@@ -110,8 +123,8 @@ if (gender === 'boy') {
 ---
 
 <Layout 
-  title={`${name} Name Meaning, Origin, Pronunciation & Nicknames | PregWeeks`}
-  description={`Discover the meaning, origin, pronunciation, nicknames, related names, and sibling pairing suggestions for the baby name ${name} on PregWeeks.`}
+  title={pageTitle}
+  description={`Discover the meaning, origin, pronunciation guide, nicknames, related names, and sibling pairing suggestions for the baby name ${name} on PregWeeks.`}
   canonicalUrl={`https://pregweeks.com/baby-names/${slug}/`}
 >
   <!-- Inject Schema -->

@@ -84,7 +84,7 @@ const organizationSchema = {
           // If localStorage is unavailable/disabled, default to null
         }
 
-        if (consent === 'accepted') {
+        if (consent === 'accepted' || region !== 'EU') {
           window.loadTrackingScripts();
         }
       })();
@@ -135,9 +135,9 @@ const organizationSchema = {
     </script>
 
     <!-- Schema Markup -->
-    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     {schemas.map((schema) => (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
     <slot name="head" />
   </head>

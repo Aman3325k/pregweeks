@@ -46,8 +46,8 @@
         // Safe fallback if localStorage is disabled
       }
 
-      // Show banner for everyone if no decision has been saved yet
-      if (!consent) {
+      // Show banner for EU if no decision has been saved yet
+      if (!consent && region === 'EU') {
         banner.classList.remove('hidden');
         // Trigger smooth slide-in after browser registers display removal
         requestAnimationFrame(() => {

@@ -69,7 +69,7 @@ const jsonLd = {
   description="Wondering when is the best time to take a pregnancy test? Learn how home tests work, how to read faint lines, and when is the earliest you can test."
 >
   <!-- Inject Schema -->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <main class="max-w-3xl mx-auto px-4 py-12 space-y-8">
     <!-- Breadcrumb -->

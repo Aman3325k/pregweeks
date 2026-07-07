@@ -392,7 +392,7 @@ const weeks = Array.from({ length: 40 }, (_, i) => i + 1);
     }
 
     try {
-      const { edd, weeks, days, daysRemaining, trimester, progressPercent } = calculatePregnancyData(state.date, state.mode);
+      const { weeks, days, daysRemaining, trimester } = calculatePregnancyData(state.date, state.mode);
       const currentWeek = Math.max(1, Math.min(40, weeks + 1));
 
       if (widgetGreeting) {

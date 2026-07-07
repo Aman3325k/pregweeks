@@ -92,7 +92,7 @@ const jsonLd = {
   description={`What is ${term}? Read our plain-English definition, clinical context, and explanations for this pregnancy term.`}
 >
   <!-- Inject Schema -->
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <main class="max-w-4xl mx-auto px-4 py-8">
     <!-- Breadcrumb -->
