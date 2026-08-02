@@ -15,7 +15,7 @@ interface Props {
 const {
   title = "PregWeeks.com | Your Weekly Pregnancy Guide & Due Date Tracker",
   description = "Detailed week-by-week pregnancy guides, developmental milestones, medical symptoms, safe nutrition, kick counter, and due date calculator tools.",
-  canonicalUrl = "https://pregweeks.com",
+  canonicalUrl = `https://pregweeks.com${Astro.url.pathname}`,
   ogImage = "https://pregweeks.com/pregnancy-hero.webp",
   schemas = []
 } = Astro.props;
