@@ -10,9 +10,6 @@ import { laborGuides } from '../data/laborData';
 export const GET: APIRoute = async () => {
   const baseUrls = [
     'https://pregweeks.com/',
-    'https://pregweeks.com/tools/due-date-calculator/',
-    'https://pregweeks.com/tools/kick-counter/',
-    'https://pregweeks.com/tools/contraction-timer/',
     'https://pregweeks.com/checklist/hospital-bag/',
     'https://pregweeks.com/trimester/first/',
     'https://pregweeks.com/trimester/second/',
@@ -24,19 +21,14 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/food/sushi/',
     // Phase 1 Expansion
     'https://pregweeks.com/food-safety/',
-    'https://pregweeks.com/tools/ivf-calculator/',
-    'https://pregweeks.com/tools/weight-tracker/',
-    'https://pregweeks.com/tools/birth-plan/',
     'https://pregweeks.com/partner/',
     'https://pregweeks.com/milestone/',
     'https://pregweeks.com/postpartum/',
-    'https://pregweeks.com/tools/gender-prediction/',
     'https://pregweeks.com/quiz/can-i-eat-this/',
     'https://pregweeks.com/medication-safety/',
     'https://pregweeks.com/prenatal-vitamins/',
     // Phase 2 Expansion
     'https://pregweeks.com/baby-names/',
-    'https://pregweeks.com/tools/ovulation-calculator/',
     'https://pregweeks.com/quiz/am-i-pregnant/',
     'https://pregweeks.com/pregnancy-announcement/',
     'https://pregweeks.com/checklist/baby-shower/',
@@ -56,11 +48,15 @@ export const GET: APIRoute = async () => {
     'https://pregweeks.com/early-pregnancy-signs/',
     'https://pregweeks.com/overdue/',
     'https://pregweeks.com/sources/',
-    'https://pregweeks.com/tools/baby-cost-calculator/',
-    'https://pregweeks.com/tools/journal/',
     'https://pregweeks.com/checklist/nursery/',
     'https://pregweeks.com/checklist/baby-gear/',
   ];
+
+  const toolFiles = import.meta.glob('./tools/*.astro');
+  Object.keys(toolFiles).forEach((path) => {
+    const slug = path.replace('./tools/', '').replace('.astro', '');
+    baseUrls.push(`https://pregweeks.com/tools/${slug}/`);
+  });
 
   const blogPosts = await getCollection('blog');
   blogPosts.forEach((post) => {
