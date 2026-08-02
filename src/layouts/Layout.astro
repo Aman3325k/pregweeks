@@ -20,8 +20,8 @@ const {
   schemas = []
 } = Astro.props;
 
-// Format the canonical URL to ensure consistency
-const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl.slice(0, -1) : canonicalUrl;
+// Format the canonical URL to ensure consistency (enforce trailing slash)
+const formattedCanonical = canonicalUrl.endsWith('/') ? canonicalUrl : `${canonicalUrl}/`;
 
 // Retrieve site verification codes from environment variables (set in Cloudflare Pages build settings)
 const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
@@ -60,12 +60,12 @@ const organizationSchema = {
           window.dataLayer = window.dataLayer || [];
           window.gtag = function() { window.dataLayer.push(arguments); };
           window.gtag('js', new Date());
-          window.gtag('config', 'G-ZVDSZPW771');
+          window.gtag('config', 'G-E4HR5R6Z9F');
 
           // Google Analytics 4 - Append script tag second
           const gaScript = document.createElement('script');
           gaScript.async = true;
-          gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZVDSZPW771';
+          gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-E4HR5R6Z9F';
           document.head.appendChild(gaScript);
 
           // Microsoft Clarity
